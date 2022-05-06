@@ -14,9 +14,6 @@ void PyInterface::initialize(const std::string& upd_filename) {
 }
 
 void PyInterface::init_pasfrs_from_5yr(np::ndarray& pasfrs5y) {
-	// TODO: throw exceptions if the dimension, size, or arrangement of pasfrs5y is
-	// insufficient (https://docs.python.org/3/extending/extending.html) or
-	// dat allocation fails
 	const int nrows(pasfrs5y.shape(0));
 	const int ncols(pasfrs5y.shape(1));
 	double* data_ptr = reinterpret_cast<double*>(pasfrs5y.get_data());
@@ -31,7 +28,8 @@ void PyInterface::init_pasfrs_from_5yr(np::ndarray& pasfrs5y) {
 		dat = nullptr;
 	}
 
-	proj->dat.init_pasfrs_from_5yr(*dat);
-
-	delete dat;
+	if (dat != NULL) {
+		proj->dat.init_pasfrs_from_5yr(*dat);
+		delete dat;
+	}
 }
