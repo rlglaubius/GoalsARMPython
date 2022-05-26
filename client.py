@@ -26,12 +26,24 @@ import src.goals_const as CONST
 def xlsx_load_range(tab, cell_first, cell_final):
     return np.array([[cell.value for cell in row] for row in tab[cell_first:cell_final]], dtype=np.float64, order="C")
 
-# Return a dict() mapping configuration tags to their values
-# (e.g., x["first.year"] = 1970)
 def xlsx_load_config(tab_config):
-    vals = [cell[0].value for cell in tab_config['B2':'B8']]
-    keys = [cell[0].value for cell in tab_config['D2':'D8']]
+    """! Load configuration options
+    @param tab_config an openpyxl workbook tab
+    @return a dict mapping configuration tags to parameter values (e.g., x["first.year"] = 1970)
+    """
+    vals = [cell[0].value for cell in tab_config['B2:B8']]
+    keys = [cell[0].value for cell in tab_config['D2:D8']]
     return dict(zip(keys,vals))
+
+def xlsx_load_popsize(tab_popsize):
+    """! Load population size inputs
+    @param tab_popsize an openpyxl workbook tab
+    @return a dict mapping population size tags to parameter values. dict values are tuples: (male_value, female_value) 
+    """
+    vals = [tuple([cell.value for cell in row]) for row in tab_popsize['B2:C16']]
+    keys = [cell[0].value for cell in tab_popsize['E2:E16']]
+    rval = dict(zip(keys, vals))
+    return {key : rval[key] for key in keys if keys != None} # Prune empty rows
 
 def xlsx_load_pasfrs(tab_fert):
     p = xlsx_load_range(tab_fert, 'B2', 'CD8')
@@ -52,25 +64,50 @@ def xlsx_load_inci(tab_inci):
     rirr_f = xlsx_load_range(tab_inci, 'B55', 'CD61')
     return inci[0], sirr[0], airr_m, airr_f, rirr_m, rirr_f
 
-def init_from_xlsx(xlsx_name):
-    wb = xlsx.load_workbook(filename=xlsx_name, read_only=True)
-    config = xlsx_load_config(wb[CONST.XLSX_TAB_CONFIG])
+def initialize_population_sizes(model, pop_pars):
+    FEMALE, MALE = 1, 0
+    model.init_median_age_debut(pop_pars[CONST.POP_FIRST_SEX  ][FEMALE], pop_pars[CONST.POP_FIRST_SEX  ][MALE])
+    model.init_median_age_union(pop_pars[CONST.POP_FIRST_UNION][FEMALE], pop_pars[CONST.POP_FIRST_UNION][MALE])
+    model.init_mean_duration_union(pop_pars[CONST.POP_FIRST_UNION][MALE])
+    model.init_mean_duration_pwid(pop_pars[CONST.POP_DUR_PWID][FEMALE], pop_pars[CONST.POP_DUR_PWID][MALE])
+    model.init_mean_duration_fsw(pop_pars[CONST.POP_DUR_KEYPOP][FEMALE])
+    model.init_mean_duration_msm(pop_pars[CONST.POP_DUR_KEYPOP][MALE])
+    model.init_size_pwid(pop_pars[CONST.POP_SIZE_PWID][FEMALE], pop_pars[CONST.POP_SIZE_PWID][MALE])
+    model.init_size_fsw(pop_pars[CONST.POP_SIZE_KEYPOP][FEMALE])
+    model.init_size_msm(pop_pars[CONST.POP_SIZE_KEYPOP][MALE])
+    model.init_size_trans(pop_pars[CONST.POP_SIZE_TRANS][FEMALE], pop_pars[CONST.POP_SIZE_TRANS][MALE])
+    model.init_age_pwid(pop_pars[CONST.POP_PWID_LOC][FEMALE], pop_pars[CONST.POP_PWID_SHP][FEMALE],
+                        pop_pars[CONST.POP_PWID_LOC][MALE  ], pop_pars[CONST.POP_PWID_SHP][MALE])
+    model.init_age_fsw(pop_pars[CONST.POP_KEYPOP_LOC][FEMALE], pop_pars[CONST.POP_KEYPOP_SHP][FEMALE])
+    model.init_age_msm(pop_pars[CONST.POP_KEYPOP_LOC][MALE], pop_pars[CONST.POP_KEYPOP_SHP][MALE])
 
-    first_year = config[CONST.CFG_FIRST_YEAR]
-    final_year = config[CONST.CFG_FINAL_YEAR]
+def init_from_xlsx(xlsx_name):
+    """! Create and initialize a Goals ARM model instance from inputs stored in Excel
+    @param xlsx_name An Excel workbook with Goals ARM inputs
+    @return An initialized Goals ARM model instance
+    """
+
+    wb = xlsx.load_workbook(filename=xlsx_name, read_only=True)
+    cfg_opts = xlsx_load_config(wb[CONST.XLSX_TAB_CONFIG])
+    pop_pars = xlsx_load_popsize(wb[CONST.XLSX_TAB_POPSIZE])
+
+    first_year = cfg_opts[CONST.CFG_FIRST_YEAR]
+    final_year = cfg_opts[CONST.CFG_FINAL_YEAR]
 
     model = Goals.Projection(first_year, final_year)
-    model.initialize(config[CONST.CFG_UPD_NAME])
+    model.initialize(cfg_opts[CONST.CFG_UPD_NAME])
 
-    if not config[CONST.CFG_USE_UPD_PASFRS]:
+    initialize_population_sizes(model, pop_pars)
+
+    if not cfg_opts[CONST.CFG_USE_UPD_PASFRS]:
         pasfrs = xlsx_load_pasfrs(wb[CONST.XLSX_TAB_PASFRS])
         model.init_pasfrs_from_5yr(pasfrs)
 
-    if not config[CONST.CFG_USE_UPD_MIGR]:
+    if not cfg_opts[CONST.CFG_USE_UPD_MIGR]:
         migr_net, migr_dist_m, migr_dist_f = xlsx_load_migr(wb[CONST.XLSX_TAB_MIGR])
         Warning("Net migration input from Excel is not supported yet")
 
-    if config[CONST.CFG_USE_DIRECT_INCI]:
+    if cfg_opts[CONST.CFG_USE_DIRECT_INCI]:
         inci, sirr, airr_m, airr_f, rirr_m, rirr_f = xlsx_load_inci(wb[CONST.XLSX_TAB_INCI])
         Warning("Direct incidence input from Excel is not supported yet")
 
@@ -78,6 +115,7 @@ def init_from_xlsx(xlsx_name):
     return model
 
 def main(xlsx_name):
+    """! Main program entry point"""
     model = init_from_xlsx(xlsx_name)
 
 if __name__ == "__main__":

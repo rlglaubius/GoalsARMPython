@@ -50,3 +50,61 @@ void PyInterface::init_pasfrs_from_5yr(np::ndarray& pasfrs5y) {
 		delete dat;
 	}
 }
+
+void PyInterface::init_median_age_debut(const double age_female, const double age_male) {
+	proj->dat.median_age_debut(DP::FEMALE, age_female);
+	proj->dat.median_age_debut(DP::MALE,   age_male);
+}
+
+void PyInterface::init_median_age_union(const double age_female, const double age_male) {
+	proj->dat.median_age_union(DP::FEMALE, age_female);
+	proj->dat.median_age_union(DP::MALE, age_male);
+}
+
+void PyInterface::init_mean_duration_union(const double years) {
+	proj->dat.mean_union_duration(years);
+}
+
+void PyInterface::init_mean_duration_pwid(const double years_female, const double years_male) {
+	proj->dat.mean_keypop_duration(DP::FEMALE, DP::POP_PWID, years_female);
+	proj->dat.mean_keypop_duration(DP::MALE,   DP::POP_PWID, years_male);
+}
+
+void PyInterface::init_mean_duration_fsw(const double years) {
+	proj->dat.mean_keypop_duration(DP::FEMALE, DP::POP_FSW, years);
+}
+
+void PyInterface::init_mean_duration_msm(const double years) {
+	proj->dat.mean_keypop_duration(DP::MALE, DP::POP_MSM, years);
+}
+
+void PyInterface::init_size_pwid(const double prop_female, const double prop_male) {
+	proj->dat.keypop_size(DP::FEMALE, DP::POP_PWID, prop_female);
+	proj->dat.keypop_size(DP::MALE,   DP::POP_PWID, prop_male);
+}
+
+void PyInterface::init_size_fsw(const double prop) {
+	proj->dat.keypop_size(DP::FEMALE, DP::POP_FSW, prop);
+}
+
+void PyInterface::init_size_msm(const double prop) {
+	proj->dat.keypop_size(DP::MALE, DP::POP_MSM, prop);
+}
+
+void PyInterface::init_size_trans(const double prop_female, const double prop_male) {
+	proj->dat.keypop_size(DP::FEMALE, DP::POP_TRANS, prop_female);
+	proj->dat.keypop_size(DP::MALE,   DP::POP_TRANS, prop_male);
+}
+
+void PyInterface::init_age_pwid(const double loc_female, const double shp_female, const double loc_male, const double shp_male) {
+	DP::set_keypop_age(proj->dat, DP::FEMALE, DP::POP_PWID, loc_female, shp_female);
+	DP::set_keypop_age(proj->dat, DP::MALE,   DP::POP_PWID, loc_male,   shp_male);
+}
+
+void PyInterface::init_age_fsw(const double loc, const double shp) {
+	DP::set_keypop_age(proj->dat, DP::FEMALE, DP::POP_FSW, loc, shp);
+}
+
+void PyInterface::init_age_msm(const double loc, const double shp) {
+	DP::set_keypop_age(proj->dat, DP::MALE, DP::POP_MSM, loc, shp);
+}
