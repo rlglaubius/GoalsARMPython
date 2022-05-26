@@ -52,30 +52,30 @@ void PyInterface::init_pasfrs_from_5yr(np::ndarray& pasfrs5y) {
 }
 
 void PyInterface::init_median_age_debut(const double age_female, const double age_male) {
-	proj->dat.median_age_debut(DP::FEMALE, age_female);
-	proj->dat.median_age_debut(DP::MALE,   age_male);
+	DP::set_median_age_debut(proj->dat, DP::FEMALE, age_female);
+	DP::set_median_age_debut(proj->dat, DP::MALE,   age_male);
 }
 
 void PyInterface::init_median_age_union(const double age_female, const double age_male) {
-	proj->dat.median_age_union(DP::FEMALE, age_female);
-	proj->dat.median_age_union(DP::MALE, age_male);
+	DP::set_median_age_union(proj->dat, DP::FEMALE, age_female);
+	DP::set_median_age_union(proj->dat, DP::MALE, age_male);
 }
 
 void PyInterface::init_mean_duration_union(const double years) {
-	proj->dat.mean_union_duration(years);
+	DP::set_mean_union_duration(proj->dat, years);
 }
 
 void PyInterface::init_mean_duration_pwid(const double years_female, const double years_male) {
-	proj->dat.mean_keypop_duration(DP::FEMALE, DP::POP_PWID, years_female);
-	proj->dat.mean_keypop_duration(DP::MALE,   DP::POP_PWID, years_male);
+	DP::set_mean_keypop_duration(proj->dat, DP::FEMALE, DP::POP_PWID, years_female);
+	DP::set_mean_keypop_duration(proj->dat, DP::MALE,   DP::POP_PWID, years_male);
 }
 
 void PyInterface::init_mean_duration_fsw(const double years) {
-	proj->dat.mean_keypop_duration(DP::FEMALE, DP::POP_FSW, years);
+	DP::set_mean_keypop_duration(proj->dat, DP::FEMALE, DP::POP_FSW, years);
 }
 
 void PyInterface::init_mean_duration_msm(const double years) {
-	proj->dat.mean_keypop_duration(DP::MALE, DP::POP_MSM, years);
+	DP::set_mean_keypop_duration(proj->dat, DP::MALE, DP::POP_MSM, years);
 }
 
 void PyInterface::init_size_pwid(const double prop_female, const double prop_male) {
