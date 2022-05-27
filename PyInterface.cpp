@@ -51,6 +51,30 @@ void PyInterface::init_pasfrs_from_5yr(np::ndarray& pasfrs5y) {
 	}
 }
 
+void PyInterface::init_migr_from_5yr(np::ndarray& netmigr, np::ndarray& pattern_female, np::ndarray& pattern_male) {
+	DP::year_sex_ref_t* migr = generate2d<double>(netmigr);
+	DP::year_age_ref_t* migr_f = generate2d<double>(pattern_female);
+	DP::year_age_ref_t* migr_m = generate2d<double>(pattern_male);
+
+	const size_t nt(migr_f->shape()[0]), na(migr_f->shape()[1]);
+
+	// convert patterns from multipliers to absolute net migrant numbers
+	// since migr, migr_m, and migr_f are pointers, we do have to do some
+	// ugly dereferencing
+	for (int t(0); t < nt; ++t)
+		for (int a(0); a < na; ++a) {
+			(*migr_m)[t][a] = (*migr)[t][0] * (*migr_m)[t][a];
+			(*migr_f)[t][a] = (*migr)[t][1] * (*migr_f)[t][a];
+		}
+
+	proj->dat.init_migr_from_5yr(DP::FEMALE, *migr_f);
+	proj->dat.init_migr_from_5yr(DP::MALE,   *migr_m);
+
+	delete migr;
+	delete migr_f;
+	delete migr_m;
+}
+
 void PyInterface::init_median_age_debut(const double age_female, const double age_male) {
 	DP::set_median_age_debut(proj->dat, DP::FEMALE, age_female);
 	DP::set_median_age_debut(proj->dat, DP::MALE,   age_male);

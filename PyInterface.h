@@ -36,6 +36,8 @@ public:
 
 	inline void initialize(const std::string& upd_filename);
 	void init_pasfrs_from_5yr(np::ndarray& pasfrs5y);
+	void init_migr_from_5yr(np::ndarray& netmigr, np::ndarray& pattern_female, np::ndarray& pattern_male);
+
 	void init_median_age_debut(const double age_female, const double age_male);
 	void init_median_age_union(const double age_female, const double age_male);
 	void init_mean_duration_union(const double years);
@@ -66,8 +68,9 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 	np::initialize();
 
 	py::class_<PyInterface>("Projection", py::init<size_t, size_t>())
-		.def("initialize", &PyInterface::initialize)
+		.def("initialize",               &PyInterface::initialize)
 		.def("init_pasfrs_from_5yr",     &PyInterface::init_pasfrs_from_5yr)
+		.def("init_migr_from_5yr",       &PyInterface::init_migr_from_5yr)
 		.def("init_median_age_debut",    &PyInterface::init_median_age_debut)
 		.def("init_median_age_union",    &PyInterface::init_median_age_union)
 		.def("init_mean_duration_union", &PyInterface::init_mean_duration_union)

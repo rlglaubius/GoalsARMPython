@@ -7,19 +7,19 @@ import lib.Debug.GoalsARM as Goals
 import src.goals_const as CONST
 
 ## TODO:
-## Config [partially done; TODO: net migration, direct incidence, direct CLHIV input]
-## MigrInputs [requires implementing Beers disaggregation here or C-side]
-## PopSizeInputs
-## DirectIncidenceInputs
-## PartnershipInputs
-## MixingMatrix
-## ContactInputs
-## EpiInputs
-## HIVDiseaseInputs
-## HIVFertilityInputs
-## ARTAdultInputs
-## MCInputs
-## DirectCLHIV
+## [ ] Config [partially done; TODO: direct incidence, direct CLHIV input]
+## [x] MigrInputs
+## [x] PopSizeInputs
+## [ ] DirectIncidenceInputs
+## [ ] PartnershipInputs
+## [ ] MixingMatrix
+## [ ] ContactInputs
+## [ ] EpiInputs
+## [ ] HIVDiseaseInputs
+## [ ] HIVFertilityInputs
+## [ ] ARTAdultInputs
+## [ ] MCInputs
+## [ ] DirectCLHIV
 
 # Return the contents of a range in an excel tab as a numpy array
 # The numpy array has float64 data type and "C" ordering
@@ -53,7 +53,7 @@ def xlsx_load_migr(tab_migr):
     migr   = xlsx_load_range(tab_migr, 'B2',  'CD3')
     dist_m = xlsx_load_range(tab_migr, 'B6',  'CD22')
     dist_f = xlsx_load_range(tab_migr, 'B25', 'CD41')
-    return migr, dist_m, dist_f
+    return migr.transpose(), 0.01 * dist_m.transpose(), 0.01 * dist_f.transpose()
 
 def xlsx_load_inci(tab_inci):
     inci   = xlsx_load_range(tab_inci, 'B2',  'CD2')
@@ -105,7 +105,7 @@ def init_from_xlsx(xlsx_name):
 
     if not cfg_opts[CONST.CFG_USE_UPD_MIGR]:
         migr_net, migr_dist_m, migr_dist_f = xlsx_load_migr(wb[CONST.XLSX_TAB_MIGR])
-        Warning("Net migration input from Excel is not supported yet")
+        model.init_migr_from_5yr(migr_net, migr_dist_f, migr_dist_m)
 
     if cfg_opts[CONST.CFG_USE_DIRECT_INCI]:
         inci, sirr, airr_m, airr_f, rirr_m, rirr_f = xlsx_load_inci(wb[CONST.XLSX_TAB_INCI])
