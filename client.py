@@ -77,9 +77,9 @@ def xlsx_load_adult_art(tab_art):
     art_elig = xlsx_load_range(tab_art, 'B2',  'CD2', dtype=np.int32)[0] # CD4-based eligibility threshold
     art_num  = xlsx_load_range(tab_art, 'B4',  'CD5').transpose()        # PLHIV on ART, #
     art_pct  = xlsx_load_range(tab_art, 'B7',  'CD8').transpose()        # PLHIV on ART, %
-    art_drop = xlsx_load_range(tab_art, 'B10', 'CD11')                   # Annual dropout, %
+    art_drop = xlsx_load_range(tab_art, 'B10', 'CD11').transpose()       # Annual dropout, %
     art_mrr  = xlsx_load_range(tab_art, 'B13', 'CD14').transpose()       # Mortality time trend rate ratio over time
-    art_vs   = xlsx_load_range(tab_art, 'B16', 'CD23')                   # Viral suppression on ART, %
+    art_vs   = xlsx_load_range(tab_art, 'B16', 'CD23').transpose()       # Viral suppression on ART, %
     return art_elig, art_num, art_pct, art_drop, art_mrr, art_vs
 
 def initialize_population_sizes(model, pop_pars):

@@ -82,7 +82,12 @@ public:
 
 	void init_adult_art_eligibility(np::ndarray& cd4);
 	void init_adult_art_curr(np::ndarray& art_num, np::ndarray& art_pct);
+	
+	// Initialize annual adult ART dropout rates from annual percentages
+	// If 5% drop out each year, then the dropout rate is -ln(1-0.05)
 	void init_adult_art_dropout(np::ndarray& art_drop_pct);
+
+	void init_adult_art_suppressed(np::ndarray& art_supp_pct);
 
 private:
 	DP::Projection* proj;
@@ -114,6 +119,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_adult_art_eligibility",    &PyInterface::init_adult_art_eligibility)
 		.def("init_adult_art_curr",           &PyInterface::init_adult_art_curr)
 		.def("init_adult_art_dropout",        &PyInterface::init_adult_art_dropout)
+		.def("init_adult_art_suppressed",     &PyInterface::init_adult_art_suppressed)
 
 		.def("use_direct_incidence",     &PyInterface::use_direct_incidence)
 	;
