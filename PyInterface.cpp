@@ -204,8 +204,13 @@ void PyInterface::init_adult_art_eligibility(np::ndarray& cd4) {
 	DP::time_series_int_ref_t* ptr_cd4 = generate1d<int>(cd4);
 	DP::set_adult_art_eligibility_from_cd4(proj->dat, *ptr_cd4);
 	delete ptr_cd4;
+}
 
-	for (int t(0); t < proj->num_years(); ++t) {
-		std::cerr << t + proj->year_first() << '\t' << proj->dat.art_first_eligible_stage_adult(t) << std::endl;
+void PyInterface::init_adult_art_curr(np::ndarray& art_num, np::ndarray& art_pct) {
+	for (int t(0); t < proj->dat.num_years(); ++t) {
+		proj->dat.art_num_adult(t, DP::MALE,   py::extract<double>(art_num[t][0]));
+		proj->dat.art_num_adult(t, DP::FEMALE, py::extract<double>(art_num[t][1]));
+		proj->dat.art_perc_adult(t, DP::MALE,   0.01 * py::extract<double>(art_pct[t][0]));
+		proj->dat.art_perc_adult(t, DP::FEMALE, 0.01 * py::extract<double>(art_pct[t][1]));
 	}
 }
