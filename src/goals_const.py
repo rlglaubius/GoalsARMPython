@@ -1,9 +1,11 @@
 # Names of input workbook tabs
-XLSX_TAB_CONFIG  = "Config"
-XLSX_TAB_PASFRS  = "FertilityInputs"
-XLSX_TAB_MIGR    = "MigrInputs"
-XLSX_TAB_INCI    = "DirectIncidenceInputs"
-XLSX_TAB_POPSIZE = "PopSizeInputs"
+XLSX_TAB_CONFIG     = "Config"
+XLSX_TAB_PASFRS     = "FertilityInputs"
+XLSX_TAB_MIGR       = "MigrInputs"
+XLSX_TAB_INCI       = "DirectIncidenceInputs"
+XLSX_TAB_POPSIZE    = "PopSizeInputs"
+XLSX_TAB_ADULT_PROG = "HIVDiseaseInputs"
+XLSX_TAB_ADULT_ART  = "ARTAdultInputs"
 
 # The Excel file specifies inputs for 1970-2050, the projection
 # uses a subset of these

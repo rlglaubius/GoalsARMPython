@@ -35,8 +35,22 @@ public:
 	~PyInterface();
 
 	inline void initialize(const std::string& upd_filename);
+
 	void init_pasfrs_from_5yr(np::ndarray& pasfrs5y);
 	void init_migr_from_5yr(np::ndarray& netmigr, np::ndarray& pattern_female, np::ndarray& pattern_male);
+
+	// Toggle use of direct incidence. If flag=TRUE, use init_direct_incidence
+	// to initialize incidence
+	void use_direct_incidence(const bool flag);
+
+	// initialize direct incidence inputs
+	void init_direct_incidence(
+		np::ndarray& inci,           // 1970-2050
+		np::ndarray& sex_irr,        // 1970-2050
+		np::ndarray& age_irr_female, // 1970-2050 by 5y age group (17 groups: 0-4, 5-9, ..., 75-79, 80+)
+		np::ndarray& age_irr_male,   // 1970-2050 by 5y age group
+		np::ndarray& pop_irr_female, // 1970-2050 by DP::N_POP
+		np::ndarray& pop_irr_male);  // 1970-2050 by DP::N_POP
 
 	void init_median_age_debut(const double age_female, const double age_male);
 	void init_median_age_union(const double age_female, const double age_male);
@@ -60,6 +74,13 @@ public:
 	void init_age_fsw(const double loc, const double shp);
 	void init_age_msm(const double loc, const double shp);
 
+	// Initialize adult HIV progression and mortality rates off ART
+	void init_adult_prog_from_10yr(np::ndarray& dist, np::ndarray& prog, np::ndarray& mort);
+
+	// Initialize adult HIV-related mortality rates on ART
+	void init_adult_art_mort_from_10yr(np::ndarray& art1, np::ndarray& art2, np::ndarray& art3, np::ndarray& art_mrr);
+
+
 private:
 	DP::Projection* proj;
 };
@@ -71,6 +92,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("initialize",               &PyInterface::initialize)
 		.def("init_pasfrs_from_5yr",     &PyInterface::init_pasfrs_from_5yr)
 		.def("init_migr_from_5yr",       &PyInterface::init_migr_from_5yr)
+		.def("init_direct_incidence",    &PyInterface::init_direct_incidence)
 		.def("init_median_age_debut",    &PyInterface::init_median_age_debut)
 		.def("init_median_age_union",    &PyInterface::init_median_age_union)
 		.def("init_mean_duration_union", &PyInterface::init_mean_duration_union)
@@ -84,6 +106,10 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_age_pwid",            &PyInterface::init_age_pwid)
 		.def("init_age_fsw",             &PyInterface::init_age_fsw)
 		.def("init_age_msm",             &PyInterface::init_age_msm)
+		.def("init_adult_prog_from_10yr",     &PyInterface::init_adult_prog_from_10yr)
+		.def("init_adult_art_mort_from_10yr", &PyInterface::init_adult_art_mort_from_10yr)
+
+		.def("use_direct_incidence",     &PyInterface::use_direct_incidence)
 	;
 }
 

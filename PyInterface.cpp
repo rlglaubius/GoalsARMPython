@@ -1,11 +1,30 @@
 #include "PyInterface.h"
 #include <iostream>
 
-// Helper function. Returns a pointer to a two-dimensional boost::multi_array_ref
-// wrapper around the data stored in a numpy ndarray. NumType must be implicitly
-// castable from the arr dtype, otherwise this will probably cause some astonishing
-// errors. If you call this, you own the multi_array_ref pointer. Use it responsibly
-// and clean up after you are done with it.
+// Factory functions. Each returns a pointer to an n-dimensional boost::multi_array_ref
+// that is a wrapper around the data underlying an input numpy ndarray.
+// 
+// CAVEATS:
+// The template parameter NumType must be implicitly castable from the arr dtype.
+// The caller owns the pointer returned, and is responsible for deallocating it.
+template<typename NumType> boost::multi_array_ref<NumType, 1>* generate1d(np::ndarray& arr);
+template<typename NumType> boost::multi_array_ref<NumType, 2>* generate2d(np::ndarray& arr);
+
+// TODO: Handle potential exception cases
+// sizeof(arr.dtype()) != sizeof(NumType)
+// ptr = nullptr
+// arr.get_nd() != target dimension
+// review other arr.get_flags() for potential issues
+
+template<typename NumType>
+boost::multi_array_ref<NumType, 1>* generate1d(np::ndarray& arr) {
+	const int ext = arr.shape(0);
+	NumType* data_ptr = reinterpret_cast<NumType*>(arr.get_data());
+	boost::multi_array_ref<NumType, 1>* ptr;
+	ptr = new boost::multi_array_ref<NumType, 1>(data_ptr, boost::extents[ext]);
+	return ptr;
+}
+
 template<typename NumType>
 boost::multi_array_ref<NumType, 2>* generate2d(np::ndarray& arr) {
 	const int ext0 = arr.shape(0);
@@ -20,13 +39,6 @@ boost::multi_array_ref<NumType, 2>* generate2d(np::ndarray& arr) {
 	} else {
 		ptr = nullptr;
 	}
-
-	// TODO:
-	// Throw exception if
-	// * sizeof(arr.dtype()) != sizeof(NumType) [multi_array_ref datatype incompatible with arr dtype]
-	// ptr=nullptr case hit [mauled beyond recognition?]
-	// arr.get_nd() > 2 [array dimension is larger than multiarray dimension]
-	// other arr.get_flags() values that might cause issues?
 
 	return ptr;
 }
@@ -73,6 +85,35 @@ void PyInterface::init_migr_from_5yr(np::ndarray& netmigr, np::ndarray& pattern_
 	delete migr;
 	delete migr_f;
 	delete migr_m;
+}
+
+void PyInterface::use_direct_incidence(const bool flag) {
+	proj->dat.direct_incidence(flag);
+}
+
+void PyInterface::init_direct_incidence(
+	np::ndarray& inci,
+	np::ndarray& sex_irr,
+	np::ndarray& age_irr_female,
+	np::ndarray& age_irr_male,
+	np::ndarray& pop_irr_female,
+	np::ndarray& pop_irr_male) {
+
+	DP::year_age_ref_t* airr_f = generate2d<double>(age_irr_female);
+	DP::year_age_ref_t* airr_m = generate2d<double>(age_irr_male);
+
+	const int nt(proj->year_final() - proj->year_first() + 1);
+
+	for (int t(0); t < nt; ++t) proj->dat.incidence(t, py::extract<double>(inci[t]));
+	for (int t(0); t < nt; ++t) proj->dat.irr_sex(t, py::extract<double>(sex_irr[t]));
+	for (int t(0); t < nt; ++t)
+		for (int r(DP::POP_MIN); r <= DP::POP_MAX; ++r) {
+			proj->dat.irr_pop(t, DP::FEMALE, r, py::extract<double>(pop_irr_female[t][r]));
+			proj->dat.irr_pop(t, DP::MALE,   r, py::extract<double>(pop_irr_male[t][r]));
+		}
+
+	proj->dat.init_age_irr_from_5yr(DP::FEMALE, *airr_f);
+	proj->dat.init_age_irr_from_5yr(DP::MALE,   *airr_m);
 }
 
 void PyInterface::init_median_age_debut(const double age_female, const double age_male) {
@@ -132,3 +173,30 @@ void PyInterface::init_age_fsw(const double loc, const double shp) {
 void PyInterface::init_age_msm(const double loc, const double shp) {
 	DP::set_keypop_age(proj->dat, DP::MALE, DP::POP_MSM, loc, shp);
 }
+
+void PyInterface::init_adult_prog_from_10yr(np::ndarray& dist, np::ndarray& prog, np::ndarray& mort) {
+	DP::cd4_sex_age_ref_t* ptr_dist = generate2d<double>(dist);
+	DP::cd4_sex_age_ref_t* ptr_prog = generate2d<double>(prog);
+	DP::cd4_sex_age_ref_t* ptr_mort = generate2d<double>(mort);
+
+	DP::set_adult_prog_from_10yr(proj->dat, *ptr_dist, *ptr_prog, *ptr_mort);
+
+	delete ptr_dist;
+	delete ptr_prog;
+	delete ptr_mort;
+}
+
+void PyInterface::init_adult_art_mort_from_10yr(np::ndarray& art1, np::ndarray& art2, np::ndarray& art3, np::ndarray& art_mrr) {
+	DP::cd4_sex_age_ref_t* ptr_art1 = generate2d<double>(art1);
+	DP::cd4_sex_age_ref_t* ptr_art2 = generate2d<double>(art2);
+	DP::cd4_sex_age_ref_t* ptr_art3 = generate2d<double>(art3);
+	DP::year_dtx_ref_t* ptr_mrr = generate2d<double>(art_mrr);
+
+	DP::set_adult_art_mort_from_10yr(proj->dat, *ptr_art1, *ptr_art2, *ptr_art3, *ptr_mrr);
+
+	delete ptr_art1;
+	delete ptr_art2;
+	delete ptr_art3;
+	delete ptr_mrr;
+}
+

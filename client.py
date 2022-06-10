@@ -7,19 +7,19 @@ import lib.Debug.GoalsARM as Goals
 import src.goals_const as CONST
 
 ## TODO:
-## [ ] Config [partially done; TODO: direct incidence, direct CLHIV input]
+## [ ] Config [partially done; direct CLHIV input]
 ## [x] MigrInputs
 ## [x] PopSizeInputs
-## [ ] DirectIncidenceInputs
+## [x] DirectIncidenceInputs
 ## [ ] PartnershipInputs
 ## [ ] MixingMatrix
 ## [ ] ContactInputs
-## [ ] EpiInputs
-## [ ] HIVDiseaseInputs
+## [ ] EpiInputs        <- next 3
+## [x] HIVDiseaseInputs
 ## [ ] HIVFertilityInputs
-## [ ] ARTAdultInputs
-## [ ] MCInputs
-## [ ] DirectCLHIV
+## [ ] ARTAdultInputs   <- next 1
+## [ ] MCInputs         <- next 2
+## [ ] DirectCLHIV      <- next 4
 
 # Return the contents of a range in an excel tab as a numpy array
 # The numpy array has float64 data type and "C" ordering
@@ -58,11 +58,30 @@ def xlsx_load_migr(tab_migr):
 def xlsx_load_inci(tab_inci):
     inci   = xlsx_load_range(tab_inci, 'B2',  'CD2')
     sirr   = xlsx_load_range(tab_inci, 'B5',  'CD5')
-    airr_m = xlsx_load_range(tab_inci, 'B9',  'CD25')
-    airr_f = xlsx_load_range(tab_inci, 'B27', 'CD43')
-    rirr_m = xlsx_load_range(tab_inci, 'B47', 'CD53')
-    rirr_f = xlsx_load_range(tab_inci, 'B55', 'CD61')
+    airr_m = xlsx_load_range(tab_inci, 'B9',  'CD25').transpose()
+    airr_f = xlsx_load_range(tab_inci, 'B27', 'CD43').transpose()
+    rirr_m = xlsx_load_range(tab_inci, 'B47', 'CD53').transpose()
+    rirr_f = xlsx_load_range(tab_inci, 'B55', 'CD61').transpose()
     return inci[0], sirr[0], airr_m, airr_f, rirr_m, rirr_f
+
+def xlsx_load_adult_prog(tab_prog):
+    dist = xlsx_load_range(tab_prog, 'B4',  'I9')  # CD4 distribution after primary infection
+    prog = xlsx_load_range(tab_prog, 'B14', 'I19') # HIV progression rates with untreated HIV
+    mort = xlsx_load_range(tab_prog, 'B24', 'I30') # HIV-related mortality rates with untreated HIV
+    art1 = xlsx_load_range(tab_prog, 'B35', 'I41') # HIV-related mortality rates if on ART for [0,6) months
+    art2 = xlsx_load_range(tab_prog, 'B46', 'I52') # HIV-related mortality rates if on ART for [6,12) months
+    art3 = xlsx_load_range(tab_prog, 'B57', 'I63') # HIV-related mortality rates if on ART for [12,\infty) months
+    return dist, prog, mort, art1, art2, art3
+
+def xlsx_load_adult_art(tab_art):
+    art_elig = xlsx_load_range(tab_art, 'B2',  'CD2')[0] # CD4-based eligibility threshold
+    art_num  = xlsx_load_range(tab_art, 'B4',  'CD5')    # PLHIV on ART, #
+    art_pct  = xlsx_load_range(tab_art, 'B7',  'CD8')    # PLHIV on ART, %
+    art_ltfu = xlsx_load_range(tab_art, 'B10', 'CD11')   # Annual dropout
+    art_mrr  = xlsx_load_range(tab_art, 'B13', 'CD14')   # Mortality time trend rate ratio over time
+    art_vs   = xlsx_load_range(tab_art, 'B16', 'CD23')   # Viral suppression on ART, %
+    return art_elig, art_num, art_pct, art_ltfu, art_mrr.transpose(), art_vs
+
 
 def initialize_population_sizes(model, pop_pars):
     FEMALE, MALE = 1, 0
@@ -109,7 +128,19 @@ def init_from_xlsx(xlsx_name):
 
     if cfg_opts[CONST.CFG_USE_DIRECT_INCI]:
         inci, sirr, airr_m, airr_f, rirr_m, rirr_f = xlsx_load_inci(wb[CONST.XLSX_TAB_INCI])
-        Warning("Direct incidence input from Excel is not supported yet")
+        model.use_direct_incidence(True)
+        model.init_direct_incidence(inci, sirr, airr_f, airr_m, rirr_f, rirr_m)
+    else:
+        model.use_direct_incidence(False)
+
+    dist, prog, mort, art1, art2, art3 = xlsx_load_adult_prog(wb[CONST.XLSX_TAB_ADULT_PROG])
+    art_elig, art_num, art_pct, art_ltfu, art_mrr, art_vs = xlsx_load_adult_art(wb[CONST.XLSX_TAB_ADULT_ART])
+
+    model.init_adult_prog_from_10yr(dist, prog, mort)
+    model.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)
+
+    ## TODO: TO USE
+    ## art_elig, art_num, art_pct, art_ltfu, art_vs
 
     wb.close()
     return model
@@ -120,5 +151,5 @@ def main(xlsx_name):
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
-    xlsx_name = "C:\\Proj\\Repositories\\GoalsARM\\tests\\example.xlsx"
+    xlsx_name = "C:\\Proj\\Repositories\\GoalsARM\\tests\\example_unversioned.xlsx"
     main(xlsx_name)
