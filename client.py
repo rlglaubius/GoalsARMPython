@@ -22,9 +22,9 @@ import src.goals_const as CONST
 ## [ ] DirectCLHIV      <- next 4
 
 # Return the contents of a range in an excel tab as a numpy array
-# The numpy array has float64 data type and "C" ordering
-def xlsx_load_range(tab, cell_first, cell_final):
-    return np.array([[cell.value for cell in row] for row in tab[cell_first:cell_final]], dtype=np.float64, order="C")
+# The numpy array has "C" ordering
+def xlsx_load_range(tab, cell_first, cell_final, dtype=np.float64):
+    return np.array([[cell.value for cell in row] for row in tab[cell_first:cell_final]], dtype=dtype, order="C")
 
 def xlsx_load_config(tab_config):
     """! Load configuration options
@@ -74,14 +74,13 @@ def xlsx_load_adult_prog(tab_prog):
     return dist, prog, mort, art1, art2, art3
 
 def xlsx_load_adult_art(tab_art):
-    art_elig = xlsx_load_range(tab_art, 'B2',  'CD2')[0] # CD4-based eligibility threshold
+    art_elig = xlsx_load_range(tab_art, 'B2',  'CD2', dtype=np.int32)[0] # CD4-based eligibility threshold
     art_num  = xlsx_load_range(tab_art, 'B4',  'CD5')    # PLHIV on ART, #
     art_pct  = xlsx_load_range(tab_art, 'B7',  'CD8')    # PLHIV on ART, %
     art_ltfu = xlsx_load_range(tab_art, 'B10', 'CD11')   # Annual dropout
     art_mrr  = xlsx_load_range(tab_art, 'B13', 'CD14')   # Mortality time trend rate ratio over time
     art_vs   = xlsx_load_range(tab_art, 'B16', 'CD23')   # Viral suppression on ART, %
     return art_elig, art_num, art_pct, art_ltfu, art_mrr.transpose(), art_vs
-
 
 def initialize_population_sizes(model, pop_pars):
     FEMALE, MALE = 1, 0
@@ -138,9 +137,10 @@ def init_from_xlsx(xlsx_name):
 
     model.init_adult_prog_from_10yr(dist, prog, mort)
     model.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)
+    model.init_adult_art_eligibility(art_elig)
 
     ## TODO: TO USE
-    ## art_elig, art_num, art_pct, art_ltfu, art_vs
+    ## art_num, art_pct, art_ltfu, art_vs
 
     wb.close()
     return model

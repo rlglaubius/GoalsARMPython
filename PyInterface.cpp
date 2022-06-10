@@ -200,3 +200,12 @@ void PyInterface::init_adult_art_mort_from_10yr(np::ndarray& art1, np::ndarray& 
 	delete ptr_mrr;
 }
 
+void PyInterface::init_adult_art_eligibility(np::ndarray& cd4) {
+	DP::time_series_int_ref_t* ptr_cd4 = generate1d<int>(cd4);
+	DP::set_adult_art_eligibility_from_cd4(proj->dat, *ptr_cd4);
+	delete ptr_cd4;
+
+	for (int t(0); t < proj->num_years(); ++t) {
+		std::cerr << t + proj->year_first() << '\t' << proj->dat.art_first_eligible_stage_adult(t) << std::endl;
+	}
+}

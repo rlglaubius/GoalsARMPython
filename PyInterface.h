@@ -80,6 +80,8 @@ public:
 	// Initialize adult HIV-related mortality rates on ART
 	void init_adult_art_mort_from_10yr(np::ndarray& art1, np::ndarray& art2, np::ndarray& art3, np::ndarray& art_mrr);
 
+	void init_adult_art_eligibility(np::ndarray& cd4);
+
 
 private:
 	DP::Projection* proj;
@@ -108,6 +110,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_age_msm",             &PyInterface::init_age_msm)
 		.def("init_adult_prog_from_10yr",     &PyInterface::init_adult_prog_from_10yr)
 		.def("init_adult_art_mort_from_10yr", &PyInterface::init_adult_art_mort_from_10yr)
+		.def("init_adult_art_eligibility",    &PyInterface::init_adult_art_eligibility)
 
 		.def("use_direct_incidence",     &PyInterface::use_direct_incidence)
 	;
