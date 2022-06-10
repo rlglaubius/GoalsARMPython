@@ -1,5 +1,7 @@
 #include "PyInterface.h"
+#include <fstream>
 #include <iostream>
+#include <boost/math/interpolators/pchip.hpp>
 
 // Factory functions. Each returns a pointer to an n-dimensional boost::multi_array_ref
 // that is a wrapper around the data underlying an input numpy ndarray.
@@ -231,6 +233,55 @@ void PyInterface::init_adult_art_suppressed(np::ndarray& art_supp_pct) {
 			col_f = col_m + num_ages;
 			proj->dat.art_suppressed_adult(t, DP::MALE,   a, py::extract<double>(art_supp_pct[t][col_m]));
 			proj->dat.art_suppressed_adult(t, DP::FEMALE, a, py::extract<double>(art_supp_pct[t][col_f]));
+		}
+	}
+}
+
+// Test here. If this works well, move into DPUtil
+void PyInterface::init_male_circumcision_uptake(np::ndarray& uptake) {
+	using boost::math::interpolators::pchip;
+
+	const size_t n(17); // number of 5-year age groups
+	std::vector<double> x{0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85};
+	std::vector<double> y(n + 1);
+	double rate, prop;
+	double dy_bgn, dy_end; // derivatives at left and right boundaries
+
+	y[0] = 0.0;
+	for (int t(0); t < proj->dat.num_years(); ++t) {
+		// Calculate cumulative exposure to circumcision uptake at the
+		// boundaries of five-year age groups
+		for (int a(0); a < n; ++a) {
+			prop = 0.01 * py::extract<double>(uptake[t][a]);
+			rate = -5.0 * log(1.0 - prop);
+			y[a+1] = y[a] + rate;
+		}
+
+		// Boundary calculations below are designed to match signal::pchip in
+		// R, which uses public Fortran code by one of the authors of PCHIP
+		// (doi:10.1137/0717021). R produces different results than boost::pchip
+		// does by default because R approximates boundary derivatives using a
+		// quadratic formula while boost::pchip takes uses a linear formula.
+		// 
+		// We have not implemented the general formula for calculating
+		// derivatives, since we know ages in x are spaced five years apart (the
+		// hard-coded constants 0.2, 1.5, and -0.5 come from that optimization).
+		dy_bgn = 0.2 * (1.5 * (y[1] - y[ 0 ]) - 0.5 * (y[ 2 ] - y[ 1 ]));
+		dy_end = 0.2 * (1.5 * (y[n] - y[n-1]) - 0.5 * (y[n-2] - y[n-1]));
+		if (dy_bgn < 0.0) dy_bgn = 0.0;
+		if (dy_end < 0.0) dy_end = 0.0;
+
+		// Interpolate cumulative exposure at singles ages using PCHIP. We
+		// pass copies of vectors to pchip because it is allowed to modify
+		// its inputs, including resizing them
+		auto spline = pchip(std::vector<double>(x), std::vector<double>(y), dy_bgn, dy_end);
+
+		// Calculate incremental uptake between consecutive ages and convert
+		// back from rates to proportions
+		for (int a(0); a < DP::N_AGE; ++a) {
+			rate = spline(a + 1) - spline(a);
+			prop = 1.0 - exp(-rate);
+			proj->dat.uptake_male_circumcision(t, a, prop);
 		}
 	}
 }

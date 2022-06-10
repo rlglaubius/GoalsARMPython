@@ -103,6 +103,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>C:\Proj\Util\boost_1_79_0;C:\Proj\Repositories\GoalsARM_Core\include;$(LOCALAPPDATA)\Programs\Python\Python310\include;C:\Proj\Repositories\GoalsARM_Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -123,6 +124,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>C:\Proj\Util\boost_1_79_0;C:\Proj\Repositories\GoalsARM_Core\include;$(LOCALAPPDATA)\Programs\Python\Python310\include;C:\Proj\Repositories\GoalsARM_Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,6 +145,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>C:\Proj\Util\boost_1_79_0;C:\Proj\Repositories\GoalsARM_Core\include;$(LOCALAPPDATA)\Programs\Python\Python310\include;C:\Proj\Repositories\GoalsARM_Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,6 +166,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>C:\Proj\Util\boost_1_79_0;C:\Proj\Repositories\GoalsARM_Core\include;$(LOCALAPPDATA)\Programs\Python\Python310\include;C:\Proj\Repositories\GoalsARM_Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

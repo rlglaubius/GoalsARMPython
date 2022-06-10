@@ -17,7 +17,7 @@ import src.goals_const as CONST
 ## [ ] EpiInputs        <- next 3
 ## [x] HIVDiseaseInputs
 ## [ ] HIVFertilityInputs
-## [ ] ARTAdultInputs   <- next 1
+## [x] ARTAdultInputs
 ## [ ] MCInputs         <- next 2
 ## [ ] DirectCLHIV      <- next 4
 
@@ -82,6 +82,9 @@ def xlsx_load_adult_art(tab_art):
     art_vs   = xlsx_load_range(tab_art, 'B16', 'CD23').transpose()       # Viral suppression on ART, %
     return art_elig, art_num, art_pct, art_drop, art_mrr, art_vs
 
+def xlsx_load_mc_uptake(tab_mc):
+    return xlsx_load_range(tab_mc, 'B3', 'CD19').transpose()
+
 def initialize_population_sizes(model, pop_pars):
     FEMALE, MALE = 1, 0
     model.init_median_age_debut(pop_pars[CONST.POP_FIRST_SEX  ][FEMALE], pop_pars[CONST.POP_FIRST_SEX  ][MALE])
@@ -134,6 +137,7 @@ def init_from_xlsx(xlsx_name):
 
     dist, prog, mort, art1, art2, art3 = xlsx_load_adult_prog(wb[CONST.XLSX_TAB_ADULT_PROG])
     art_elig, art_num, art_pct, art_drop, art_mrr, art_vs = xlsx_load_adult_art(wb[CONST.XLSX_TAB_ADULT_ART])
+    uptake_mc = xlsx_load_mc_uptake(wb[CONST.XLSX_TAB_MALE_CIRC])
 
     model.init_adult_prog_from_10yr(dist, prog, mort)
     model.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)
@@ -141,6 +145,8 @@ def init_from_xlsx(xlsx_name):
     model.init_adult_art_curr(art_num, art_pct)
     model.init_adult_art_dropout(art_drop)
     model.init_adult_art_suppressed(art_vs)
+
+    model.init_male_circumcision_uptake(uptake_mc)
 
     wb.close()
     return model

@@ -87,7 +87,16 @@ public:
 	// If 5% drop out each year, then the dropout rate is -ln(1-0.05)
 	void init_adult_art_dropout(np::ndarray& art_drop_pct);
 
+	// Initialize trends in adult viral suppression on ART
+	// art_supp_pct is expected to have one row per year, and 8 columns. The
+	// first four colums are for males ages 15-24, 25-34, 35-44, then 45+. The
+	// next four columns are for females in those same age groups
 	void init_adult_art_suppressed(np::ndarray& art_supp_pct);
+
+	// Initialize male circumcision uptake
+	// uptake is expected to have one row per year and one column per 5-year age group
+	// 0-4, 5-9, ..., 75-79, 80+
+	void init_male_circumcision_uptake(np::ndarray& uptake);
 
 private:
 	DP::Projection* proj;
@@ -120,6 +129,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_adult_art_curr",           &PyInterface::init_adult_art_curr)
 		.def("init_adult_art_dropout",        &PyInterface::init_adult_art_dropout)
 		.def("init_adult_art_suppressed",     &PyInterface::init_adult_art_suppressed)
+		.def("init_male_circumcision_uptake", &PyInterface::init_male_circumcision_uptake)
 
 		.def("use_direct_incidence",     &PyInterface::use_direct_incidence)
 	;
