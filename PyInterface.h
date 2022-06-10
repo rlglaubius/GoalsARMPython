@@ -82,6 +82,7 @@ public:
 
 	void init_adult_art_eligibility(np::ndarray& cd4);
 	void init_adult_art_curr(np::ndarray& art_num, np::ndarray& art_pct);
+	void init_adult_art_dropout(np::ndarray& art_drop_pct);
 
 private:
 	DP::Projection* proj;
@@ -112,6 +113,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_adult_art_mort_from_10yr", &PyInterface::init_adult_art_mort_from_10yr)
 		.def("init_adult_art_eligibility",    &PyInterface::init_adult_art_eligibility)
 		.def("init_adult_art_curr",           &PyInterface::init_adult_art_curr)
+		.def("init_adult_art_dropout",        &PyInterface::init_adult_art_dropout)
 
 		.def("use_direct_incidence",     &PyInterface::use_direct_incidence)
 	;

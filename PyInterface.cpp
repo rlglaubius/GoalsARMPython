@@ -214,3 +214,10 @@ void PyInterface::init_adult_art_curr(np::ndarray& art_num, np::ndarray& art_pct
 		proj->dat.art_perc_adult(t, DP::FEMALE, 0.01 * py::extract<double>(art_pct[t][1]));
 	}
 }
+
+void PyInterface::init_adult_art_dropout(np::ndarray& art_drop_pct) {
+	for (int t(0); t < proj->dat.num_years(); ++t) {
+		proj->dat.art_drop_adult(t, DP::MALE,   -log(1.0 - py::extract<double>(art_drop_pct[0][t])));
+		proj->dat.art_drop_adult(t, DP::FEMALE, -log(1.0 - py::extract<double>(art_drop_pct[1][t])));
+	}
+}
