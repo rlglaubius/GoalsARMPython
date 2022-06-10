@@ -140,9 +140,7 @@ def init_from_xlsx(xlsx_name):
     model.init_adult_art_eligibility(art_elig)
     model.init_adult_art_curr(art_num, art_pct)
     model.init_adult_art_dropout(art_drop)
-
-    ## TODO: TO USE
-    ## art_vs
+    model.init_adult_art_suppressed(art_vs)
 
     wb.close()
     return model
