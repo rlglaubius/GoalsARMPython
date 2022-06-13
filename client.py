@@ -14,7 +14,7 @@ import src.goals_const as CONST
 ## [ ] PartnershipInputs
 ## [ ] MixingMatrix
 ## [ ] ContactInputs
-## [ ] EpiInputs        <- next 3
+## [x] EpiInputs
 ## [x] HIVDiseaseInputs
 ## [ ] HIVFertilityInputs
 ## [x] ARTAdultInputs
@@ -73,6 +73,13 @@ def xlsx_load_inci(tab_inci):
     rirr_m = xlsx_load_range(tab_inci, 'B47', 'CD53').transpose()
     rirr_f = xlsx_load_range(tab_inci, 'B55', 'CD61').transpose()
     return inci[0], sirr[0], airr_m, airr_f, rirr_m, rirr_f
+
+def xlsx_load_hiv_fert(tab_frr):
+    age_no_art = xlsx_load_range(tab_frr, 'B2',  'CD8')
+    cd4_no_art = xlsx_load_range(tab_frr, 'B11', 'B17')[:,0] # X[:,0] converts to 1d array
+    age_on_art = xlsx_load_range(tab_frr, 'B20', 'B26')[:,0]
+    adj = tab_frr['B29'].value # local adjustment factor
+    return age_no_art.transpose() * adj, cd4_no_art, age_on_art * adj
 
 def xlsx_load_adult_prog(tab_prog):
     dist = xlsx_load_range(tab_prog, 'B4',  'I9')  # CD4 distribution after primary infection
@@ -159,10 +166,12 @@ def init_from_xlsx(xlsx_name):
             epi_pars[CONST.EPI_TRANSMIT_ART_VS],
             epi_pars[CONST.EPI_TRANSMIT_ART_VF])
 
+    frr_age_no_art, frr_cd4_no_art, frr_age_on_art = xlsx_load_hiv_fert(wb[CONST.XLSX_TAB_HIV_FERT])
     dist, prog, mort, art1, art2, art3 = xlsx_load_adult_prog(wb[CONST.XLSX_TAB_ADULT_PROG])
     art_elig, art_num, art_pct, art_drop, art_mrr, art_vs = xlsx_load_adult_art(wb[CONST.XLSX_TAB_ADULT_ART])
     uptake_mc = xlsx_load_mc_uptake(wb[CONST.XLSX_TAB_MALE_CIRC])
 
+    model.init_hiv_fertility(frr_age_no_art, frr_cd4_no_art, frr_age_on_art)
     model.init_adult_prog_from_10yr(dist, prog, mort)
     model.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)
     model.init_adult_art_eligibility(art_elig)

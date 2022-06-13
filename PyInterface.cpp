@@ -181,6 +181,18 @@ void PyInterface::init_epidemic_seed(const int seed_year, const double seed_prev
 	proj->dat.seed_prevalence(seed_prev);
 }
 
+void PyInterface::init_hiv_fertility(np::ndarray& frr_age_off_art, np::ndarray& frr_cd4_off_art, np::ndarray& frr_age_on_art) {
+	int b;
+	for (int a(0); a < DP::N_AGE_BIRTH; ++a) {
+		b = a / 5;
+		for (int t(0); t < proj->num_years(); ++t)
+			proj->dat.frr_age_no_art(t, a, py::extract<double>(frr_age_off_art[t][b]));
+		proj->dat.frr_age_on_art(a, py::extract<double>(frr_age_on_art[b]));
+	}
+	for (int h(DP::HIV_ADULT_MIN); h <= DP::HIV_ADULT_MAX; ++h)
+		proj->dat.frr_cd4_no_art(h, py::extract<double>(frr_cd4_off_art[h]));
+}
+
 void PyInterface::init_transmission(const double pct_f2m,
 									const double or_m2f,
 									const double or_m2m,

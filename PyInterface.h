@@ -87,6 +87,8 @@ public:
 						   const double art_supp,
 						   const double art_fail);
 
+	void init_hiv_fertility(np::ndarray& frr_age_off_art, np::ndarray& frr_cd4_off_art, np::ndarray& frr_age_on_art);
+
 	// Initialize adult HIV progression and mortality rates off ART
 	void init_adult_prog_from_10yr(np::ndarray& dist, np::ndarray& prog, np::ndarray& mort);
 
@@ -146,6 +148,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_age_fsw",             &PyInterface::init_age_fsw)
 		.def("init_age_msm",             &PyInterface::init_age_msm)
 		.def("init_epidemic_seed",       &PyInterface::init_epidemic_seed)
+		.def("init_hiv_fertility",       &PyInterface::init_hiv_fertility)
 		.def("init_transmission",        &PyInterface::init_transmission)
 		.def("init_adult_prog_from_10yr",     &PyInterface::init_adult_prog_from_10yr)
 		.def("init_adult_art_mort_from_10yr", &PyInterface::init_adult_art_mort_from_10yr)
