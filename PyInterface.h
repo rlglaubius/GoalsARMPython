@@ -74,6 +74,19 @@ public:
 	void init_age_fsw(const double loc, const double shp);
 	void init_age_msm(const double loc, const double shp);
 
+	// Initialize the first year of epidemic simulation, and HIV prevalence in that year
+	void init_epidemic_seed(const int seed_year, const double seed_prev);
+
+	// Initialize transmission probabilities per sex act
+	void init_transmission(const double pct_f2m,
+						   const double or_m2f,
+						   const double or_m2m,
+		                   const double primary,
+						   const double chronic,
+						   const double symptom,
+						   const double art_supp,
+						   const double art_fail);
+
 	// Initialize adult HIV progression and mortality rates off ART
 	void init_adult_prog_from_10yr(np::ndarray& dist, np::ndarray& prog, np::ndarray& mort);
 
@@ -82,6 +95,13 @@ public:
 
 	void init_adult_art_eligibility(np::ndarray& cd4);
 	void init_adult_art_curr(np::ndarray& art_num, np::ndarray& art_pct);
+
+	// Initialize the ART initiation weight. ART uptake in a CD4
+	// category is a weighted average of (1) the number of PLHIV off ART
+	// in that category and (2) the expected number of deaths in that
+	// population. "weight" is the weight assigned to expected deaths,
+	// expressed as a percentage between 0 and 100.
+	void init_adult_art_allocation(const double weight);
 	
 	// Initialize annual adult ART dropout rates from annual percentages
 	// If 5% drop out each year, then the dropout rate is -ln(1-0.05)
@@ -98,6 +118,8 @@ public:
 	// 0-4, 5-9, ..., 75-79, 80+
 	void init_male_circumcision_uptake(np::ndarray& uptake);
 
+	void init_effect_vmmc(const double effect);
+	void init_effect_condom(const double effect);
 private:
 	DP::Projection* proj;
 };
@@ -123,13 +145,18 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_age_pwid",            &PyInterface::init_age_pwid)
 		.def("init_age_fsw",             &PyInterface::init_age_fsw)
 		.def("init_age_msm",             &PyInterface::init_age_msm)
+		.def("init_epidemic_seed",       &PyInterface::init_epidemic_seed)
+		.def("init_transmission",        &PyInterface::init_transmission)
 		.def("init_adult_prog_from_10yr",     &PyInterface::init_adult_prog_from_10yr)
 		.def("init_adult_art_mort_from_10yr", &PyInterface::init_adult_art_mort_from_10yr)
 		.def("init_adult_art_eligibility",    &PyInterface::init_adult_art_eligibility)
 		.def("init_adult_art_curr",           &PyInterface::init_adult_art_curr)
+		.def("init_adult_art_allocation",     &PyInterface::init_adult_art_allocation)
 		.def("init_adult_art_dropout",        &PyInterface::init_adult_art_dropout)
 		.def("init_adult_art_suppressed",     &PyInterface::init_adult_art_suppressed)
 		.def("init_male_circumcision_uptake", &PyInterface::init_male_circumcision_uptake)
+		.def("init_effect_vmmc",   &PyInterface::init_effect_vmmc)
+		.def("init_effect_condom", &PyInterface::init_effect_condom)
 
 		.def("use_direct_incidence",     &PyInterface::use_direct_incidence)
 	;

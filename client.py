@@ -18,7 +18,7 @@ import src.goals_const as CONST
 ## [x] HIVDiseaseInputs
 ## [ ] HIVFertilityInputs
 ## [x] ARTAdultInputs
-## [ ] MCInputs         <- next 2
+## [x] MCInputs
 ## [ ] DirectCLHIV      <- next 4
 
 # Return the contents of a range in an excel tab as a numpy array
@@ -42,6 +42,16 @@ def xlsx_load_popsize(tab_popsize):
     """
     vals = [tuple([cell.value for cell in row]) for row in tab_popsize['B2:C16']]
     keys = [cell[0].value for cell in tab_popsize['E2:E16']]
+    rval = dict(zip(keys, vals))
+    return {key : rval[key] for key in keys if keys != None} # Prune empty rows
+
+def xlsx_load_epi(tab_epi):
+    """! Load various epidemiological inputs
+    @param tab_epi an openpyxl workbook tab
+    @return a dict mapping parameter tags to values
+    """
+    vals = [cell[0].value for cell in tab_epi['B3:B19']]
+    keys = [cell[0].value for cell in tab_epi['D3:D19']]
     rval = dict(zip(keys, vals))
     return {key : rval[key] for key in keys if keys != None} # Prune empty rows
 
@@ -97,8 +107,11 @@ def initialize_population_sizes(model, pop_pars):
     model.init_size_fsw(pop_pars[CONST.POP_SIZE_KEYPOP][FEMALE])
     model.init_size_msm(pop_pars[CONST.POP_SIZE_KEYPOP][MALE])
     model.init_size_trans(pop_pars[CONST.POP_SIZE_TRANS][FEMALE], pop_pars[CONST.POP_SIZE_TRANS][MALE])
-    model.init_age_pwid(pop_pars[CONST.POP_PWID_LOC][FEMALE], pop_pars[CONST.POP_PWID_SHP][FEMALE],
-                        pop_pars[CONST.POP_PWID_LOC][MALE  ], pop_pars[CONST.POP_PWID_SHP][MALE])
+    model.init_age_pwid(
+        pop_pars[CONST.POP_PWID_LOC][FEMALE],
+        pop_pars[CONST.POP_PWID_SHP][FEMALE],
+        pop_pars[CONST.POP_PWID_LOC][MALE],
+        pop_pars[CONST.POP_PWID_SHP][MALE])
     model.init_age_fsw(pop_pars[CONST.POP_KEYPOP_LOC][FEMALE], pop_pars[CONST.POP_KEYPOP_SHP][FEMALE])
     model.init_age_msm(pop_pars[CONST.POP_KEYPOP_LOC][MALE], pop_pars[CONST.POP_KEYPOP_SHP][MALE])
 
@@ -111,6 +124,7 @@ def init_from_xlsx(xlsx_name):
     wb = xlsx.load_workbook(filename=xlsx_name, read_only=True)
     cfg_opts = xlsx_load_config(wb[CONST.XLSX_TAB_CONFIG])
     pop_pars = xlsx_load_popsize(wb[CONST.XLSX_TAB_POPSIZE])
+    epi_pars = xlsx_load_epi(wb[CONST.XLSX_TAB_EPI])
 
     first_year = cfg_opts[CONST.CFG_FIRST_YEAR]
     final_year = cfg_opts[CONST.CFG_FINAL_YEAR]
@@ -134,6 +148,16 @@ def init_from_xlsx(xlsx_name):
         model.init_direct_incidence(inci, sirr, airr_f, airr_m, rirr_f, rirr_m)
     else:
         model.use_direct_incidence(False)
+        model.init_epidemic_seed(epi_pars[CONST.EPI_INITIAL_YEAR], epi_pars[CONST.EPI_INITIAL_PREV])
+        model.init_transmission(
+            epi_pars[CONST.EPI_TRANSMIT_F2M],
+            epi_pars[CONST.EPI_TRANSMIT_M2F],
+            epi_pars[CONST.EPI_TRANSMIT_M2M],
+            epi_pars[CONST.EPI_TRANSMIT_PRIMARY],
+            epi_pars[CONST.EPI_TRANSMIT_CHRONIC],
+            epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
+            epi_pars[CONST.EPI_TRANSMIT_ART_VS],
+            epi_pars[CONST.EPI_TRANSMIT_ART_VF])
 
     dist, prog, mort, art1, art2, art3 = xlsx_load_adult_prog(wb[CONST.XLSX_TAB_ADULT_PROG])
     art_elig, art_num, art_pct, art_drop, art_mrr, art_vs = xlsx_load_adult_art(wb[CONST.XLSX_TAB_ADULT_ART])
@@ -143,6 +167,7 @@ def init_from_xlsx(xlsx_name):
     model.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)
     model.init_adult_art_eligibility(art_elig)
     model.init_adult_art_curr(art_num, art_pct)
+    model.init_adult_art_allocation(epi_pars[CONST.EPI_ART_MORT_WEIGHT])
     model.init_adult_art_dropout(art_drop)
     model.init_adult_art_suppressed(art_vs)
 

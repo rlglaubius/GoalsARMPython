@@ -176,6 +176,22 @@ void PyInterface::init_age_msm(const double loc, const double shp) {
 	DP::set_keypop_age(proj->dat, DP::MALE, DP::POP_MSM, loc, shp);
 }
 
+void PyInterface::init_epidemic_seed(const int seed_year, const double seed_prev) {
+	proj->dat.seed_time(seed_year);
+	proj->dat.seed_prevalence(seed_prev);
+}
+
+void PyInterface::init_transmission(const double pct_f2m,
+									const double or_m2f,
+									const double or_m2m,
+									const double primary,
+									const double chronic,
+									const double symptom,
+									const double art_supp,
+									const double art_fail) {
+	DP::set_transmission(proj->dat, pct_f2m, or_m2f, or_m2m, primary, chronic, symptom, art_supp, art_fail);
+}
+
 void PyInterface::init_adult_prog_from_10yr(np::ndarray& dist, np::ndarray& prog, np::ndarray& mort) {
 	DP::cd4_sex_age_ref_t* ptr_dist = generate2d<double>(dist);
 	DP::cd4_sex_age_ref_t* ptr_prog = generate2d<double>(prog);
@@ -215,6 +231,10 @@ void PyInterface::init_adult_art_curr(np::ndarray& art_num, np::ndarray& art_pct
 		proj->dat.art_perc_adult(t, DP::MALE,   0.01 * py::extract<double>(art_pct[t][0]));
 		proj->dat.art_perc_adult(t, DP::FEMALE, 0.01 * py::extract<double>(art_pct[t][1]));
 	}
+}
+
+void PyInterface::init_adult_art_allocation(const double weight) {
+	proj->dat.art_mort_weight(0.01 * weight);
 }
 
 void PyInterface::init_adult_art_dropout(np::ndarray& art_drop_pct) {
@@ -284,4 +304,12 @@ void PyInterface::init_male_circumcision_uptake(np::ndarray& uptake) {
 			proj->dat.uptake_male_circumcision(t, a, prop);
 		}
 	}
+}
+
+void PyInterface::init_effect_vmmc(const double effect) {
+	proj->dat.effect_vmmc(effect);
+}
+
+void PyInterface::init_effect_condom(const double effect) {
+	proj->dat.effect_condom(effect);
 }
