@@ -122,6 +122,10 @@ public:
 
 	void init_effect_vmmc(const double effect);
 	void init_effect_condom(const double effect);
+
+	// Initialize 14-year-old CLHIV from direct inputs
+	void init_clhiv_agein(np::ndarray& clhiv);
+
 private:
 	DP::Projection* proj;
 };
@@ -158,6 +162,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_adult_art_dropout",        &PyInterface::init_adult_art_dropout)
 		.def("init_adult_art_suppressed",     &PyInterface::init_adult_art_suppressed)
 		.def("init_male_circumcision_uptake", &PyInterface::init_male_circumcision_uptake)
+		.def("init_clhiv_agein",   &PyInterface::init_clhiv_agein)
 		.def("init_effect_vmmc",   &PyInterface::init_effect_vmmc)
 		.def("init_effect_condom", &PyInterface::init_effect_condom)
 

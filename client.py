@@ -7,7 +7,8 @@ import lib.Debug.GoalsARM as Goals
 import src.goals_const as CONST
 
 ## TODO:
-## [ ] Config [partially done; direct CLHIV input]
+## Truncate inputs from XLSX to the requested years before passing them to GoalsARMCore. Use x[t0:t1,:] syntax
+## [x] Config
 ## [x] MigrInputs
 ## [x] PopSizeInputs
 ## [x] DirectIncidenceInputs
@@ -16,10 +17,10 @@ import src.goals_const as CONST
 ## [ ] ContactInputs
 ## [x] EpiInputs
 ## [x] HIVDiseaseInputs
-## [ ] HIVFertilityInputs
+## [x] HIVFertilityInputs
 ## [x] ARTAdultInputs
 ## [x] MCInputs
-## [ ] DirectCLHIV      <- next 4
+## [x] DirectCLHIV
 
 # Return the contents of a range in an excel tab as a numpy array
 # The numpy array has "C" ordering
@@ -102,6 +103,9 @@ def xlsx_load_adult_art(tab_art):
 def xlsx_load_mc_uptake(tab_mc):
     return xlsx_load_range(tab_mc, 'B3', 'CD19').transpose()
 
+def xlsx_load_direct_clhiv(tab_clhiv):
+    return xlsx_load_range(tab_clhiv, 'D3', 'CF86').transpose()
+
 def initialize_population_sizes(model, pop_pars):
     FEMALE, MALE = 1, 0
     model.init_median_age_debut(pop_pars[CONST.POP_FIRST_SEX  ][FEMALE], pop_pars[CONST.POP_FIRST_SEX  ][MALE])
@@ -165,6 +169,10 @@ def init_from_xlsx(xlsx_name):
             epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
             epi_pars[CONST.EPI_TRANSMIT_ART_VS],
             epi_pars[CONST.EPI_TRANSMIT_ART_VF])
+
+    if cfg_opts[CONST.CFG_USE_DIRECT_CLHIV]:
+        direct_clhiv = xlsx_load_direct_clhiv(wb[CONST.XLSX_TAB_DIRECT_CLHIV])
+        model.init_clhiv_agein(direct_clhiv)
 
     frr_age_no_art, frr_cd4_no_art, frr_age_on_art = xlsx_load_hiv_fert(wb[CONST.XLSX_TAB_HIV_FERT])
     dist, prog, mort, art1, art2, art3 = xlsx_load_adult_prog(wb[CONST.XLSX_TAB_ADULT_PROG])

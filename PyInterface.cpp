@@ -318,6 +318,12 @@ void PyInterface::init_male_circumcision_uptake(np::ndarray& uptake) {
 	}
 }
 
+void PyInterface::init_clhiv_agein(np::ndarray& clhiv) {
+	boost::multi_array_ref<double, 2>* ptr_clhiv = generate2d<double>(clhiv);
+	DP::set_clhiv_agein(proj->dat, *ptr_clhiv);
+	delete ptr_clhiv;
+}
+
 void PyInterface::init_effect_vmmc(const double effect) {
 	proj->dat.effect_vmmc(effect);
 }
