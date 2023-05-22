@@ -196,8 +196,10 @@ def init_from_xlsx(xlsx_name):
 def main(xlsx_name):
     """! Main program entry point"""
     model = init_from_xlsx(xlsx_name)
+    model.project(1980)
+    pass
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
-    xlsx_name = "C:\\Proj\\Repositories\\GoalsARM\\tests\\example_unversioned.xlsx"
+    xlsx_name = "inputs\\example_unversioned_nohiv.xlsx"
     main(xlsx_name)

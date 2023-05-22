@@ -126,6 +126,9 @@ public:
 	// Initialize 14-year-old CLHIV from direct inputs
 	void init_clhiv_agein(np::ndarray& clhiv);
 
+	// Calculate projection from year_start to year_final
+	void project(const int year_final);
+
 private:
 	DP::Projection* proj;
 };
@@ -165,6 +168,8 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_clhiv_agein",   &PyInterface::init_clhiv_agein)
 		.def("init_effect_vmmc",   &PyInterface::init_effect_vmmc)
 		.def("init_effect_condom", &PyInterface::init_effect_condom)
+
+		.def("project", &PyInterface::project)
 
 		.def("use_direct_incidence",     &PyInterface::use_direct_incidence)
 	;

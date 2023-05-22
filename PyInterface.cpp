@@ -331,3 +331,7 @@ void PyInterface::init_effect_vmmc(const double effect) {
 void PyInterface::init_effect_condom(const double effect) {
 	proj->dat.effect_condom(effect);
 }
+
+void PyInterface::project(const int year_final) {
+	proj->project(year_final);
+}
