@@ -294,8 +294,8 @@ void PyInterface::init_adult_art_allocation(const double weight) {
 
 void PyInterface::init_adult_art_dropout(np::ndarray& art_drop_pct) {
 	for (int t(0); t < proj->dat.num_years(); ++t) {
-		proj->dat.art_drop_adult(t, DP::MALE,   -log(1.0 - py::extract<double>(art_drop_pct[t][0])));
-		proj->dat.art_drop_adult(t, DP::FEMALE, -log(1.0 - py::extract<double>(art_drop_pct[t][0])));
+		proj->dat.art_drop_adult(t, DP::MALE,   -log(1.0 - 0.01 * py::extract<double>(art_drop_pct[t][0])));
+		proj->dat.art_drop_adult(t, DP::FEMALE, -log(1.0 - 0.01 * py::extract<double>(art_drop_pct[t][0])));
 	}
 }
 
@@ -306,8 +306,8 @@ void PyInterface::init_adult_art_suppressed(np::ndarray& art_supp_pct) {
 		for (int a(0); a < DP::N_AGE_ADULT; ++a) {
 			col_m = std::min(a / 10, num_ages - 1);
 			col_f = col_m + num_ages;
-			proj->dat.art_suppressed_adult(t, DP::MALE,   a, py::extract<double>(art_supp_pct[t][col_m]));
-			proj->dat.art_suppressed_adult(t, DP::FEMALE, a, py::extract<double>(art_supp_pct[t][col_f]));
+			proj->dat.art_suppressed_adult(t, DP::MALE,   a, 0.01 * py::extract<double>(art_supp_pct[t][col_m]));
+			proj->dat.art_suppressed_adult(t, DP::FEMALE, a, 0.01 * py::extract<double>(art_supp_pct[t][col_f]));
 		}
 	}
 }

@@ -142,10 +142,10 @@ class Model:
         self._proj.init_mean_duration_pwid(pop_pars[CONST.POP_DUR_PWID][FEMALE], pop_pars[CONST.POP_DUR_PWID][MALE])
         self._proj.init_mean_duration_fsw(pop_pars[CONST.POP_DUR_KEYPOP][FEMALE])
         self._proj.init_mean_duration_msm(pop_pars[CONST.POP_DUR_KEYPOP][MALE])
-        self._proj.init_size_pwid(pop_pars[CONST.POP_SIZE_PWID][FEMALE], pop_pars[CONST.POP_SIZE_PWID][MALE])
-        self._proj.init_size_fsw(pop_pars[CONST.POP_SIZE_KEYPOP][FEMALE])
-        self._proj.init_size_msm(pop_pars[CONST.POP_SIZE_KEYPOP][MALE])
-        self._proj.init_size_trans(pop_pars[CONST.POP_SIZE_TRANS][FEMALE], pop_pars[CONST.POP_SIZE_TRANS][MALE])
+        self._proj.init_size_pwid(0.01 * pop_pars[CONST.POP_SIZE_PWID][FEMALE], 0.01 * pop_pars[CONST.POP_SIZE_PWID][MALE])
+        self._proj.init_size_fsw(0.01 * pop_pars[CONST.POP_SIZE_KEYPOP][FEMALE])
+        self._proj.init_size_msm(0.01 * pop_pars[CONST.POP_SIZE_KEYPOP][MALE])
+        self._proj.init_size_trans(0.01 * pop_pars[CONST.POP_SIZE_TRANS][FEMALE], 0.01 * pop_pars[CONST.POP_SIZE_TRANS][MALE])
         self._proj.init_age_pwid(
             pop_pars[CONST.POP_PWID_LOC][FEMALE],
             pop_pars[CONST.POP_PWID_SHP][FEMALE],

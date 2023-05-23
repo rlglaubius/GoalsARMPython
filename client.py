@@ -1,5 +1,6 @@
 import os
 import sys
+import src.goals_const as CONST
 from src.goals_model import Model
 from src.goals_results import Results
 
