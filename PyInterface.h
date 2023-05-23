@@ -34,6 +34,28 @@ public:
 	PyInterface(const int year_start, const int year_final);
 	~PyInterface();
 
+	/// Pass memory for storing population sizes.
+	/// @param HIV-negative adults, by year, sex, age, risk
+	/// @param HIV-positive adults, by year, sex, age, risk, CD4, and care status
+	/// @param HIV-negative children, by year, sex, age
+	/// @param HIV-positive children, by year, sex, age, CD4, and care status
+	void setup_storage_population(
+			np::ndarray& adult_neg,
+			np::ndarray& adult_hiv,
+			np::ndarray& child_neg,
+			np::ndarray& child_hiv);
+
+	/// Pass memory for storing all-cause deaths counts.
+	/// @param HIV-negative adults, by year, sex, age, risk
+	/// @param HIV-positive adults, by year, sex, age, risk, CD4, and care status
+	/// @param HIV-negative children, by year, sex, age
+	/// @param HIV-positive children, by year, sex, age, CD4, and care status
+	void setup_storage_deaths(
+			np::ndarray& adult_neg,
+			np::ndarray& adult_hiv,
+			np::ndarray& child_neg,
+			np::ndarray& child_hiv);
+
 	inline void initialize(const std::string& upd_filename);
 
 	void init_pasfrs_from_5yr(np::ndarray& pasfrs5y);
@@ -78,14 +100,15 @@ public:
 	void init_epidemic_seed(const int seed_year, const double seed_prev);
 
 	// Initialize transmission probabilities per sex act
-	void init_transmission(const double pct_f2m,
-						   const double or_m2f,
-						   const double or_m2m,
-		                   const double primary,
-						   const double chronic,
-						   const double symptom,
-						   const double art_supp,
-						   const double art_fail);
+	void init_transmission(
+			const double pct_f2m,
+			const double or_m2f,
+			const double or_m2m,
+			const double primary,
+			const double chronic,
+			const double symptom,
+			const double art_supp,
+			const double art_fail);
 
 	void init_hiv_fertility(np::ndarray& frr_age_off_art, np::ndarray& frr_cd4_off_art, np::ndarray& frr_age_on_art);
 
@@ -137,6 +160,9 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 	np::initialize();
 
 	py::class_<PyInterface>("Projection", py::init<size_t, size_t>())
+		.def("setup_storage_population", &PyInterface::setup_storage_population)
+		.def("setup_storage_deaths",     &PyInterface::setup_storage_deaths)
+
 		.def("initialize",               &PyInterface::initialize)
 		.def("init_pasfrs_from_5yr",     &PyInterface::init_pasfrs_from_5yr)
 		.def("init_migr_from_5yr",       &PyInterface::init_migr_from_5yr)

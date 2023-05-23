@@ -3,6 +3,25 @@
 #include <iostream>
 #include <boost/math/interpolators/pchip.hpp>
 
+template<typename ValueType>
+ValueType* prepare_ndarray(np::ndarray& arr) {
+#ifdef _DEBUG // _DEBUG is set when compiling in Debug mode
+		if (arr.get_nd() > 1 && !(arr.get_flags() & (np::ndarray::C_CONTIGUOUS | np::ndarray::ALIGNED))) {
+				// numpy multidimensional arrays must be C contiguous arrays, otherwise
+				// Goals calculation code will access elements out-of-order. This will generally
+				// produce incorrect results, so we abort execution instead.
+				//
+				// How might this happen? Suppose A is a numpy array. It may have the wrong
+				// memory ordering if:
+				// - If A was created in Fortran order (e.g., numpy.array(..., order="F"))
+				// - If A was created C order, then transposed via A.transpose().
+				// - Other operations, like numpyp.reshape(), might also change flags instead of memory ordering
+				throw std::runtime_error("Array misaligned");
+		}
+#endif // _DEBUG
+		return reinterpret_cast<ValueType*>(arr.get_data());
+}
+
 // Factory functions. Each returns a pointer to an n-dimensional boost::multi_array_ref
 // that is a wrapper around the data underlying an input numpy ndarray.
 // 
@@ -51,6 +70,30 @@ PyInterface::PyInterface(const int year_start, const int year_final) {
 
 PyInterface::~PyInterface() {
 	if (proj != NULL) { delete proj; }
+}
+
+void PyInterface::setup_storage_population(
+		np::ndarray& adult_neg,
+		np::ndarray& adult_hiv,
+		np::ndarray& child_neg,
+		np::ndarray& child_hiv) {
+		double* ptr_adult_neg(prepare_ndarray<double>(adult_neg));
+		double* ptr_adult_hiv(prepare_ndarray<double>(adult_hiv));
+		double* ptr_child_neg(prepare_ndarray<double>(child_neg));
+		double* ptr_child_hiv(prepare_ndarray<double>(child_hiv));
+		proj->setup_storage_population(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
+}
+
+void PyInterface::setup_storage_deaths(
+		np::ndarray& adult_neg,
+		np::ndarray& adult_hiv,
+		np::ndarray& child_neg,
+		np::ndarray& child_hiv) {
+		double* ptr_adult_neg(prepare_ndarray<double>(adult_neg));
+		double* ptr_adult_hiv(prepare_ndarray<double>(adult_hiv));
+		double* ptr_child_neg(prepare_ndarray<double>(child_neg));
+		double* ptr_child_hiv(prepare_ndarray<double>(child_hiv));
+		proj->setup_storage_deaths(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
 }
 
 void PyInterface::initialize(const std::string& upd_filename) {

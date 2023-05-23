@@ -140,8 +140,21 @@ def init_from_xlsx(xlsx_name):
     first_year = cfg_opts[CONST.CFG_FIRST_YEAR]
     final_year = cfg_opts[CONST.CFG_FINAL_YEAR]
 
+    num_years = final_year - first_year + 1
+    pop_adult_neg = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE_ADULT, CONST.N_POP), dtype=np.float64, order="C")
+    pop_adult_hiv = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE_ADULT, CONST.N_POP, CONST.N_HIV_ADULT, CONST.N_DTX), dtype=np.float64, order="C")
+    pop_child_neg = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE_CHILD), dtype=np.float64, order="C")
+    pop_child_hiv = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE_CHILD, CONST.N_HIV_CHILD, CONST.N_DTX), dtype=np.float64, order="C")
+
+    deaths_adult_neg = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE_ADULT, CONST.N_POP), dtype=np.float64, order="C")
+    deaths_adult_hiv = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE_ADULT, CONST.N_POP, CONST.N_HIV_ADULT, CONST.N_DTX), dtype=np.float64, order="C")
+    deaths_child_neg = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE_CHILD), dtype=np.float64, order="C")
+    deaths_child_hiv = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE_CHILD, CONST.N_HIV_CHILD, CONST.N_DTX), dtype=np.float64, order="C")
+
     model = Goals.Projection(first_year, final_year)
     model.initialize(cfg_opts[CONST.CFG_UPD_NAME])
+    model.setup_storage_population(pop_adult_neg, pop_adult_hiv, pop_child_neg, pop_child_hiv)
+    model.setup_storage_deaths(deaths_adult_neg, deaths_adult_hiv, deaths_child_neg, deaths_child_hiv)
 
     initialize_population_sizes(model, pop_pars)
 
