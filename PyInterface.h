@@ -56,9 +56,15 @@ public:
 			np::ndarray& child_neg,
 			np::ndarray& child_hiv);
 
-	/// Pass partner rate inputs.
+	/// Pass partner rate inputs
 	/// @param partner_rate matrix by year (year_start:year_final), sex (male,female), age (15:80), and behavioral risk group
 	void share_input_partner_rate(np::ndarray& partner_rate);
+
+	/// Pass mixing preferences by age
+	/// @param mix Mixing matrix. mix[si,ai,sj,aj] is the preference of sex si, age ai for partners of sex sj, age aj
+	/// Generally, mix[si,ai,sj,:] should sum to 1. Age indices 0..66 correspond to ages 15..80. Mixing coefficients
+	/// for female-female partnerships or age 80 are not currently used.
+	void share_input_age_mixing(np::ndarray& mix);
 
 	inline void initialize(const std::string& upd_filename);
 
@@ -100,7 +106,9 @@ public:
 	void init_age_fsw(const double loc, const double shp);
 	void init_age_msm(const double loc, const double shp);
 
-	// Initialize the first year of epidemic simulation, and HIV prevalence in that year
+	/// Initialize the first year of epidemic simulation, and HIV prevalence in that year
+	/// @param seed_year First year of the HIV epidemic. This should be specified as the number of years since the projection began
+	/// @param seed_prev HIV prevalence in the first year of the HIV epidemic.
 	void init_epidemic_seed(const int seed_year, const double seed_prev);
 
 	// Initialize transmission probabilities per sex act
@@ -167,6 +175,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("share_output_population",  &PyInterface::share_output_population)
 		.def("share_output_deaths",      &PyInterface::share_output_deaths)
 		.def("share_input_partner_rate", &PyInterface::share_input_partner_rate)
+		.def("share_input_age_mixing",   &PyInterface::share_input_age_mixing)
 
 		.def("initialize",               &PyInterface::initialize)
 		.def("init_pasfrs_from_5yr",     &PyInterface::init_pasfrs_from_5yr)

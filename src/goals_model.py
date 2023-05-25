@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import scipy as sp
 import openpyxl as xlsx
@@ -91,10 +92,13 @@ class Model:
             self._proj.init_direct_incidence(inci, sirr, airr_f, airr_m, rirr_f, rirr_m)
         else:
             time_trend, age_params, pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
+            age_prefs, pop_prefs, p_married    = Utils.xlsx_load_partner_prefs(wb[CONST.XLSX_TAB_PARTNER])
             self.partner_rate = self.calc_partner_rates(time_trend, age_params, pop_ratios)
+            self.age_mix = self.calc_partner_prefs(age_prefs, pop_prefs)
             self._proj.share_input_partner_rate(self.partner_rate)
+            self._proj.share_input_age_mixing(self.age_mix)
             self._proj.use_direct_incidence(False)
-            self._proj.init_epidemic_seed(epi_pars[CONST.EPI_INITIAL_YEAR], epi_pars[CONST.EPI_INITIAL_PREV])
+            self._proj.init_epidemic_seed(epi_pars[CONST.EPI_INITIAL_YEAR] - self.year_first, epi_pars[CONST.EPI_INITIAL_PREV])
             self._proj.init_transmission(
                 epi_pars[CONST.EPI_TRANSMIT_F2M],
                 epi_pars[CONST.EPI_TRANSMIT_M2F],
@@ -189,9 +193,54 @@ class Model:
         #         for r in range(1,CONST.N_POP):
         #             partner_rate[:,s,a,r] = time_trend[s,yr_bgn:yr_end] * age_ratios[s,a] * pop_ratios[r-1,s]
 
-        ## Vectorized variant (probably faster)
+        ## Vectorized variant (much faster)
         partner_rate = np.zeros((num_yrs, CONST.N_SEX, CONST.N_AGE_ADULT, CONST.N_POP), dtype=self._dtype, order=self._order)
         for s in range(CONST.N_SEX):
             partner_rate[:,s,:,1:CONST.N_POP] = np.outer(time_trend[s,yr_bgn:yr_end], np.outer(age_ratios[s,:], pop_ratios[:,s])).reshape((num_yrs, CONST.N_AGE_ADULT, CONST.N_POP-1))
 
         return partner_rate
+    
+    def calc_partner_prefs(self, age_prefs, pop_prefs):
+        ## age differences mean and variance
+        oppo_diff_avg, oppo_diff_var = age_prefs[0], age_prefs[1] # male-female partnerships
+        male_diff_var = age_prefs[2]                              # male-male partnerships
+        mix = np.zeros((CONST.N_SEX, CONST.N_AGE_ADULT, CONST.N_SEX, CONST.N_AGE_ADULT), dtype=self._dtype, order=self._order)
+
+	    ## Use Newton-Raphson to approximate shape and scale parameters of the Fisk
+	    ## distribution given the specified mean and variance.
+        num_iter = 5
+        shift = -10 # assuming negligible partnerships with females who are 10 years older than their male partners
+        m, v = oppo_diff_avg - shift, oppo_diff_var
+        target = m * m / (m * m + v)
+        x = 0.5 * math.pi - target
+        for k in range(num_iter):
+            cot_x = 1.0 / math.tan(x)
+            csc_x = 1.0 / math.sin(x)
+            fx = x * cot_x - target
+            dx = cot_x - x * csc_x * csc_x
+            x = x - fx / dx
+
+        shape = math.pi / x
+        scale = m * math.sin(x) / x
+        oppo_dist = sp.stats.fisk(shape, shift, scale)
+        same_dist = sp.stats.norm(0.0, math.sqrt(male_diff_var))
+        
+        ## This could be vectorized for speed. Beware Brian Kernighan's debugging insight.
+        ## Calculate unnormalized mixing preferences 
+        oppo_raw = np.zeros((CONST.N_AGE_ADULT, CONST.N_AGE_ADULT), dtype=self._dtype, order=self._order)
+        same_raw = np.zeros((CONST.N_AGE_ADULT, CONST.N_AGE_ADULT), dtype=self._dtype, order=self._order)
+        for a in range(CONST.AGE_ADULT_MIN, CONST.AGE_ADULT_MAX): # intentionally omits the 80+ age group
+            b = a - CONST.AGE_ADULT_MIN
+            min_age_diff = CONST.AGE_ADULT_MIN - a
+            max_age_diff = CONST.AGE_ADULT_MAX - a
+            oppo_raw[b,:-1] = np.diff(oppo_dist.cdf(range(min_age_diff, max_age_diff + 1)))
+            same_raw[b,:-1] = np.diff(same_dist.cdf(range(min_age_diff, max_age_diff + 1)))
+
+        ## Fill in normalized mixing matrix. This could be vectorized further
+        for b in range(CONST.N_AGE_ADULT - 1):
+            mix[CONST.SEX_FEMALE, b, CONST.SEX_MALE,   :] = oppo_raw[b,:] / oppo_raw[b,:].sum()
+            mix[CONST.SEX_MALE,   b, CONST.SEX_FEMALE, :] = oppo_raw[:,b] / oppo_raw[:,b].sum()
+            mix[CONST.SEX_MALE,   b, CONST.SEX_MALE,   :] = same_raw[b,:] / same_raw[b,:].sum()
+        
+        return mix
+        

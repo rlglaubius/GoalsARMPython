@@ -87,11 +87,19 @@ def xlsx_load_mc_uptake(tab_mc):
     return xlsx_load_range(tab_mc, 'B3', 'CD19').transpose()
 
 def xlsx_load_partner_rates(tab_partners):
+    """! Load parameters that specify numbers of partners per year """
     time_trend = xlsx_load_range(tab_partners, 'B2',  'CD3') # sex x year matrix
     age_params = xlsx_load_range(tab_partners, 'B6',  'C7')  # par x sex matrix, par = (mean, scale)
     pop_ratios = xlsx_load_range(tab_partners, 'B10', 'C15') # pop x sex matrix, excludes sexually-inactive
     # reorder males and females to Goals ARM ordering
     return time_trend[[1,0],:], age_params[:,[1,0]], pop_ratios[:,[1,0]]
+
+def xlsx_load_partner_prefs(tab_partners):
+    """! Load parameters that specify age-based mixing and married/union status """
+    age_prefs = xlsx_load_range(tab_partners, 'B18', 'B20')
+    pop_prefs = xlsx_load_range(tab_partners, 'B23', 'C28')
+    p_married = xlsx_load_range(tab_partners, 'B31', 'C33')
+    return age_prefs, 0.01 * pop_prefs[:,[1,0]], 0.01 * p_married[:,[1,0]]
 
 def xlsx_load_direct_clhiv(tab_clhiv):
     return xlsx_load_range(tab_clhiv, 'D3', 'CF86').transpose()

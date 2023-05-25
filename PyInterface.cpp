@@ -101,6 +101,11 @@ void PyInterface::share_input_partner_rate(np::ndarray& partner_rate) {
 		proj->dat.share_partner_rate(ptr_partner_rate);
 }
 
+void PyInterface::share_input_age_mixing(np::ndarray& mix) {
+	double* ptr_mix(prepare_ndarray<double>(mix));
+	proj->dat.share_age_mixing(ptr_mix);
+}
+
 void PyInterface::initialize(const std::string& upd_filename) {
 	proj->initialize(upd_filename);
 }
