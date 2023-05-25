@@ -22,6 +22,13 @@ import lib.Debug.GoalsARM as Goals
 ## [x] MCInputs
 ## [x] DirectCLHIV
 
+## TODO:
+## Create an Excel reader that just loads the raw inputs from Excel into member
+## variables. Then the Model here would be responsible for doing any
+## transformations on those variables before passing them to the calculation
+## engine. The C++ transfer layer and calculation engine ideally should not do
+## any input transformations.
+
 class Model:
     """! Goals model class. This is wraps an external Goals ARM core projection object
     so that calling applications should not need to care about the Python-C++ API
@@ -94,9 +101,11 @@ class Model:
             time_trend, age_params, pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
             age_prefs, pop_prefs, p_married    = Utils.xlsx_load_partner_prefs(wb[CONST.XLSX_TAB_PARTNER])
             self.partner_rate = self.calc_partner_rates(time_trend, age_params, pop_ratios)
-            self.age_mix = self.calc_partner_prefs(age_prefs, pop_prefs)
+            self.age_mixing = self.calc_partner_prefs(age_prefs)
+            self.pop_assort = self.calc_pop_assort(pop_prefs)
             self._proj.share_input_partner_rate(self.partner_rate)
-            self._proj.share_input_age_mixing(self.age_mix)
+            self._proj.share_input_age_mixing(self.age_mixing)
+            self._proj.share_input_pop_assort(pop_prefs)
             self._proj.use_direct_incidence(False)
             self._proj.init_epidemic_seed(epi_pars[CONST.EPI_INITIAL_YEAR] - self.year_first, epi_pars[CONST.EPI_INITIAL_PREV])
             self._proj.init_transmission(
@@ -108,6 +117,13 @@ class Model:
                 epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
                 epi_pars[CONST.EPI_TRANSMIT_ART_VS],
                 epi_pars[CONST.EPI_TRANSMIT_ART_VF])
+            self._proj.init_keypop_married(
+                0.01 * p_married[CONST.SEX_FEMALE, CONST.POP_PWID  - CONST.POP_PWID],
+                0.01 * p_married[CONST.SEX_FEMALE, CONST.POP_FSW   - CONST.POP_PWID],
+                0.01 * p_married[CONST.SEX_FEMALE, CONST.POP_TRANS - CONST.POP_PWID],
+                0.01 * p_married[CONST.SEX_MALE,   CONST.POP_PWID  - CONST.POP_PWID],
+                0.01 * p_married[CONST.SEX_MALE,   CONST.POP_MSM   - CONST.POP_PWID],
+                0.01 * p_married[CONST.SEX_MALE,   CONST.POP_TRANS - CONST.POP_PWID])
 
         if cfg_opts[CONST.CFG_USE_DIRECT_CLHIV]:
             direct_clhiv = Utils.xlsx_load_direct_clhiv(wb[CONST.XLSX_TAB_DIRECT_CLHIV])
@@ -200,7 +216,7 @@ class Model:
 
         return partner_rate
     
-    def calc_partner_prefs(self, age_prefs, pop_prefs):
+    def calc_partner_prefs(self, age_prefs):
         ## age differences mean and variance
         oppo_diff_avg, oppo_diff_var = age_prefs[0], age_prefs[1] # male-female partnerships
         male_diff_var = age_prefs[2]                              # male-male partnerships
@@ -243,4 +259,12 @@ class Model:
             mix[CONST.SEX_MALE,   b, CONST.SEX_MALE,   :] = same_raw[b,:] / same_raw[b,:].sum()
         
         return mix
-        
+    
+    def calc_pop_assort(self, pop_prefs):
+        """"! Convert raw assortativity inputs from Excel into usable inputs by converting
+        them from percentages to proportions and adding a row for POP_NOSEX
+        @param pop_prefs array of assortativity parameters by sex and population, excluding POP_NOSEX
+        """
+        assort = np.zeros((CONST.N_SEX, CONST.N_POP), dtype=self._dtype, order=self._order)
+        assort[:,CONST.POP_NEVER:] = 0.01 * pop_prefs.transpose()
+        return assort

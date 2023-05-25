@@ -99,7 +99,7 @@ def xlsx_load_partner_prefs(tab_partners):
     age_prefs = xlsx_load_range(tab_partners, 'B18', 'B20')
     pop_prefs = xlsx_load_range(tab_partners, 'B23', 'C28')
     p_married = xlsx_load_range(tab_partners, 'B31', 'C33')
-    return age_prefs, 0.01 * pop_prefs[:,[1,0]], 0.01 * p_married[:,[1,0]]
+    return age_prefs, pop_prefs[:,[1,0]], p_married[:,[1,0]].transpose()
 
 def xlsx_load_direct_clhiv(tab_clhiv):
     return xlsx_load_range(tab_clhiv, 'D3', 'CF86').transpose()

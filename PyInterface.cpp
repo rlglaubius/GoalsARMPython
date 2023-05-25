@@ -106,6 +106,11 @@ void PyInterface::share_input_age_mixing(np::ndarray& mix) {
 	proj->dat.share_age_mixing(ptr_mix);
 }
 
+void PyInterface::share_input_pop_assort(np::ndarray& assort) {
+	double* ptr_assort(prepare_ndarray<double>(assort));
+	proj->dat.share_pop_assortativity(ptr_assort);
+}
+
 void PyInterface::initialize(const std::string& upd_filename) {
 	proj->initialize(upd_filename);
 }
@@ -227,6 +232,15 @@ void PyInterface::init_age_fsw(const double loc, const double shp) {
 
 void PyInterface::init_age_msm(const double loc, const double shp) {
 	DP::set_keypop_age(proj->dat, DP::MALE, DP::POP_MSM, loc, shp);
+}
+
+void PyInterface::init_keypop_married(const double fwid, const double fsw, const double tgm, const double mwid, const double msm, const double tgw) {
+	proj->dat.keypop_married(DP::FEMALE, DP::POP_PWID,  fwid);
+	proj->dat.keypop_married(DP::FEMALE, DP::POP_FSW,   fsw );
+	proj->dat.keypop_married(DP::FEMALE, DP::POP_TRANS, tgm );
+	proj->dat.keypop_married(DP::MALE,   DP::POP_PWID,  mwid);
+	proj->dat.keypop_married(DP::MALE,   DP::POP_MSM,   msm );
+	proj->dat.keypop_married(DP::MALE,   DP::POP_TRANS, tgw );
 }
 
 void PyInterface::init_epidemic_seed(const int seed_year, const double seed_prev) {

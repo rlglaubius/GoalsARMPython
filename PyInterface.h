@@ -66,6 +66,12 @@ public:
 	/// for female-female partnerships or age 80 are not currently used.
 	void share_input_age_mixing(np::ndarray& mix);
 
+	/// Pass assortativity parameters for behavioral risk groups
+	/// @param assort assort[s,r] is the extent that people of sex s and behavioral risk r mix preferentially
+	void share_input_pop_assort(np::ndarray& assort);
+
+	/// Use a UPD file to initialize demographic inputs
+	/// @param upd_filename UPD file name
 	inline void initialize(const std::string& upd_filename);
 
 	void init_pasfrs_from_5yr(np::ndarray& pasfrs5y);
@@ -105,6 +111,15 @@ public:
 	void init_age_pwid(const double loc_female, const double shp_female, const double loc_male, const double shp_male);
 	void init_age_fsw(const double loc, const double shp);
 	void init_age_msm(const double loc, const double shp);
+
+	/// Initialize the proportion of key population members who have a main opposite-sex partner
+	/// @param fwid females who inject drugs
+	/// @param fsw  female sex workers
+	/// @param tgm  transgender men
+	/// @param mwid males who inject drugs
+	/// @param msm  men who have sex with men
+	/// @param tgw  transgender women
+	void init_keypop_married(const double fwid, const double fsw, const double tgm, const double mwid, const double msm, const double tgw);
 
 	/// Initialize the first year of epidemic simulation, and HIV prevalence in that year
 	/// @param seed_year First year of the HIV epidemic. This should be specified as the number of years since the projection began
@@ -176,6 +191,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("share_output_deaths",      &PyInterface::share_output_deaths)
 		.def("share_input_partner_rate", &PyInterface::share_input_partner_rate)
 		.def("share_input_age_mixing",   &PyInterface::share_input_age_mixing)
+		.def("share_input_pop_assort",   &PyInterface::share_input_pop_assort)
 
 		.def("initialize",               &PyInterface::initialize)
 		.def("init_pasfrs_from_5yr",     &PyInterface::init_pasfrs_from_5yr)
@@ -194,6 +210,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_age_pwid",            &PyInterface::init_age_pwid)
 		.def("init_age_fsw",             &PyInterface::init_age_fsw)
 		.def("init_age_msm",             &PyInterface::init_age_msm)
+		.def("init_keypop_married",      &PyInterface::init_keypop_married)
 		.def("init_epidemic_seed",       &PyInterface::init_epidemic_seed)
 		.def("init_hiv_fertility",       &PyInterface::init_hiv_fertility)
 		.def("init_transmission",        &PyInterface::init_transmission)
