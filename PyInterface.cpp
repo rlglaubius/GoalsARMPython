@@ -81,7 +81,7 @@ void PyInterface::share_output_population(
 		double* ptr_adult_hiv(prepare_ndarray<double>(adult_hiv));
 		double* ptr_child_neg(prepare_ndarray<double>(child_neg));
 		double* ptr_child_hiv(prepare_ndarray<double>(child_hiv));
-		proj->setup_storage_population(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
+		proj->pop.share_storage(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
 }
 
 void PyInterface::share_output_deaths(
@@ -93,7 +93,7 @@ void PyInterface::share_output_deaths(
 		double* ptr_adult_hiv(prepare_ndarray<double>(adult_hiv));
 		double* ptr_child_neg(prepare_ndarray<double>(child_neg));
 		double* ptr_child_hiv(prepare_ndarray<double>(child_hiv));
-		proj->setup_storage_deaths(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
+		proj->dth.share_storage(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
 }
 
 void PyInterface::share_input_partner_rate(np::ndarray& partner_rate) {
