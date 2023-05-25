@@ -1,4 +1,5 @@
 import numpy as np
+import scipy as sp
 import openpyxl as xlsx
 import src.goals_const as CONST
 import src.goals_utils as Utils
@@ -71,8 +72,8 @@ class Model:
 
         self._proj = Goals.Projection(self.year_first, self.year_final)
         self._proj.initialize(cfg_opts[CONST.CFG_UPD_NAME])
-        self._proj.setup_storage_population(self.pop_adult_neg, self.pop_adult_hiv, self.pop_child_neg, self.pop_child_hiv)
-        self._proj.setup_storage_deaths(self.deaths_adult_neg, self.deaths_adult_hiv, self.deaths_child_neg, self.deaths_child_hiv)
+        self._proj.share_output_population(self.pop_adult_neg, self.pop_adult_hiv, self.pop_child_neg, self.pop_child_hiv)
+        self._proj.share_output_deaths(self.deaths_adult_neg, self.deaths_adult_hiv, self.deaths_child_neg, self.deaths_child_hiv)
 
         self._initialize_population_sizes(pop_pars)
 
@@ -89,6 +90,9 @@ class Model:
             self._proj.use_direct_incidence(True)
             self._proj.init_direct_incidence(inci, sirr, airr_f, airr_m, rirr_f, rirr_m)
         else:
+            time_trend, age_params, pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
+            self.partner_rate = self.calc_partner_rates(time_trend, age_params, pop_ratios)
+            self._proj.share_input_partner_rate(self.partner_rate)
             self._proj.use_direct_incidence(False)
             self._proj.init_epidemic_seed(epi_pars[CONST.EPI_INITIAL_YEAR], epi_pars[CONST.EPI_INITIAL_PREV])
             self._proj.init_transmission(
@@ -153,3 +157,41 @@ class Model:
             pop_pars[CONST.POP_PWID_SHP][MALE])
         self._proj.init_age_fsw(pop_pars[CONST.POP_KEYPOP_LOC][FEMALE], pop_pars[CONST.POP_KEYPOP_SHP][FEMALE])
         self._proj.init_age_msm(pop_pars[CONST.POP_KEYPOP_LOC][MALE], pop_pars[CONST.POP_KEYPOP_SHP][MALE])
+
+    def calc_partner_rates(self, time_trend, age_params, pop_ratios):
+        """! Calculate partnership rates by year, sex, age, and behavioral risk group
+        @param time_trend lifetime partnership-years by sex and year
+        @param age_params beta distribution mean and size parameters that specify partner rates by age
+        @param pop_params rate ratios by behavioral risk group, excluding the sexually naive group
+        """
+        
+        ## Calculate age-specific rate ratios from age_params
+        age_ratios = np.zeros((CONST.N_SEX, CONST.N_AGE_ADULT), dtype=self._dtype, order=self._order)
+        raw_ages = np.array(range(CONST.AGE_ADULT_MIN, CONST.AGE_ADULT_MAX + 1))
+        std_ages = (raw_ages - CONST.AGE_ADULT_MIN) / (CONST.AGE_ADULT_MAX - CONST.AGE_ADULT_MIN)
+        for s in [CONST.SEX_FEMALE, CONST.SEX_MALE]: # not idiomatic...
+            raw_mean = age_params[0,s]
+            std_mean = (raw_mean - CONST.AGE_ADULT_MIN) / (CONST.AGE_ADULT_MAX - CONST.AGE_ADULT_MIN)
+            dist = sp.stats.beta(age_params[1,s] * std_mean, age_params[1,s] * (1.0 - std_mean))
+
+            ## This intentionally excludes CONST.AGE_ADULT_MAX so that its age_ratio is 0
+            age_ratios[s,0:(CONST.N_AGE_ADULT - 1)] = np.diff(dist.cdf(std_ages))
+
+        ## Calculate the full partner rate matrix
+        num_yrs = self.year_final - self.year_first + 1
+        yr_bgn = self.year_first - CONST.XLSX_FIRST_YEAR
+        yr_end = self.year_final - CONST.XLSX_FIRST_YEAR + 1
+        partner_rate = np.zeros((num_yrs, CONST.N_SEX, CONST.N_AGE_ADULT, CONST.N_POP), dtype=self._dtype, order=self._order)
+
+        # ## Loop variant (readable)
+        # for s in range(CONST.N_SEX):
+        #     for a in range(CONST.N_AGE_ADULT):
+        #         for r in range(1,CONST.N_POP):
+        #             partner_rate[:,s,a,r] = time_trend[s,yr_bgn:yr_end] * age_ratios[s,a] * pop_ratios[r-1,s]
+
+        ## Vectorized variant (probably faster)
+        partner_rate = np.zeros((num_yrs, CONST.N_SEX, CONST.N_AGE_ADULT, CONST.N_POP), dtype=self._dtype, order=self._order)
+        for s in range(CONST.N_SEX):
+            partner_rate[:,s,:,1:CONST.N_POP] = np.outer(time_trend[s,yr_bgn:yr_end], np.outer(age_ratios[s,:], pop_ratios[:,s])).reshape((num_yrs, CONST.N_AGE_ADULT, CONST.N_POP-1))
+
+        return partner_rate

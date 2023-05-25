@@ -34,27 +34,31 @@ public:
 	PyInterface(const int year_start, const int year_final);
 	~PyInterface();
 
-	/// Pass memory for storing population sizes.
+	/// Pass memory for storing output population sizes.
 	/// @param HIV-negative adults, by year, sex, age, risk
 	/// @param HIV-positive adults, by year, sex, age, risk, CD4, and care status
 	/// @param HIV-negative children, by year, sex, age
 	/// @param HIV-positive children, by year, sex, age, CD4, and care status
-	void setup_storage_population(
+	void share_output_population(
 			np::ndarray& adult_neg,
 			np::ndarray& adult_hiv,
 			np::ndarray& child_neg,
 			np::ndarray& child_hiv);
 
-	/// Pass memory for storing all-cause deaths counts.
+	/// Pass memory for storing output all-cause deaths counts.
 	/// @param HIV-negative adults, by year, sex, age, risk
 	/// @param HIV-positive adults, by year, sex, age, risk, CD4, and care status
 	/// @param HIV-negative children, by year, sex, age
 	/// @param HIV-positive children, by year, sex, age, CD4, and care status
-	void setup_storage_deaths(
+	void share_output_deaths(
 			np::ndarray& adult_neg,
 			np::ndarray& adult_hiv,
 			np::ndarray& child_neg,
 			np::ndarray& child_hiv);
+
+	/// Pass partner rate inputs.
+	/// @param partner_rate matrix by year (year_start:year_final), sex (male,female), age (15:80), and behavioral risk group
+	void share_input_partner_rate(np::ndarray& partner_rate);
 
 	inline void initialize(const std::string& upd_filename);
 
@@ -160,8 +164,9 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 	np::initialize();
 
 	py::class_<PyInterface>("Projection", py::init<size_t, size_t>())
-		.def("setup_storage_population", &PyInterface::setup_storage_population)
-		.def("setup_storage_deaths",     &PyInterface::setup_storage_deaths)
+		.def("share_output_population",  &PyInterface::share_output_population)
+		.def("share_output_deaths",      &PyInterface::share_output_deaths)
+		.def("share_input_partner_rate", &PyInterface::share_input_partner_rate)
 
 		.def("initialize",               &PyInterface::initialize)
 		.def("init_pasfrs_from_5yr",     &PyInterface::init_pasfrs_from_5yr)

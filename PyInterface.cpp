@@ -72,7 +72,7 @@ PyInterface::~PyInterface() {
 	if (proj != NULL) { delete proj; }
 }
 
-void PyInterface::setup_storage_population(
+void PyInterface::share_output_population(
 		np::ndarray& adult_neg,
 		np::ndarray& adult_hiv,
 		np::ndarray& child_neg,
@@ -84,7 +84,7 @@ void PyInterface::setup_storage_population(
 		proj->setup_storage_population(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
 }
 
-void PyInterface::setup_storage_deaths(
+void PyInterface::share_output_deaths(
 		np::ndarray& adult_neg,
 		np::ndarray& adult_hiv,
 		np::ndarray& child_neg,
@@ -94,6 +94,11 @@ void PyInterface::setup_storage_deaths(
 		double* ptr_child_neg(prepare_ndarray<double>(child_neg));
 		double* ptr_child_hiv(prepare_ndarray<double>(child_hiv));
 		proj->setup_storage_deaths(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
+}
+
+void PyInterface::share_input_partner_rate(np::ndarray& partner_rate) {
+		double* ptr_partner_rate(prepare_ndarray<double>(partner_rate));
+		proj->dat.share_partner_rate(ptr_partner_rate);
 }
 
 void PyInterface::initialize(const std::string& upd_filename) {
