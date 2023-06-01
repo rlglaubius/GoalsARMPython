@@ -121,6 +121,14 @@ public:
 	/// @param tgw  transgender women
 	void init_keypop_married(const double fwid, const double fsw, const double tgm, const double mwid, const double msm, const double tgw);
 
+	/// Initialize the structure of the mixing matrix by behavioral risk group
+	/// @param mix_levels matrix of mixing levels. mix_levels[si,ri,sj,rj] for
+	/// (sex, risk group) pairs (si,ri) and (sj,rj) takes values 0, 1, or 2. These
+	/// indicate if the groups do not mix (value=0), can mix (value=1) or prefer
+	/// to mix (value=2). We do not require that this matrix is symmetric. Sexes
+	/// si and sj refer to assigned sex at birth, not to gender identity.
+	void init_mixing_matrix(np::ndarray& mix_levels);
+
 	/// Initialize the first year of epidemic simulation, and HIV prevalence in that year
 	/// @param seed_year First year of the HIV epidemic. This should be specified as the number of years since the projection began
 	/// @param seed_prev HIV prevalence in the first year of the HIV epidemic.
@@ -211,6 +219,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_age_fsw",             &PyInterface::init_age_fsw)
 		.def("init_age_msm",             &PyInterface::init_age_msm)
 		.def("init_keypop_married",      &PyInterface::init_keypop_married)
+		.def("init_mixing_matrix",       &PyInterface::init_mixing_matrix)
 		.def("init_epidemic_seed",       &PyInterface::init_epidemic_seed)
 		.def("init_hiv_fertility",       &PyInterface::init_hiv_fertility)
 		.def("init_transmission",        &PyInterface::init_transmission)

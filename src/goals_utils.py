@@ -101,5 +101,10 @@ def xlsx_load_partner_prefs(tab_partners):
     p_married = xlsx_load_range(tab_partners, 'B31', 'C33')
     return age_prefs, pop_prefs[:,[1,0]], p_married[:,[1,0]].transpose()
 
+def xlsx_load_mixing_levels(tab_mixing):
+    """"! Load the behavioral risk group mixing matrix structure"""
+    mix_levels = xlsx_load_range(tab_mixing, 'C3', 'N14')
+    return mix_levels
+
 def xlsx_load_direct_clhiv(tab_clhiv):
     return xlsx_load_range(tab_clhiv, 'D3', 'CF86').transpose()

@@ -4,7 +4,7 @@ import scipy as sp
 import openpyxl as xlsx
 import src.goals_const as CONST
 import src.goals_utils as Utils
-import lib.Debug.GoalsARM as Goals
+import lib.Debug.GoalsARM as Goals # At last check, calculation was ~100-fold slower with the Debug version of the library
 
 ## TODO:
 ## Truncate inputs from XLSX to the requested years before passing them to GoalsARMCore. Use x[t0:t1,:] syntax
@@ -12,7 +12,7 @@ import lib.Debug.GoalsARM as Goals
 ## [x] MigrInputs
 ## [x] PopSizeInputs
 ## [x] DirectIncidenceInputs
-## [ ] PartnershipInputs
+## [x] PartnershipInputs
 ## [ ] MixingMatrix
 ## [ ] ContactInputs
 ## [x] EpiInputs
@@ -100,9 +100,11 @@ class Model:
         else:
             time_trend, age_params, pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
             age_prefs, pop_prefs, p_married    = Utils.xlsx_load_partner_prefs(wb[CONST.XLSX_TAB_PARTNER])
+            mix_levels = Utils.xlsx_load_mixing_levels(wb[CONST.XLSX_TAB_MIXNG_MATRIX])
             self.partner_rate = self.calc_partner_rates(time_trend, age_params, pop_ratios)
             self.age_mixing = self.calc_partner_prefs(age_prefs)
             self.pop_assort = self.calc_pop_assort(pop_prefs)
+            self.mix_levels = self.calc_mix_levels(mix_levels)
             self._proj.share_input_partner_rate(self.partner_rate)
             self._proj.share_input_age_mixing(self.age_mixing)
             self._proj.share_input_pop_assort(pop_prefs)
@@ -124,6 +126,7 @@ class Model:
                 0.01 * p_married[CONST.SEX_MALE,   CONST.POP_PWID  - CONST.POP_PWID],
                 0.01 * p_married[CONST.SEX_MALE,   CONST.POP_MSM   - CONST.POP_PWID],
                 0.01 * p_married[CONST.SEX_MALE,   CONST.POP_TRANS - CONST.POP_PWID])
+            self._proj.init_mixing_matrix(self.mix_levels)
 
         if cfg_opts[CONST.CFG_USE_DIRECT_CLHIV]:
             direct_clhiv = Utils.xlsx_load_direct_clhiv(wb[CONST.XLSX_TAB_DIRECT_CLHIV])
@@ -268,3 +271,26 @@ class Model:
         assort = np.zeros((CONST.N_SEX, CONST.N_POP), dtype=self._dtype, order=self._order)
         assort[:,CONST.POP_NEVER:] = 0.01 * pop_prefs.transpose()
         return assort
+    
+    def calc_mix_levels(self, mix_levels):
+        """! Reshape the raw mixing levels read Excel into a more usable layout"""
+        tmp = mix_levels.reshape((CONST.N_SEX, CONST.N_POP-1, CONST.N_SEX, CONST.N_POP-1))
+        mix = np.zeros((CONST.N_SEX, CONST.N_POP, CONST.N_SEX, CONST.N_POP), dtype=np.int32, order=self._order)
+        f, m = CONST.SEX_FEMALE, CONST.SEX_MALE
+
+        ## The workbook organizes people by gender identity and does not include
+        ## mixing matrix rows for people who have never had sex. The model stratifies
+        ## people by assigned sex at birth and includes mixing matrix rows for people
+        ## who never had sex. We need to reorganize the input matrix to conform to the
+        ## model specification
+        mix[CONST.SEX_FEMALE, CONST.POP_NEVER:, CONST.SEX_FEMALE, CONST.POP_NEVER:] = tmp[CONST.SEX_FEMALE, :, CONST.SEX_FEMALE, :]
+        mix[CONST.SEX_FEMALE, CONST.POP_NEVER:, CONST.SEX_MALE,   CONST.POP_NEVER:] = tmp[CONST.SEX_FEMALE, :, CONST.SEX_MALE,   :]
+        mix[CONST.SEX_MALE,   CONST.POP_NEVER:, CONST.SEX_FEMALE, CONST.POP_NEVER:] = tmp[CONST.SEX_MALE,   :, CONST.SEX_FEMALE, :]
+        mix[CONST.SEX_MALE,   CONST.POP_NEVER:, CONST.SEX_MALE,   CONST.POP_NEVER:] = tmp[CONST.SEX_MALE,   :, CONST.SEX_MALE,   :]
+
+        ## Flip interpretation from gender identity (workbook) to assigned sex at
+        ## birth (projection engine)
+        mix[[CONST.SEX_FEMALE, CONST.SEX_MALE], CONST.POP_TRANS, :, :] = mix[[CONST.SEX_MALE, CONST.SEX_FEMALE], CONST.POP_TRANS, :, :]
+        mix[:, :, [CONST.SEX_FEMALE, CONST.SEX_MALE], CONST.POP_TRANS] = mix[:, :, [CONST.SEX_MALE, CONST.SEX_FEMALE], CONST.POP_TRANS]
+
+        return mix

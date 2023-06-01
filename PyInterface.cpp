@@ -243,6 +243,14 @@ void PyInterface::init_keypop_married(const double fwid, const double fsw, const
 	proj->dat.keypop_married(DP::MALE,   DP::POP_TRANS, tgw );
 }
 
+void PyInterface::init_mixing_matrix(np::ndarray& mix_levels) {
+	for (int si(DP::SEX_MIN); si <= DP::SEX_MAX; ++si)
+		for (int ri(DP::POP_MIN); ri <= DP::POP_MAX; ++ri)
+			for (int sj(DP::SEX_MIN); sj <= DP::SEX_MAX; ++sj)
+				for (int rj(DP::POP_MIN); rj <= DP::POP_MAX; ++rj)
+					proj->dat.mix_structure(si, ri, sj, rj, py::extract<int>(mix_levels[si][ri][sj][rj]));
+}
+
 void PyInterface::init_epidemic_seed(const int seed_year, const double seed_prev) {
 	proj->dat.seed_time(seed_year);
 	proj->dat.seed_prevalence(seed_prev);
