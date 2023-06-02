@@ -7,22 +7,6 @@ import src.goals_utils as Utils
 import lib.Debug.GoalsARM as Goals # At last check, calculation was ~100-fold slower with the Debug version of the library
 
 ## TODO:
-## Truncate inputs from XLSX to the requested years before passing them to GoalsARMCore. Use x[t0:t1,:] syntax
-## [x] Config
-## [x] MigrInputs
-## [x] PopSizeInputs
-## [x] DirectIncidenceInputs
-## [x] PartnershipInputs
-## [ ] MixingMatrix
-## [ ] ContactInputs
-## [x] EpiInputs
-## [x] HIVDiseaseInputs
-## [x] HIVFertilityInputs
-## [x] ARTAdultInputs
-## [x] MCInputs
-## [x] DirectCLHIV
-
-## TODO:
 ## Create an Excel reader that just loads the raw inputs from Excel into member
 ## variables. Then the Model here would be responsible for doing any
 ## transformations on those variables before passing them to the calculation
