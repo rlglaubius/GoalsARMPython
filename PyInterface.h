@@ -35,21 +35,25 @@ public:
 	~PyInterface();
 
 	/// Pass memory for storing output population sizes.
-	/// @param HIV-negative adults, by year, sex, age, risk
-	/// @param HIV-positive adults, by year, sex, age, risk, CD4, and care status
-	/// @param HIV-negative children, by year, sex, age
-	/// @param HIV-positive children, by year, sex, age, CD4, and care status
+	/// @param adult_neg HIV-negative adults, by year, sex, age, risk
+	/// @param adult_hiv HIV-positive adults, by year, sex, age, risk, CD4, and care status
+	/// @param child_neg HIV-negative children, by year, sex, age
+	/// @param child_hiv HIV-positive children, by year, sex, age, CD4, and care status
 	void share_output_population(
 			np::ndarray& adult_neg,
 			np::ndarray& adult_hiv,
 			np::ndarray& child_neg,
 			np::ndarray& child_hiv);
 
+	/// Pass memory for storing output births counts.
+	/// @param births Births by year and sex
+	void share_output_births(np::ndarray& births);
+
 	/// Pass memory for storing output all-cause deaths counts.
-	/// @param HIV-negative adults, by year, sex, age, risk
-	/// @param HIV-positive adults, by year, sex, age, risk, CD4, and care status
-	/// @param HIV-negative children, by year, sex, age
-	/// @param HIV-positive children, by year, sex, age, CD4, and care status
+	/// @param adult_neg HIV-negative adults, by year, sex, age, risk
+	/// @param adult_hiv HIV-positive adults, by year, sex, age, risk, CD4, and care status
+	/// @param child_neg HIV-negative children, by year, sex, age
+	/// @param child_hiv HIV-positive children, by year, sex, age, CD4, and care status
 	void share_output_deaths(
 			np::ndarray& adult_neg,
 			np::ndarray& adult_hiv,
@@ -206,6 +210,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 
 	py::class_<PyInterface>("Projection", py::init<size_t, size_t>())
 		.def("share_output_population",  &PyInterface::share_output_population)
+		.def("share_output_births",      &PyInterface::share_output_births)
 		.def("share_output_deaths",      &PyInterface::share_output_deaths)
 		.def("share_input_partner_rate", &PyInterface::share_input_partner_rate)
 		.def("share_input_age_mixing",   &PyInterface::share_input_age_mixing)

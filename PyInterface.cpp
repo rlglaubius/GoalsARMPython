@@ -84,6 +84,11 @@ void PyInterface::share_output_population(
 		proj->pop.share_storage(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
 }
 
+void PyInterface::share_output_births(np::ndarray& births) {
+	double* ptr_births(prepare_ndarray<double>(births));
+	proj->dat.share_births(ptr_births);
+}
+
 void PyInterface::share_output_deaths(
 		np::ndarray& adult_neg,
 		np::ndarray& adult_hiv,

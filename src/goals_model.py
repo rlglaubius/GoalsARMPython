@@ -62,9 +62,12 @@ class Model:
         self.deaths_child_neg = np.zeros(shp_child_neg, dtype=self._dtype, order=self._order)
         self.deaths_child_hiv = np.zeros(shp_child_hiv, dtype=self._dtype, order=self._order)
 
+        self.births = np.zeros((num_years, CONST.N_SEX), dtype=self._dtype, order=self._order)
+
         self._proj = Goals.Projection(self.year_first, self.year_final)
         self._proj.initialize(cfg_opts[CONST.CFG_UPD_NAME])
         self._proj.share_output_population(self.pop_adult_neg, self.pop_adult_hiv, self.pop_child_neg, self.pop_child_hiv)
+        self._proj.share_output_births(self.births)
         self._proj.share_output_deaths(self.deaths_adult_neg, self.deaths_adult_hiv, self.deaths_child_neg, self.deaths_child_hiv)
 
         self._initialize_population_sizes(pop_pars)
