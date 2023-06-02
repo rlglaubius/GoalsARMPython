@@ -251,6 +251,17 @@ void PyInterface::init_mixing_matrix(np::ndarray& mix_levels) {
 					proj->dat.mix_structure(si, ri, sj, rj, py::extract<int>(mix_levels[si][ri][sj][rj]));
 }
 
+void PyInterface::init_sex_acts(np::ndarray& acts) {
+	for (int q(DP::BOND_MIN); q <= DP::BOND_MAX; ++q)
+		proj->dat.sex_acts(q, py::extract<double>(acts[q]));
+}
+
+void PyInterface::init_condom_freq(np::ndarray& freq) {
+	for (int t(0); t < proj->num_years(); ++t)
+		for (int q(DP::BOND_MIN); q <= DP::BOND_MAX; ++q)
+			proj->dat.condom_freq(t, q, py::extract<double>(freq[t][q]));
+}
+
 void PyInterface::init_epidemic_seed(const int seed_year, const double seed_prev) {
 	proj->dat.seed_time(seed_year);
 	proj->dat.seed_prevalence(seed_prev);

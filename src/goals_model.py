@@ -99,12 +99,15 @@ class Model:
             self._proj.init_direct_incidence(inci, sirr, airr_f, airr_m, rirr_f, rirr_m)
         else:
             time_trend, age_params, pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
-            age_prefs, pop_prefs, p_married    = Utils.xlsx_load_partner_prefs(wb[CONST.XLSX_TAB_PARTNER])
-            mix_levels = Utils.xlsx_load_mixing_levels(wb[CONST.XLSX_TAB_MIXNG_MATRIX])
+            age_prefs, pop_prefs, self.p_married = Utils.xlsx_load_partner_prefs(wb[CONST.XLSX_TAB_PARTNER])
+            mix_raw = Utils.xlsx_load_mixing_levels(wb[CONST.XLSX_TAB_MIXNG_MATRIX])
+            self.sex_acts, self.condom_freq = Utils.xlsx_load_contact_params(wb[CONST.XLSX_TAB_CONTACT])
             self.partner_rate = self.calc_partner_rates(time_trend, age_params, pop_ratios)
             self.age_mixing = self.calc_partner_prefs(age_prefs)
             self.pop_assort = self.calc_pop_assort(pop_prefs)
-            self.mix_levels = self.calc_mix_levels(mix_levels)
+            self.mix_levels = self.calc_mix_levels(mix_raw)
+            self.condom_freq = 0.01 * self.condom_freq
+            self.p_married = 0.01 * self.p_married
             self._proj.share_input_partner_rate(self.partner_rate)
             self._proj.share_input_age_mixing(self.age_mixing)
             self._proj.share_input_pop_assort(pop_prefs)
@@ -120,13 +123,15 @@ class Model:
                 epi_pars[CONST.EPI_TRANSMIT_ART_VS],
                 epi_pars[CONST.EPI_TRANSMIT_ART_VF])
             self._proj.init_keypop_married(
-                0.01 * p_married[CONST.SEX_FEMALE, CONST.POP_PWID  - CONST.POP_PWID],
-                0.01 * p_married[CONST.SEX_FEMALE, CONST.POP_FSW   - CONST.POP_PWID],
-                0.01 * p_married[CONST.SEX_FEMALE, CONST.POP_TRANS - CONST.POP_PWID],
-                0.01 * p_married[CONST.SEX_MALE,   CONST.POP_PWID  - CONST.POP_PWID],
-                0.01 * p_married[CONST.SEX_MALE,   CONST.POP_MSM   - CONST.POP_PWID],
-                0.01 * p_married[CONST.SEX_MALE,   CONST.POP_TRANS - CONST.POP_PWID])
+                self.p_married[CONST.SEX_FEMALE, CONST.POP_PWID  - CONST.POP_PWID],
+                self.p_married[CONST.SEX_FEMALE, CONST.POP_FSW   - CONST.POP_PWID],
+                self.p_married[CONST.SEX_FEMALE, CONST.POP_TRANS - CONST.POP_PWID],
+                self.p_married[CONST.SEX_MALE,   CONST.POP_PWID  - CONST.POP_PWID],
+                self.p_married[CONST.SEX_MALE,   CONST.POP_MSM   - CONST.POP_PWID],
+                self.p_married[CONST.SEX_MALE,   CONST.POP_TRANS - CONST.POP_PWID])
             self._proj.init_mixing_matrix(self.mix_levels)
+            self._proj.init_sex_acts(self.sex_acts)
+            self._proj.init_condom_freq(self.condom_freq)
 
         if cfg_opts[CONST.CFG_USE_DIRECT_CLHIV]:
             direct_clhiv = Utils.xlsx_load_direct_clhiv(wb[CONST.XLSX_TAB_DIRECT_CLHIV])
@@ -276,7 +281,6 @@ class Model:
         """! Reshape the raw mixing levels read Excel into a more usable layout"""
         tmp = mix_levels.reshape((CONST.N_SEX, CONST.N_POP-1, CONST.N_SEX, CONST.N_POP-1))
         mix = np.zeros((CONST.N_SEX, CONST.N_POP, CONST.N_SEX, CONST.N_POP), dtype=np.int32, order=self._order)
-        f, m = CONST.SEX_FEMALE, CONST.SEX_MALE
 
         ## The workbook organizes people by gender identity and does not include
         ## mixing matrix rows for people who have never had sex. The model stratifies

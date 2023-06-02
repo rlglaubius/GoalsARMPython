@@ -129,6 +129,16 @@ public:
 	/// si and sj refer to assigned sex at birth, not to gender identity.
 	void init_mixing_matrix(np::ndarray& mix_levels);
 
+	/// Initialize numbers of sex acts per year by partnership type
+	/// @param acts a vector storing the number of sex acts per year by
+	/// partnership type (main=0, casual=1, commercial=2, msm=3)
+	void init_sex_acts(np::ndarray& acts);
+	
+	/// Initialize condom use inputs by year and partnership type
+	/// @param freq freq[t][i] is the probability in [0,1] of condom use at last sex
+	/// by partnership type i (main=0, casual=1, commercial=2, msm=3)
+	void init_condom_freq(np::ndarray& freq);
+
 	/// Initialize the first year of epidemic simulation, and HIV prevalence in that year
 	/// @param seed_year First year of the HIV epidemic. This should be specified as the number of years since the projection began
 	/// @param seed_prev HIV prevalence in the first year of the HIV epidemic.
@@ -220,6 +230,8 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_age_msm",             &PyInterface::init_age_msm)
 		.def("init_keypop_married",      &PyInterface::init_keypop_married)
 		.def("init_mixing_matrix",       &PyInterface::init_mixing_matrix)
+		.def("init_sex_acts",            &PyInterface::init_sex_acts)
+		.def("init_condom_freq",         &PyInterface::init_condom_freq)
 		.def("init_epidemic_seed",       &PyInterface::init_epidemic_seed)
 		.def("init_hiv_fertility",       &PyInterface::init_hiv_fertility)
 		.def("init_transmission",        &PyInterface::init_transmission)
