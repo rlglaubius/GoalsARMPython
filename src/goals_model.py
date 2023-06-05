@@ -4,7 +4,7 @@ import scipy as sp
 import openpyxl as xlsx
 import src.goals_const as CONST
 import src.goals_utils as Utils
-import lib.Debug.GoalsARM as Goals # At last check, calculation was ~100-fold slower with the Debug version of the library
+import lib.Release.GoalsARM as Goals # At last check, calculation was ~100-fold slower with the Debug version of the library
 
 ## TODO:
 ## Create an Excel reader that just loads the raw inputs from Excel into member
