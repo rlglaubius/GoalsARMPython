@@ -29,27 +29,28 @@ def main(xlsx_name):
     pop = results.bigpop()
     
     pop_frame = array2frame(pop, ['Year', 'Sex', 'Age'])
-    pop_frame.to_csv("bigpop.csv")
-
     birth_frame = array2frame(model.births, ['Year', 'Sex'])
-    birth_frame.to_csv("births.csv")
-
     pop_child_neg = array2frame(model.pop_child_neg, ['Year', 'Sex', 'Age'])
     pop_child_hiv = array2frame(model.pop_child_hiv, ['Year', 'Sex', 'Age', 'CD4', 'ART'])
     pop_adult_neg = array2frame(model.pop_adult_neg, ['Year', 'Sex', 'Age', 'Risk'])
     pop_adult_hiv = array2frame(model.pop_adult_hiv, ['Year', 'Sex', 'Age', 'Risk', 'CD4', 'ART'])
+    new_hiv = array2frame(model.new_infections, ['Year', 'Sex', 'Age', 'Risk'])
+    t4 = time.time()
 
+    pop_frame.to_csv("bigpop.csv")
+    birth_frame.to_csv("births.csv")
     pop_child_neg.to_csv("child-neg.csv")
     pop_child_hiv.to_csv("child-hiv.csv")
     pop_adult_neg.to_csv("adult-neg.csv")
     pop_adult_hiv.to_csv("adult-hiv.csv")
-    t4 = time.time()
+    new_hiv.to_csv("new-hiv.csv")
+    t5 = time.time()
 
-    sys.stdout.write("Construct\t%0.2fs\nInitialize\t%0.2fs\nProject\t\t%0.2fs\nAnalysis\t%0.2fs\n" % (t1-t0, t2-t1, t3-t2, t4-t3))
+    sys.stdout.write("Construct\t%0.2fs\nInitialize\t%0.2fs\nProject\t\t%0.2fs\nAnalysis\t%0.2fs\nCSV write\t%0.2fs\n" % (t1-t0, t2-t1, t3-t2, t4-t3, t5-t4))
 
     pass
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
-    xlsx_name = "inputs\\example-unversioned-nohiv-dbg.xlsx"
+    xlsx_name = "inputs\\example-unversioned_direct-hiv.xlsx"
     main(xlsx_name)

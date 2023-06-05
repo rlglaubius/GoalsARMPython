@@ -41,7 +41,14 @@ class Model:
         wb = xlsx.load_workbook(filename=xlsx_name, read_only=True)
         cfg_opts = Utils.xlsx_load_config(wb[CONST.XLSX_TAB_CONFIG])
         pop_pars = Utils.xlsx_load_popsize(wb[CONST.XLSX_TAB_POPSIZE])
-        epi_pars = Utils.xlsx_load_epi(wb[CONST.XLSX_TAB_EPI])
+        self.epi_pars = Utils.xlsx_load_epi(wb[CONST.XLSX_TAB_EPI])
+
+        # Conver % epi parameters to proportions
+        self.epi_pars[CONST.EPI_INITIAL_PREV   ] *= 0.01
+        self.epi_pars[CONST.EPI_TRANSMIT_F2M   ] *= 0.01
+        self.epi_pars[CONST.EPI_EFFECT_VMMC    ] *= 0.01
+        self.epi_pars[CONST.EPI_EFFECT_CONDOM  ] *= 0.01
+        self.epi_pars[CONST.EPI_ART_MORT_WEIGHT] *= 0.01
 
         self.year_first = cfg_opts[CONST.CFG_FIRST_YEAR]
         self.year_final = cfg_opts[CONST.CFG_FINAL_YEAR]
@@ -64,11 +71,14 @@ class Model:
 
         self.births = np.zeros((num_years, CONST.N_SEX), dtype=self._dtype, order=self._order)
 
+        self.new_infections = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE, CONST.N_POP), dtype=self._dtype, order=self._order)
+
         self._proj = Goals.Projection(self.year_first, self.year_final)
         self._proj.initialize(cfg_opts[CONST.CFG_UPD_NAME])
         self._proj.share_output_population(self.pop_adult_neg, self.pop_adult_hiv, self.pop_child_neg, self.pop_child_hiv)
         self._proj.share_output_births(self.births)
         self._proj.share_output_deaths(self.deaths_adult_neg, self.deaths_adult_hiv, self.deaths_child_neg, self.deaths_child_hiv)
+        self._proj.share_output_new_infections(self.new_infections)
 
         self._initialize_population_sizes(pop_pars)
 
@@ -80,10 +90,12 @@ class Model:
             migr_net, migr_dist_m, migr_dist_f = Utils.xlsx_load_migr(wb[CONST.XLSX_TAB_MIGR])
             self._proj.init_migr_from_5yr(migr_net, migr_dist_f, migr_dist_m)
 
+        self._proj.init_effect_vmmc(self.epi_pars[CONST.EPI_EFFECT_VMMC])
+        self._proj.init_effect_condom(self.epi_pars[CONST.EPI_EFFECT_CONDOM])
         if cfg_opts[CONST.CFG_USE_DIRECT_INCI]:
             inci, sirr, airr_m, airr_f, rirr_m, rirr_f = Utils.xlsx_load_inci(wb[CONST.XLSX_TAB_INCI])
             self._proj.use_direct_incidence(True)
-            self._proj.init_direct_incidence(inci, sirr, airr_f, airr_m, rirr_f, rirr_m)
+            self._proj.init_direct_incidence(0.01 * inci, sirr, airr_f, airr_m, rirr_f, rirr_m)
         else:
             time_trend, age_params, pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
             age_prefs, pop_prefs, self.p_married = Utils.xlsx_load_partner_prefs(wb[CONST.XLSX_TAB_PARTNER])
@@ -99,16 +111,16 @@ class Model:
             self._proj.share_input_age_mixing(self.age_mixing)
             self._proj.share_input_pop_assort(pop_prefs)
             self._proj.use_direct_incidence(False)
-            self._proj.init_epidemic_seed(epi_pars[CONST.EPI_INITIAL_YEAR] - self.year_first, epi_pars[CONST.EPI_INITIAL_PREV])
+            self._proj.init_epidemic_seed(self.epi_pars[CONST.EPI_INITIAL_YEAR] - self.year_first, self.epi_pars[CONST.EPI_INITIAL_PREV])
             self._proj.init_transmission(
-                epi_pars[CONST.EPI_TRANSMIT_F2M],
-                epi_pars[CONST.EPI_TRANSMIT_M2F],
-                epi_pars[CONST.EPI_TRANSMIT_M2M],
-                epi_pars[CONST.EPI_TRANSMIT_PRIMARY],
-                epi_pars[CONST.EPI_TRANSMIT_CHRONIC],
-                epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
-                epi_pars[CONST.EPI_TRANSMIT_ART_VS],
-                epi_pars[CONST.EPI_TRANSMIT_ART_VF])
+                self.epi_pars[CONST.EPI_TRANSMIT_F2M],
+                self.epi_pars[CONST.EPI_TRANSMIT_M2F],
+                self.epi_pars[CONST.EPI_TRANSMIT_M2M],
+                self.epi_pars[CONST.EPI_TRANSMIT_PRIMARY],
+                self.epi_pars[CONST.EPI_TRANSMIT_CHRONIC],
+                self.epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
+                self.epi_pars[CONST.EPI_TRANSMIT_ART_VS],
+                self.epi_pars[CONST.EPI_TRANSMIT_ART_VF])
             self._proj.init_keypop_married(
                 self.p_married[CONST.SEX_FEMALE, CONST.POP_PWID  - CONST.POP_PWID],
                 self.p_married[CONST.SEX_FEMALE, CONST.POP_FSW   - CONST.POP_PWID],
@@ -130,11 +142,11 @@ class Model:
         uptake_mc = Utils.xlsx_load_mc_uptake(wb[CONST.XLSX_TAB_MALE_CIRC])
 
         self._proj.init_hiv_fertility(frr_age_no_art, frr_cd4_no_art, frr_age_on_art)
-        self._proj.init_adult_prog_from_10yr(dist, prog, mort)
+        self._proj.init_adult_prog_from_10yr(0.01 * dist, prog, mort)
         self._proj.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)
         self._proj.init_adult_art_eligibility(art_elig)
         self._proj.init_adult_art_curr(art_num, art_pct)
-        self._proj.init_adult_art_allocation(epi_pars[CONST.EPI_ART_MORT_WEIGHT])
+        self._proj.init_adult_art_allocation(self.epi_pars[CONST.EPI_ART_MORT_WEIGHT])
         self._proj.init_adult_art_dropout(art_drop)
         self._proj.init_adult_art_suppressed(art_vs)
 

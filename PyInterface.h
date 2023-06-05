@@ -50,15 +50,21 @@ public:
 	void share_output_births(np::ndarray& births);
 
 	/// Pass memory for storing output all-cause deaths counts.
-	/// @param adult_neg HIV-negative adults, by year, sex, age, risk
-	/// @param adult_hiv HIV-positive adults, by year, sex, age, risk, CD4, and care status
-	/// @param child_neg HIV-negative children, by year, sex, age
-	/// @param child_hiv HIV-positive children, by year, sex, age, CD4, and care status
+	/// @param adult_neg HIV-negative adults, by year, sex, age (15:80), risk
+	/// @param adult_hiv HIV-positive adults, by year, sex, age (15:80), risk, CD4, and care status
+	/// @param child_neg HIV-negative children, by year, sex, age (0:14)
+	/// @param child_hiv HIV-positive children, by year, sex, age (0:14), CD4, and care status
+	/// @details sex should have three levels: females, uncircumcised males, circumcised males
 	void share_output_deaths(
 			np::ndarray& adult_neg,
 			np::ndarray& adult_hiv,
 			np::ndarray& child_neg,
 			np::ndarray& child_hiv);
+
+	/// Pass memory for storing output new HIV infections
+	/// @param newhiv New HIV infections by year, sex, age (0:80), risk
+	/// @details sex should have three levels: females, uncircumcised males, circumcised males
+	void share_output_new_infections(np::ndarray& newhiv);
 
 	/// Pass partner rate inputs
 	/// @param partner_rate matrix by year (year_start:year_final), sex (male,female), age (15:80), and behavioral risk group
@@ -148,16 +154,24 @@ public:
 	/// @param seed_prev HIV prevalence in the first year of the HIV epidemic.
 	void init_epidemic_seed(const int seed_year, const double seed_prev);
 
-	// Initialize transmission probabilities per sex act
+	/// Initialize transmission probabilities per sex act
+	/// @param transmit_f2m female-to-male transmission probability (as proportion) per sex act
+	/// @param or_m2f odds ratio for male-to-female transmission, relative to female-to-male
+	/// @param or_m2m odds ratio for male-to-male transmission, relative to female-to-male
+	/// @param primary odds ratio for transmission during primary infection
+	/// @param chronic odds ratio for transmission during chronic (asymtomatic) infection
+	/// @param symptom odds ratio for transmission during symptomatic infection
+	/// @param or_art_supp odds ratio for transmission on ART when virally suppressed, relative to off ART
+	/// @param or_art_fail odds ratio for transmission on ART when virally unsuppressed, relative to off ART
 	void init_transmission(
-			const double pct_f2m,
+			const double transmit_f2m,
 			const double or_m2f,
 			const double or_m2m,
 			const double primary,
 			const double chronic,
 			const double symptom,
-			const double art_supp,
-			const double art_fail);
+			const double or_art_supp,
+			const double or_art_fail);
 
 	void init_hiv_fertility(np::ndarray& frr_age_off_art, np::ndarray& frr_cd4_off_art, np::ndarray& frr_age_on_art);
 
@@ -192,7 +206,13 @@ public:
 	// 0-4, 5-9, ..., 75-79, 80+
 	void init_male_circumcision_uptake(np::ndarray& uptake);
 
+	/// Initialize the effect of male circumcision on HIV acquisition
+	/// @param effect proportionate reduction (in [0,1]) in HIV acquisition when circumcised (vs. not)
+	/// @details This is used for direct and for mechanistic incidence calculations
 	void init_effect_vmmc(const double effect);
+
+	/// Initialize the effect of condom use on HIV transmission
+	/// @param effect proportionate reduction (in [0,1]) in HIV transmission per act when a condom is used (vs. not)
 	void init_effect_condom(const double effect);
 
 	// Initialize 14-year-old CLHIV from direct inputs
@@ -209,12 +229,13 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 	np::initialize();
 
 	py::class_<PyInterface>("Projection", py::init<size_t, size_t>())
-		.def("share_output_population",  &PyInterface::share_output_population)
-		.def("share_output_births",      &PyInterface::share_output_births)
-		.def("share_output_deaths",      &PyInterface::share_output_deaths)
-		.def("share_input_partner_rate", &PyInterface::share_input_partner_rate)
-		.def("share_input_age_mixing",   &PyInterface::share_input_age_mixing)
-		.def("share_input_pop_assort",   &PyInterface::share_input_pop_assort)
+		.def("share_output_population",     &PyInterface::share_output_population)
+		.def("share_output_births",         &PyInterface::share_output_births)
+		.def("share_output_deaths",         &PyInterface::share_output_deaths)
+		.def("share_output_new_infections", &PyInterface::share_output_new_infections)
+		.def("share_input_partner_rate",    &PyInterface::share_input_partner_rate)
+		.def("share_input_age_mixing",      &PyInterface::share_input_age_mixing)
+		.def("share_input_pop_assort",      &PyInterface::share_input_pop_assort)
 
 		.def("initialize",               &PyInterface::initialize)
 		.def("init_pasfrs_from_5yr",     &PyInterface::init_pasfrs_from_5yr)

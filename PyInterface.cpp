@@ -101,6 +101,11 @@ void PyInterface::share_output_deaths(
 		proj->dth.share_storage(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
 }
 
+void PyInterface::share_output_new_infections(np::ndarray& newhiv) {
+	double* ptr_newhiv(prepare_ndarray<double>(newhiv));
+	proj->dat.share_new_infections(ptr_newhiv);
+}
+
 void PyInterface::share_input_partner_rate(np::ndarray& partner_rate) {
 		double* ptr_partner_rate(prepare_ndarray<double>(partner_rate));
 		proj->dat.share_partner_rate(ptr_partner_rate);
@@ -284,15 +289,16 @@ void PyInterface::init_hiv_fertility(np::ndarray& frr_age_off_art, np::ndarray& 
 		proj->dat.frr_cd4_no_art(h, py::extract<double>(frr_cd4_off_art[h]));
 }
 
-void PyInterface::init_transmission(const double pct_f2m,
-									const double or_m2f,
-									const double or_m2m,
-									const double primary,
-									const double chronic,
-									const double symptom,
-									const double art_supp,
-									const double art_fail) {
-	DP::set_transmission(proj->dat, pct_f2m, or_m2f, or_m2m, primary, chronic, symptom, art_supp, art_fail);
+void PyInterface::init_transmission(
+	const double transmit_f2m,
+	const double or_m2f,
+	const double or_m2m,
+	const double primary,
+	const double chronic,
+	const double symptom,
+	const double or_art_supp,
+	const double or_art_fail) {
+	DP::set_transmission(proj->dat, transmit_f2m, or_m2f, or_m2m, primary, chronic, symptom, or_art_supp, or_art_fail);
 }
 
 void PyInterface::init_adult_prog_from_10yr(np::ndarray& dist, np::ndarray& prog, np::ndarray& mort) {
@@ -337,7 +343,7 @@ void PyInterface::init_adult_art_curr(np::ndarray& art_num, np::ndarray& art_pct
 }
 
 void PyInterface::init_adult_art_allocation(const double weight) {
-	proj->dat.art_mort_weight(0.01 * weight);
+	proj->dat.art_mort_weight(weight);
 }
 
 void PyInterface::init_adult_art_dropout(np::ndarray& art_drop_pct) {
