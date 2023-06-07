@@ -138,17 +138,17 @@ class Model:
 
         frr_age_no_art, frr_cd4_no_art, frr_age_on_art = Utils.xlsx_load_hiv_fert(wb[CONST.XLSX_TAB_HIV_FERT])
         dist, prog, mort, art1, art2, art3 = Utils.xlsx_load_adult_prog(wb[CONST.XLSX_TAB_ADULT_PROG])
-        art_elig, art_num, art_pct, art_drop, art_mrr, art_vs = Utils.xlsx_load_adult_art(wb[CONST.XLSX_TAB_ADULT_ART])
+        art_elig, art_num, art_pct, art_stop, art_mrr, art_vs = Utils.xlsx_load_adult_art(wb[CONST.XLSX_TAB_ADULT_ART])
         uptake_mc = Utils.xlsx_load_mc_uptake(wb[CONST.XLSX_TAB_MALE_CIRC])
 
         self._proj.init_hiv_fertility(frr_age_no_art, frr_cd4_no_art, frr_age_on_art)
         self._proj.init_adult_prog_from_10yr(0.01 * dist, prog, mort)
         self._proj.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)
         self._proj.init_adult_art_eligibility(art_elig)
-        self._proj.init_adult_art_curr(art_num, art_pct)
+        self._proj.init_adult_art_curr(art_num, 0.01 * art_pct)
         self._proj.init_adult_art_allocation(self.epi_pars[CONST.EPI_ART_MORT_WEIGHT])
-        self._proj.init_adult_art_dropout(art_drop)
-        self._proj.init_adult_art_suppressed(art_vs)
+        self._proj.init_adult_art_interruption(-np.log(1.0 - 0.01 * art_stop)) # convert %/year to an event rate
+        self._proj.init_adult_art_suppressed(0.01 * art_vs)
 
         self._proj.init_male_circumcision_uptake(uptake_mc)
         self._initialized = True

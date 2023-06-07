@@ -181,8 +181,17 @@ public:
 	// Initialize adult HIV-related mortality rates on ART
 	void init_adult_art_mort_from_10yr(np::ndarray& art1, np::ndarray& art2, np::ndarray& art3, np::ndarray& art_mrr);
 
+	/// Initialize CD4 thresholds for adult ART eligibility
+	/// @param cd4 CD4 thresholds over time. This must be of integer type.
 	void init_adult_art_eligibility(np::ndarray& cd4);
-	void init_adult_art_curr(np::ndarray& art_num, np::ndarray& art_pct);
+
+	/// Initialize adult ART program size
+	/// @param n_art number on ART by year and sex (female, male)
+	/// @param p_art proportion in [0,1] of ART need met by year and sex (female, male)
+	/// @details Adult ART coverage can be specified in absolute numbers or as a proportion
+	/// of need met. For a given year t and sex s, if the proportion p_art[t][s] > 0 then it
+	/// is used to drive calculations, otherwise n_art[t][s] is used.
+	void init_adult_art_curr(np::ndarray& n_art, np::ndarray& p_art);
 
 	// Initialize the ART initiation weight. ART uptake in a CD4
 	// category is a weighted average of (1) the number of PLHIV off ART
@@ -191,9 +200,11 @@ public:
 	// expressed as a percentage between 0 and 100.
 	void init_adult_art_allocation(const double weight);
 	
-	// Initialize annual adult ART dropout rates from annual percentages
-	// If 5% drop out each year, then the dropout rate is -ln(1-0.05)
-	void init_adult_art_dropout(np::ndarray& art_drop_pct);
+	/// Initialize annual adult ART interruption rates
+	/// @param art_exit_rate ART interruption rates by year
+	/// @details This should be an event rate (interruptions per person-year),
+	/// not a proportion or percentage
+	void init_adult_art_interruption(np::ndarray& art_exit_rate);
 
 	// Initialize trends in adult viral suppression on ART
 	// art_supp_pct is expected to have one row per year, and 8 columns. The
@@ -266,7 +277,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_adult_art_eligibility",    &PyInterface::init_adult_art_eligibility)
 		.def("init_adult_art_curr",           &PyInterface::init_adult_art_curr)
 		.def("init_adult_art_allocation",     &PyInterface::init_adult_art_allocation)
-		.def("init_adult_art_dropout",        &PyInterface::init_adult_art_dropout)
+		.def("init_adult_art_interruption",   &PyInterface::init_adult_art_interruption)
 		.def("init_adult_art_suppressed",     &PyInterface::init_adult_art_suppressed)
 		.def("init_male_circumcision_uptake", &PyInterface::init_male_circumcision_uptake)
 		.def("init_clhiv_agein",   &PyInterface::init_clhiv_agein)
