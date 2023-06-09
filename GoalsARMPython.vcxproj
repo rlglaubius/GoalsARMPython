@@ -144,15 +144,15 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Proj\Util\boost_1_79_0;C:\Proj\Repositories\GoalsARM_Core\include;$(LOCALAPPDATA)\Programs\Python\Python310\include;C:\Proj\Repositories\GoalsARM_Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LOCALAPPDATA)\Programs\Python\Python310\include;C:\Proj\Util\boost_1_79_0;C:\Proj\Repositories\GoalsARM;C:\Proj\Repositories\GoalsARM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>C:\Proj\Util\boost_1_79_0\stage\lib;$(LOCALAPPDATA)\Programs\Python\Python310\DLLs;$(LOCALAPPDATA)\Programs\Python\Python310\Lib;$(LOCALAPPDATA)\Programs\Python\Python310\libs;$(LOCALAPPDATA)\Programs\Python\Python310\tcl;C:\Proj\Repositories\GoalsARM_Core\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GoalsARM_Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Proj\Util\boost_1_79_0\stage\lib;$(LOCALAPPDATA)\Programs\Python\Python310\DLLs;$(LOCALAPPDATA)\Programs\Python\Python310\Lib;$(LOCALAPPDATA)\Programs\Python\Python310\libs;$(LOCALAPPDATA)\Programs\Python\Python310\tcl;C:\Proj\Repositories\GoalsARM\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GoalsARM.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,7 +165,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Proj\Util\boost_1_79_0;C:\Proj\Repositories\GoalsARM_Core\include;$(LOCALAPPDATA)\Programs\Python\Python310\include;C:\Proj\Repositories\GoalsARM_Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LOCALAPPDATA)\Programs\Python\Python310\include;C:\Proj\Util\boost_1_79_0;C:\Proj\Repositories\GoalsARM;C:\Proj\Repositories\GoalsARM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -174,8 +174,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>C:\Proj\Util\boost_1_79_0\stage\lib;$(LOCALAPPDATA)\Programs\Python\Python310\DLLs;$(LOCALAPPDATA)\Programs\Python\Python310\Lib;$(LOCALAPPDATA)\Programs\Python\Python310\libs;$(LOCALAPPDATA)\Programs\Python\Python310\tcl;C:\Proj\Repositories\GoalsARM_Core\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GoalsARM_Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Proj\Util\boost_1_79_0\stage\lib;$(LOCALAPPDATA)\Programs\Python\Python310\DLLs;$(LOCALAPPDATA)\Programs\Python\Python310\Lib;$(LOCALAPPDATA)\Programs\Python\Python310\libs;$(LOCALAPPDATA)\Programs\Python\Python310\tcl;C:\Proj\Repositories\GoalsARM\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GoalsARM.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

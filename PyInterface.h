@@ -1,7 +1,7 @@
 #ifndef PY_INTERFACE_H
 #define PY_INTERFACE_H
 
-#include <GoalsARM_Core.H>
+#include <GoalsARM.H>
 
 #define BOOST_PYTHON_STATIC_LIB
 #define BOOST_NUMPY_STATIC_LIB
