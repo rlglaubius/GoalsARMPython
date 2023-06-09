@@ -52,5 +52,5 @@ def main(xlsx_name):
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
-    xlsx_name = "inputs\\example-unversioned_direct-hiv.xlsx"
+    xlsx_name = "inputs\\example-inputs.xlsx"
     main(xlsx_name)
