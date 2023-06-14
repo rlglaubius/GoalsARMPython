@@ -40,7 +40,6 @@ class Model:
 
         wb = xlsx.load_workbook(filename=xlsx_name, read_only=True)
         cfg_opts = Utils.xlsx_load_config(wb[CONST.XLSX_TAB_CONFIG])
-        pop_pars = Utils.xlsx_load_popsize(wb[CONST.XLSX_TAB_POPSIZE])
         self.epi_pars = Utils.xlsx_load_epi(wb[CONST.XLSX_TAB_EPI])
 
         # Conver % epi parameters to proportions
@@ -80,7 +79,8 @@ class Model:
         self._proj.share_output_deaths(self.deaths_adult_neg, self.deaths_adult_hiv, self.deaths_child_neg, self.deaths_child_hiv)
         self._proj.share_output_new_infections(self.new_infections)
 
-        self._initialize_population_sizes(pop_pars)
+        med_age_debut, med_age_union, avg_dur_union, kp_size, kp_stay, kp_turnover = Utils.xlsx_load_popsize(wb[CONST.XLSX_TAB_POPSIZE])
+        self._initialize_population_sizes(med_age_debut, med_age_union, avg_dur_union, kp_size, kp_stay, kp_turnover)
 
         if not cfg_opts[CONST.CFG_USE_UPD_PASFRS]:
             pasfrs = Utils.xlsx_load_pasfrs(wb[CONST.XLSX_TAB_PASFRS])
@@ -106,7 +106,12 @@ class Model:
             self.pop_assort = self.calc_pop_assort(pop_prefs)
             self.mix_levels = self.calc_mix_levels(mix_raw)
             self.condom_freq = 0.01 * self.condom_freq
-            self.p_married = 0.01 * self.p_married
+            self.p_married = 0.01 * np.array([self.p_married[CONST.SEX_FEMALE, CONST.POP_PWID - CONST.POP_KEY_MIN],
+                                              self.p_married[CONST.SEX_MALE,   CONST.POP_PWID - CONST.POP_KEY_MIN],
+                                              self.p_married[CONST.SEX_FEMALE, CONST.POP_FSW  - CONST.POP_KEY_MIN],
+                                              self.p_married[CONST.SEX_MALE,   CONST.POP_CSW  - CONST.POP_KEY_MIN],
+                                              self.p_married[CONST.SEX_MALE,   CONST.POP_MSM  - CONST.POP_KEY_MIN],
+                                              self.p_married[CONST.SEX_FEMALE, CONST.POP_TGW  - CONST.POP_KEY_MIN]])
             self._proj.share_input_partner_rate(self.partner_rate)
             self._proj.share_input_age_mixing(self.age_mixing)
             self._proj.share_input_pop_assort(pop_prefs)
@@ -121,13 +126,7 @@ class Model:
                 self.epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
                 self.epi_pars[CONST.EPI_TRANSMIT_ART_VS],
                 self.epi_pars[CONST.EPI_TRANSMIT_ART_VF])
-            self._proj.init_keypop_married(
-                self.p_married[CONST.SEX_FEMALE, CONST.POP_PWID  - CONST.POP_PWID],
-                self.p_married[CONST.SEX_FEMALE, CONST.POP_FSW   - CONST.POP_PWID],
-                self.p_married[CONST.SEX_FEMALE, CONST.POP_TRANS - CONST.POP_PWID],
-                self.p_married[CONST.SEX_MALE,   CONST.POP_PWID  - CONST.POP_PWID],
-                self.p_married[CONST.SEX_MALE,   CONST.POP_MSM   - CONST.POP_PWID],
-                self.p_married[CONST.SEX_MALE,   CONST.POP_TRANS - CONST.POP_PWID])
+            self._proj.init_keypop_married(self.p_married)
             self._proj.init_mixing_matrix(self.mix_levels)
             self._proj.init_sex_acts(self.sex_acts)
             self._proj.init_condom_freq(self.condom_freq)
@@ -163,27 +162,13 @@ class Model:
         self._proj.project(year_stop)
         self._projected = year_stop
         
-    def _initialize_population_sizes(self, pop_pars):
+    def _initialize_population_sizes(self, med_age_debut, med_age_union, avg_dur_union, kp_size, kp_stay, kp_turnover):
         """! Convenience function for initializing model population sizes
         """
-        FEMALE, MALE = 1, 0
-        self._proj.init_median_age_debut(pop_pars[CONST.POP_FIRST_SEX  ][FEMALE], pop_pars[CONST.POP_FIRST_SEX  ][MALE])
-        self._proj.init_median_age_union(pop_pars[CONST.POP_FIRST_UNION][FEMALE], pop_pars[CONST.POP_FIRST_UNION][MALE])
-        self._proj.init_mean_duration_union(pop_pars[CONST.POP_FIRST_UNION][MALE])
-        self._proj.init_mean_duration_pwid(pop_pars[CONST.POP_DUR_PWID][FEMALE], pop_pars[CONST.POP_DUR_PWID][MALE])
-        self._proj.init_mean_duration_fsw(pop_pars[CONST.POP_DUR_KEYPOP][FEMALE])
-        self._proj.init_mean_duration_msm(pop_pars[CONST.POP_DUR_KEYPOP][MALE])
-        self._proj.init_size_pwid(0.01 * pop_pars[CONST.POP_SIZE_PWID][FEMALE], 0.01 * pop_pars[CONST.POP_SIZE_PWID][MALE])
-        self._proj.init_size_fsw(0.01 * pop_pars[CONST.POP_SIZE_KEYPOP][FEMALE])
-        self._proj.init_size_msm(0.01 * pop_pars[CONST.POP_SIZE_KEYPOP][MALE])
-        self._proj.init_size_trans(0.01 * pop_pars[CONST.POP_SIZE_TRANS][FEMALE], 0.01 * pop_pars[CONST.POP_SIZE_TRANS][MALE])
-        self._proj.init_age_pwid(
-            pop_pars[CONST.POP_PWID_LOC][FEMALE],
-            pop_pars[CONST.POP_PWID_SHP][FEMALE],
-            pop_pars[CONST.POP_PWID_LOC][MALE],
-            pop_pars[CONST.POP_PWID_SHP][MALE])
-        self._proj.init_age_fsw(pop_pars[CONST.POP_KEYPOP_LOC][FEMALE], pop_pars[CONST.POP_KEYPOP_SHP][FEMALE])
-        self._proj.init_age_msm(pop_pars[CONST.POP_KEYPOP_LOC][MALE], pop_pars[CONST.POP_KEYPOP_SHP][MALE])
+        self._proj.init_median_age_debut(med_age_debut[CONST.SEX_FEMALE], med_age_debut[CONST.SEX_MALE])
+        self._proj.init_median_age_union(med_age_union[CONST.SEX_FEMALE], med_age_union[CONST.SEX_MALE])
+        self._proj.init_mean_duration_union(avg_dur_union)
+        self._proj.init_keypop_size_params(0.01 * kp_size, kp_stay, kp_turnover)
 
     def calc_partner_rates(self, time_trend, age_params, pop_ratios):
         """! Calculate partnership rates by year, sex, age, and behavioral risk group
@@ -210,16 +195,23 @@ class Model:
         yr_end = self.year_final - CONST.XLSX_FIRST_YEAR + 1
         partner_rate = np.zeros((num_yrs, CONST.N_SEX, CONST.N_AGE_ADULT, CONST.N_POP), dtype=self._dtype, order=self._order)
 
+        ## Reorganize pop_ratios to include sexually inactive people and to map gender
+        ## identity to assigned sex at birth
+        pop_ratios_aug = np.zeros((CONST.N_POP, CONST.N_SEX), dtype=self._dtype, order=self._order)
+        pop_ratios_aug[CONST.POP_NEVER:(CONST.POP_FSW+1), CONST.SEX_FEMALE] = pop_ratios[0:5, CONST.SEX_FEMALE]
+        pop_ratios_aug[CONST.POP_NEVER:(CONST.POP_MSM+1), CONST.SEX_MALE  ] = pop_ratios[0:6, CONST.SEX_MALE  ] 
+        pop_ratios_aug[CONST.POP_TGW, CONST.SEX_MALE] = pop_ratios[5, CONST.SEX_FEMALE]
+
         # ## Loop variant (readable)
         # for s in range(CONST.N_SEX):
         #     for a in range(CONST.N_AGE_ADULT):
-        #         for r in range(1,CONST.N_POP):
-        #             partner_rate[:,s,a,r] = time_trend[s,yr_bgn:yr_end] * age_ratios[s,a] * pop_ratios[r-1,s]
+        #         for r in range(CONST.N_POP):
+        #             partner_rate[:,s,a,r] = time_trend[s,yr_bgn:yr_end] * age_ratios[s,a] * pop_ratios_aug[r,s]
 
         ## Vectorized variant (much faster)
         partner_rate = np.zeros((num_yrs, CONST.N_SEX, CONST.N_AGE_ADULT, CONST.N_POP), dtype=self._dtype, order=self._order)
         for s in range(CONST.N_SEX):
-            partner_rate[:,s,:,1:CONST.N_POP] = np.outer(time_trend[s,yr_bgn:yr_end], np.outer(age_ratios[s,:], pop_ratios[:,s])).reshape((num_yrs, CONST.N_AGE_ADULT, CONST.N_POP-1))
+            partner_rate[:,s,:,:] = np.outer(time_trend[s,yr_bgn:yr_end], np.outer(age_ratios[s,:], pop_ratios_aug[:,s])).reshape((num_yrs, CONST.N_AGE_ADULT, CONST.N_POP))
 
         return partner_rate
     
@@ -269,31 +261,29 @@ class Model:
     
     def calc_pop_assort(self, pop_prefs):
         """"! Convert raw assortativity inputs from Excel into usable inputs by converting
-        them from percentages to proportions and adding a row for POP_NOSEX
+        them from percentages to proportions, adding a row for POP_NOSEX, and mapping TGW
+        from female identity to male sex at birth
         @param pop_prefs array of assortativity parameters by sex and population, excluding POP_NOSEX
         """
         assort = np.zeros((CONST.N_SEX, CONST.N_POP), dtype=self._dtype, order=self._order)
-        assort[:,CONST.POP_NEVER:] = 0.01 * pop_prefs.transpose()
+        assort[CONST.SEX_FEMALE, CONST.POP_NEVER:(CONST.POP_FSW+1)] = 0.01 * pop_prefs[0:5, CONST.SEX_FEMALE]
+        assort[CONST.SEX_MALE, CONST.POP_NEVER:(CONST.POP_MSM+1)] = 0.01 * pop_prefs[0:6, CONST.SEX_MALE]
+        assort[CONST.SEX_MALE, CONST.POP_TGW] = 0.01 * pop_prefs[6, CONST.SEX_FEMALE]
+
         return assort
     
     def calc_mix_levels(self, mix_levels):
         """! Reshape the raw mixing levels read Excel into a more usable layout"""
-        tmp = mix_levels.reshape((CONST.N_SEX, CONST.N_POP-1, CONST.N_SEX, CONST.N_POP-1))
-        mix = np.zeros((CONST.N_SEX, CONST.N_POP, CONST.N_SEX, CONST.N_POP), dtype=np.int32, order=self._order)
 
-        ## The workbook organizes people by gender identity and does not include
-        ## mixing matrix rows for people who have never had sex. The model stratifies
-        ## people by assigned sex at birth and includes mixing matrix rows for people
-        ## who never had sex. We need to reorganize the input matrix to conform to the
-        ## model specification
-        mix[CONST.SEX_FEMALE, CONST.POP_NEVER:, CONST.SEX_FEMALE, CONST.POP_NEVER:] = tmp[CONST.SEX_FEMALE, :, CONST.SEX_FEMALE, :]
-        mix[CONST.SEX_FEMALE, CONST.POP_NEVER:, CONST.SEX_MALE,   CONST.POP_NEVER:] = tmp[CONST.SEX_FEMALE, :, CONST.SEX_MALE,   :]
-        mix[CONST.SEX_MALE,   CONST.POP_NEVER:, CONST.SEX_FEMALE, CONST.POP_NEVER:] = tmp[CONST.SEX_MALE,   :, CONST.SEX_FEMALE, :]
-        mix[CONST.SEX_MALE,   CONST.POP_NEVER:, CONST.SEX_MALE,   CONST.POP_NEVER:] = tmp[CONST.SEX_MALE,   :, CONST.SEX_MALE,   :]
+        ## 1. Augment with rows ignored by Excel (never had sex, female versions of male-only populations)
+        mix = np.zeros((CONST.N_SEX * CONST.N_POP, CONST.N_SEX * CONST.N_POP), dtype=np.int32, order=self._order)
+        mix[1:7, 1:7 ] = mix_levels[0:6, 0:6 ] # female-female block
+        mix[1:7, 9:15] = mix_levels[0:6, 6:12] # female-male block
+        mix[9:15,1:7 ] = mix_levels[6:12,0:6 ] # male-female block
+        mix[9:15,9:15] = mix_levels[6:12,6:12] # male-male block
 
-        ## Flip interpretation from gender identity (workbook) to assigned sex at
-        ## birth (projection engine)
-        mix[[CONST.SEX_FEMALE, CONST.SEX_MALE], CONST.POP_TRANS, :, :] = mix[[CONST.SEX_MALE, CONST.SEX_FEMALE], CONST.POP_TRANS, :, :]
-        mix[:, :, [CONST.SEX_FEMALE, CONST.SEX_MALE], CONST.POP_TRANS] = mix[:, :, [CONST.SEX_MALE, CONST.SEX_FEMALE], CONST.POP_TRANS]
+        ## Swap TGW from females (gender) to males (assigned sex at birth)
+        mix[[15,6],:] = mix[[6,15],:] # swaps TGW rows into place
+        mix[:,[15,6]] = mix[:,[6,15]] # swaps TGW cols into place
 
-        return mix
+        return mix.reshape((CONST.N_SEX, CONST.N_POP, CONST.N_SEX, CONST.N_POP))

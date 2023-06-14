@@ -20,14 +20,13 @@ def xlsx_load_config(tab_config):
     return dict(zip(keys,vals))
 
 def xlsx_load_popsize(tab_popsize):
-    """! Load population size inputs
-    @param tab_popsize an openpyxl workbook tab
-    @return a dict mapping population size tags to parameter values. dict values are tuples: (male_value, female_value) 
-    """
-    vals = [tuple([cell.value for cell in row]) for row in tab_popsize['B2:C16']]
-    keys = [cell[0].value for cell in tab_popsize['E2:E16']]
-    rval = dict(zip(keys, vals))
-    return {key : rval[key] for key in keys if keys != None} # Prune empty rows
+    med_age_debut = xlsx_load_range(tab_popsize, 'B3', 'C3')
+    med_age_union = xlsx_load_range(tab_popsize, 'B4', 'C4')
+    avg_dur_union = tab_popsize['B7'].value
+    kp_size = xlsx_load_range(tab_popsize, 'B10', 'G10')
+    kp_stay = xlsx_load_range(tab_popsize, 'B11', 'G11', dtype=np.int32)
+    kp_turnover = xlsx_load_range(tab_popsize, 'B12', 'G14')
+    return med_age_debut[0], med_age_union[0], avg_dur_union, kp_size[0], kp_stay[0], kp_turnover
 
 def xlsx_load_epi(tab_epi):
     """! Load various epidemiological inputs
@@ -54,8 +53,17 @@ def xlsx_load_inci(tab_inci):
     sirr   = xlsx_load_range(tab_inci, 'B5',  'CD5')
     airr_m = xlsx_load_range(tab_inci, 'B9',  'CD25').transpose()
     airr_f = xlsx_load_range(tab_inci, 'B27', 'CD43').transpose()
-    rirr_m = xlsx_load_range(tab_inci, 'B47', 'CD53').transpose()
-    rirr_f = xlsx_load_range(tab_inci, 'B55', 'CD61').transpose()
+    rirr_raw_m = xlsx_load_range(tab_inci, 'B47', 'CD53').transpose()
+    rirr_raw_f = xlsx_load_range(tab_inci, 'B55', 'CD61').transpose()
+
+    ## Reorganize incidence rate ratios by population for Goals input
+    n_years = rirr_raw_m.shape[0]
+    rirr_m = np.zeros((n_years, CONST.N_POP), dtype=np.double, order="C")
+    rirr_f = np.zeros((n_years, CONST.N_POP), dtype=np.double, order="C")
+    rirr_f[:,CONST.POP_NOSEX:(CONST.POP_FSW+1)] = rirr_raw_f[:,CONST.POP_NOSEX:(CONST.POP_FSW+1)]
+    rirr_m[:,CONST.POP_NOSEX:(CONST.POP_MSM+1)] = rirr_raw_m[:,CONST.POP_NOSEX:(CONST.POP_MSM+1)]
+    rirr_m[:,CONST.POP_TGW] = rirr_raw_f[:,6]
+
     return inci[0], sirr[0], airr_m, airr_f, rirr_m, rirr_f
 
 def xlsx_load_hiv_fert(tab_frr):
@@ -90,16 +98,15 @@ def xlsx_load_partner_rates(tab_partners):
     """! Load parameters that specify numbers of partners per year """
     time_trend = xlsx_load_range(tab_partners, 'B2',  'CD3') # sex x year matrix
     age_params = xlsx_load_range(tab_partners, 'B6',  'C7')  # par x sex matrix, par = (mean, scale)
-    pop_ratios = xlsx_load_range(tab_partners, 'B10', 'C15') # pop x sex matrix, excludes sexually-inactive
-    # reorder males and females to Goals ARM ordering
-    return time_trend[[1,0],:], age_params[:,[1,0]], pop_ratios[:,[1,0]]
+    pop_ratios = xlsx_load_range(tab_partners, 'B10', 'C16') # pop x sex matrix, excludes sexually-inactive
+    return time_trend, age_params, pop_ratios
 
 def xlsx_load_partner_prefs(tab_partners):
     """! Load parameters that specify age-based mixing and married/union status """
-    age_prefs = xlsx_load_range(tab_partners, 'B18', 'B20')
-    pop_prefs = xlsx_load_range(tab_partners, 'B23', 'C28')
-    p_married = xlsx_load_range(tab_partners, 'B31', 'C33')
-    return age_prefs, pop_prefs[:,[1,0]], p_married[:,[1,0]].transpose()
+    age_prefs = xlsx_load_range(tab_partners, 'B19', 'B21')
+    pop_prefs = xlsx_load_range(tab_partners, 'B24', 'C30')
+    p_married = xlsx_load_range(tab_partners, 'B33', 'C36')
+    return age_prefs, pop_prefs, p_married.transpose()
 
 def xlsx_load_mixing_levels(tab_mixing):
     """"! Load the behavioral risk group mixing matrix structure"""

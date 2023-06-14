@@ -29,20 +29,6 @@ CFG_USE_UPD_MIGR     = "use.upd.migr"
 CFG_USE_DIRECT_INCI  = "use.direct.inci"
 CFG_USE_DIRECT_CLHIV = "use.direct.clhiv"
 
-## PopSizeInputs tab tags
-POP_FIRST_SEX   = "age.first.sex"
-POP_FIRST_UNION = "age.first.union"
-POP_DUR_UNION   = "dur.union"
-POP_DUR_PWID    = "dur.pwid"
-POP_DUR_KEYPOP  = "dur.keypop"
-POP_SIZE_PWID   = "size.pwid"
-POP_SIZE_KEYPOP = "size.keypop"
-POP_SIZE_TRANS  = "size.trans"
-POP_PWID_LOC    = "age.pwid.loc"
-POP_PWID_SHP    = "age.pwid.shp"
-POP_KEYPOP_LOC  = "age.keypop.loc"
-POP_KEYPOP_SHP  = "age.keypop.shp"
-
 ## EpiInputs tab tags
 EPI_TRANSMIT_F2M     = "transmit.f2m"
 EPI_TRANSMIT_M2F     = "transmit.m2f"
@@ -97,14 +83,19 @@ POP_NEVER = 1 # male or female, never married
 POP_UNION = 2 # male or female, married or in stable union
 POP_SPLIT = 3 # male or female, previously married
 POP_PWID = 4  # male or female, people who inject drugs
-POP_FSW = 5   # female only, female sex worker
-POP_MSM = 5   # male only, men who have sex with men
-POP_KEY = 5   # male or female, generic placeholder for FSW or MSMHIV_PRC_GT_30
-POP_TRANS = 6 # male or female (assignment at birth), transgender (POP_TRANS + MALE encodes TGW)
+POP_FSW = 5   # female only, female sex workers
+POP_CSW = 5   # male only, male clients of female sex workers
+POP_BOTH = 5  # male or female, female sex workers or their clients
+POP_MSM = 6   # male only, men who have sex with men
+POP_TGW = 7   # male only, transgender women
 
 POP_MIN = 0
-POP_MAX = 6
+POP_MAX = 7
 N_POP = POP_MAX - POP_MIN + 1
+
+POP_KEY_MIN = POP_PWID
+POP_KEY_MAX = POP_MAX
+N_POP_KEY = POP_KEY_MAX - POP_KEY_MIN + 1
 
 ## +-+ HIV infection stage constants +-----------------------------------------+
 ## Child categories (CD4 percent), ages 0-4

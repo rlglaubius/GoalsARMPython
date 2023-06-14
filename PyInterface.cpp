@@ -200,57 +200,38 @@ void PyInterface::init_mean_duration_union(const double years) {
 	DP::set_mean_union_duration(proj->dat, years);
 }
 
-void PyInterface::init_mean_duration_pwid(const double years_female, const double years_male) {
-	DP::set_mean_keypop_duration(proj->dat, DP::FEMALE, DP::POP_PWID, years_female);
-	DP::set_mean_keypop_duration(proj->dat, DP::MALE,   DP::POP_PWID, years_male);
+void PyInterface::init_keypop_size_params(
+	np::ndarray& kp_size,
+	np::ndarray& kp_stay,
+	np::ndarray& kp_turnover) {
+
+	const int n_pop(6);
+	const DP::sex_t sex[] = {DP::FEMALE,   DP::MALE,     DP::FEMALE,  DP::MALE,    DP::MALE,    DP::MALE};
+	const DP::pop_t pop[] = {DP::POP_PWID, DP::POP_PWID, DP::POP_FSW, DP::POP_CSW, DP::POP_MSM, DP::POP_TGW};
+	bool stay;
+	double med, loc, shp;
+
+	for (int r(0); r < n_pop; ++r) {
+		stay = py::extract<int>(kp_stay[r]);
+		proj->dat.keypop_size(sex[r], pop[r], py::extract<double>(kp_size[r]));
+		proj->dat.keypop_stay(sex[r], pop[r], stay);
+		if (!stay) {
+			med = py::extract<double>(kp_turnover[1][r]);
+			shp = py::extract<double>(kp_turnover[2][r]);
+			loc = log(med - 15.0);
+			DP::set_mean_keypop_duration(proj->dat, sex[r], pop[r], py::extract<double>(kp_turnover[0][r]));
+			DP::set_keypop_age(proj->dat, sex[r], pop[r], loc, shp);
+		}
+	}
 }
 
-void PyInterface::init_mean_duration_fsw(const double years) {
-	DP::set_mean_keypop_duration(proj->dat, DP::FEMALE, DP::POP_FSW, years);
-}
-
-void PyInterface::init_mean_duration_msm(const double years) {
-	DP::set_mean_keypop_duration(proj->dat, DP::MALE, DP::POP_MSM, years);
-}
-
-void PyInterface::init_size_pwid(const double prop_female, const double prop_male) {
-	proj->dat.keypop_size(DP::FEMALE, DP::POP_PWID, prop_female);
-	proj->dat.keypop_size(DP::MALE,   DP::POP_PWID, prop_male);
-}
-
-void PyInterface::init_size_fsw(const double prop) {
-	proj->dat.keypop_size(DP::FEMALE, DP::POP_FSW, prop);
-}
-
-void PyInterface::init_size_msm(const double prop) {
-	proj->dat.keypop_size(DP::MALE, DP::POP_MSM, prop);
-}
-
-void PyInterface::init_size_trans(const double prop_female, const double prop_male) {
-	proj->dat.keypop_size(DP::FEMALE, DP::POP_TRANS, prop_female);
-	proj->dat.keypop_size(DP::MALE,   DP::POP_TRANS, prop_male);
-}
-
-void PyInterface::init_age_pwid(const double loc_female, const double shp_female, const double loc_male, const double shp_male) {
-	DP::set_keypop_age(proj->dat, DP::FEMALE, DP::POP_PWID, loc_female, shp_female);
-	DP::set_keypop_age(proj->dat, DP::MALE,   DP::POP_PWID, loc_male,   shp_male);
-}
-
-void PyInterface::init_age_fsw(const double loc, const double shp) {
-	DP::set_keypop_age(proj->dat, DP::FEMALE, DP::POP_FSW, loc, shp);
-}
-
-void PyInterface::init_age_msm(const double loc, const double shp) {
-	DP::set_keypop_age(proj->dat, DP::MALE, DP::POP_MSM, loc, shp);
-}
-
-void PyInterface::init_keypop_married(const double fwid, const double fsw, const double tgm, const double mwid, const double msm, const double tgw) {
-	proj->dat.keypop_married(DP::FEMALE, DP::POP_PWID,  fwid);
-	proj->dat.keypop_married(DP::FEMALE, DP::POP_FSW,   fsw );
-	proj->dat.keypop_married(DP::FEMALE, DP::POP_TRANS, tgm );
-	proj->dat.keypop_married(DP::MALE,   DP::POP_PWID,  mwid);
-	proj->dat.keypop_married(DP::MALE,   DP::POP_MSM,   msm );
-	proj->dat.keypop_married(DP::MALE,   DP::POP_TRANS, tgw );
+void PyInterface::init_keypop_married(np::ndarray& prop_married) {
+	const int n_pop(6);
+	const DP::sex_t sex[] = {DP::FEMALE,   DP::MALE,     DP::FEMALE,  DP::MALE,    DP::MALE,    DP::MALE};
+	const DP::pop_t pop[] = {DP::POP_PWID, DP::POP_PWID, DP::POP_FSW, DP::POP_CSW, DP::POP_MSM, DP::POP_TGW};
+	for (int r(0); r < n_pop; ++r) {
+		proj->dat.keypop_married(sex[r], pop[r], py::extract<double>(prop_married[r]));
+	}
 }
 
 void PyInterface::init_mixing_matrix(np::ndarray& mix_levels) {

@@ -104,32 +104,37 @@ public:
 	void init_median_age_union(const double age_female, const double age_male);
 	void init_mean_duration_union(const double years);
 
-	// Turnover inputs
-	void init_mean_duration_pwid(const double years_female, const double years_male);
-	void init_mean_duration_fsw(const double years);
-	void init_mean_duration_msm(const double years);
-
-	// inputs are the proportion of people who are members of each key population
-	// (e.g., the proportion of 15-49 females who are PWID, the proportion of 15+
-	// males [assigned at birth] who are transgender women)
-	void init_size_pwid(const double prop_female, const double prop_male);
-	void init_size_fsw(const double prop);
-	void init_size_msm(const double prop);
-	void init_size_trans(const double prop_female, const double prop_male);
-
-	// Initialize the age distribution of key populations with turnover
-	void init_age_pwid(const double loc_female, const double shp_female, const double loc_male, const double shp_male);
-	void init_age_fsw(const double loc, const double shp);
-	void init_age_msm(const double loc, const double shp);
+	/// Initialize key population size parameter values
+	/// @param kp_size kp_size[i] is the proportion of the overall the 15-49 population in key population i.
+	/// @param kp_stay kp_stay[i] is 1 if people stay in the key population after entry, 0 if they may eventually leave.
+	/// @param kp_turnover kp_turnover[k,i] indices the average number of years spent in the population (k=0),
+	/// the median age of population members (k=1) and the age distribution shape parameter (k=2). These may be left
+	/// uninitialized if people remain in the population after entry.
+	/// @details
+	/// Populations:
+	/// - i=0 people who inject drugs, female
+	/// - i=1 people who inject drugs, male
+	/// - i=2 female sex workers
+	/// - i=3 male clients of female sex workers
+	/// - i=4 men who have sex with men
+	/// - i=5 transgender women
+	void init_keypop_size_params(
+		np::ndarray& kp_size,
+		np::ndarray& kp_stay,
+		np::ndarray& kp_turnover);
 
 	/// Initialize the proportion of key population members who have a main opposite-sex partner
-	/// @param fwid females who inject drugs
-	/// @param fsw  female sex workers
-	/// @param tgm  transgender men
-	/// @param mwid males who inject drugs
-	/// @param msm  men who have sex with men
-	/// @param tgw  transgender women
-	void init_keypop_married(const double fwid, const double fsw, const double tgm, const double mwid, const double msm, const double tgw);
+	/// @param prop_married prop_married[i] is the proportion of key population i who are married to or
+	/// have a cohabiting opposite-sex partner.
+	/// @details
+	/// Populations:
+	/// - i=0 people who inject drugs, female
+	/// - i=1 people who inject drugs, male
+	/// - i=2 female sex workers
+	/// - i=3 male clients of female sex workers
+	/// - i=4 men who have sex with men
+	/// - i=5 transgender women
+	void init_keypop_married(np::ndarray& prop_married);
 
 	/// Initialize the structure of the mixing matrix by behavioral risk group
 	/// @param mix_levels matrix of mixing levels. mix_levels[si,ri,sj,rj] for
@@ -255,16 +260,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_median_age_debut",    &PyInterface::init_median_age_debut)
 		.def("init_median_age_union",    &PyInterface::init_median_age_union)
 		.def("init_mean_duration_union", &PyInterface::init_mean_duration_union)
-		.def("init_mean_duration_pwid",  &PyInterface::init_mean_duration_pwid)
-		.def("init_mean_duration_fsw",   &PyInterface::init_mean_duration_fsw)
-		.def("init_mean_duration_msm",   &PyInterface::init_mean_duration_msm)
-		.def("init_size_pwid",           &PyInterface::init_size_pwid)
-		.def("init_size_fsw",            &PyInterface::init_size_fsw)
-		.def("init_size_msm",            &PyInterface::init_size_msm)
-		.def("init_size_trans",          &PyInterface::init_size_trans)
-		.def("init_age_pwid",            &PyInterface::init_age_pwid)
-		.def("init_age_fsw",             &PyInterface::init_age_fsw)
-		.def("init_age_msm",             &PyInterface::init_age_msm)
+		.def("init_keypop_size_params",  &PyInterface::init_keypop_size_params)
 		.def("init_keypop_married",      &PyInterface::init_keypop_married)
 		.def("init_mixing_matrix",       &PyInterface::init_mixing_matrix)
 		.def("init_sex_acts",            &PyInterface::init_sex_acts)
