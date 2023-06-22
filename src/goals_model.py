@@ -200,7 +200,7 @@ class Model:
         pop_ratios_aug = np.zeros((CONST.N_POP, CONST.N_SEX), dtype=self._dtype, order=self._order)
         pop_ratios_aug[CONST.POP_NEVER:(CONST.POP_FSW+1), CONST.SEX_FEMALE] = pop_ratios[0:5, CONST.SEX_FEMALE]
         pop_ratios_aug[CONST.POP_NEVER:(CONST.POP_MSM+1), CONST.SEX_MALE  ] = pop_ratios[0:6, CONST.SEX_MALE  ] 
-        pop_ratios_aug[CONST.POP_TGW, CONST.SEX_MALE] = pop_ratios[5, CONST.SEX_FEMALE]
+        pop_ratios_aug[CONST.POP_TGW, CONST.SEX_MALE] = pop_ratios[6, CONST.SEX_FEMALE]
 
         # ## Loop variant (readable)
         # for s in range(CONST.N_SEX):
