@@ -80,6 +80,11 @@ public:
 	/// @param assort assort[s,r] is the extent that people of sex s and behavioral risk r mix preferentially
 	void share_input_pop_assort(np::ndarray& assort);
 
+	/// Pass parameters that specify HIV acquisition risk in people who inject drugs
+	/// @param force Force of infection acting on PWID who share needles, by year and sex
+	/// @param needle_sharing proportion of PWID who share needles by year
+	void share_input_pwid_risk(np::ndarray& force, np::ndarray& needle_sharing);
+
 	/// Use a UPD file to initialize demographic inputs
 	/// @param upd_filename UPD file name
 	inline void initialize(const std::string& upd_filename);
@@ -252,6 +257,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("share_input_partner_rate",    &PyInterface::share_input_partner_rate)
 		.def("share_input_age_mixing",      &PyInterface::share_input_age_mixing)
 		.def("share_input_pop_assort",      &PyInterface::share_input_pop_assort)
+		.def("share_input_pwid_risk",       &PyInterface::share_input_pwid_risk)
 
 		.def("initialize",               &PyInterface::initialize)
 		.def("init_pasfrs_from_5yr",     &PyInterface::init_pasfrs_from_5yr)

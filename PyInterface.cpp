@@ -121,6 +121,12 @@ void PyInterface::share_input_pop_assort(np::ndarray& assort) {
 	proj->dat.share_pop_assortativity(ptr_assort);
 }
 
+void PyInterface::share_input_pwid_risk(np::ndarray& force, np::ndarray& needle_sharing) {
+	double* ptr_force(prepare_ndarray<double>(force));
+	double* ptr_share(prepare_ndarray<double>(needle_sharing));
+	proj->dat.share_pwid_risk(ptr_force, ptr_share);
+}
+
 void PyInterface::initialize(const std::string& upd_filename) {
 	proj->initialize(upd_filename);
 }

@@ -100,12 +100,13 @@ class Model:
             time_trend, age_params, pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
             age_prefs, pop_prefs, self.p_married = Utils.xlsx_load_partner_prefs(wb[CONST.XLSX_TAB_PARTNER])
             mix_raw = Utils.xlsx_load_mixing_levels(wb[CONST.XLSX_TAB_MIXNG_MATRIX])
-            self.sex_acts, self.condom_freq = Utils.xlsx_load_contact_params(wb[CONST.XLSX_TAB_CONTACT])
+            self.sex_acts, condom_freq, self.pwid_force, needle_sharing = Utils.xlsx_load_contact_params(wb[CONST.XLSX_TAB_CONTACT])
             self.partner_rate = self.calc_partner_rates(time_trend, age_params, pop_ratios)
             self.age_mixing = self.calc_partner_prefs(age_prefs)
             self.pop_assort = self.calc_pop_assort(pop_prefs)
             self.mix_levels = self.calc_mix_levels(mix_raw)
-            self.condom_freq = 0.01 * self.condom_freq
+            self.condom_freq = 0.01 * condom_freq
+            self.needle_sharing = 0.01 * needle_sharing
             self.p_married = 0.01 * np.array([self.p_married[CONST.SEX_FEMALE, CONST.POP_PWID - CONST.POP_KEY_MIN],
                                               self.p_married[CONST.SEX_MALE,   CONST.POP_PWID - CONST.POP_KEY_MIN],
                                               self.p_married[CONST.SEX_FEMALE, CONST.POP_FSW  - CONST.POP_KEY_MIN],
@@ -115,6 +116,7 @@ class Model:
             self._proj.share_input_partner_rate(self.partner_rate)
             self._proj.share_input_age_mixing(self.age_mixing)
             self._proj.share_input_pop_assort(self.pop_assort)
+            self._proj.share_input_pwid_risk(self.pwid_force, self.needle_sharing)
             self._proj.use_direct_incidence(False)
             self._proj.init_epidemic_seed(self.epi_pars[CONST.EPI_INITIAL_YEAR] - self.year_first, self.epi_pars[CONST.EPI_INITIAL_PREV])
             self._proj.init_transmission(

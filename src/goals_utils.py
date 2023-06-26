@@ -115,9 +115,11 @@ def xlsx_load_mixing_levels(tab_mixing):
 
 def xlsx_load_contact_params(tab_contact):
     """"! Load coital frequency and condom use inputs"""
-    sex_acts    = xlsx_load_range(tab_contact, 'B2', 'B5')
-    condom_freq = xlsx_load_range(tab_contact, 'B8', 'CD11')
-    return sex_acts.reshape((4)), condom_freq.transpose()
+    sex_acts    = xlsx_load_range(tab_contact, 'B2',  'B5')
+    condom_freq = xlsx_load_range(tab_contact, 'B8',  'CD11')
+    pwid_force_infection = xlsx_load_range(tab_contact, 'B14', 'CD15')
+    needle_sharing = xlsx_load_range(tab_contact, 'B18', 'CD18')
+    return sex_acts.reshape((4)), condom_freq.transpose(), pwid_force_infection.transpose(), needle_sharing[0]
 
 def xlsx_load_direct_clhiv(tab_clhiv):
     return xlsx_load_range(tab_clhiv, 'D3', 'CF86').transpose()
