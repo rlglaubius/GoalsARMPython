@@ -101,6 +101,11 @@ void PyInterface::share_output_deaths(
 		proj->dth.share_storage(ptr_adult_neg, ptr_adult_hiv, ptr_child_neg, ptr_child_hiv);
 }
 
+void PyInterface::share_output_births_exposed(np::ndarray& births) {
+	double* ptr_births(prepare_ndarray<double>(births));
+	proj->dat.share_births_exposed(ptr_births);
+}
+
 void PyInterface::share_output_new_infections(np::ndarray& newhiv) {
 	double* ptr_newhiv(prepare_ndarray<double>(newhiv));
 	proj->dat.share_new_infections(ptr_newhiv);

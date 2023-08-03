@@ -69,6 +69,7 @@ class Model:
         self.deaths_child_hiv = np.zeros(shp_child_hiv, dtype=self._dtype, order=self._order)
 
         self.births = np.zeros((num_years, CONST.N_SEX), dtype=self._dtype, order=self._order)
+        self.births_exposed = np.zeros((num_years), dtype=self._dtype, order=self._order)
 
         self.new_infections = np.zeros((num_years, CONST.N_SEX_MC, CONST.N_AGE, CONST.N_POP), dtype=self._dtype, order=self._order)
 
@@ -78,6 +79,7 @@ class Model:
         self._proj.share_output_births(self.births)
         self._proj.share_output_deaths(self.deaths_adult_neg, self.deaths_adult_hiv, self.deaths_child_neg, self.deaths_child_hiv)
         self._proj.share_output_new_infections(self.new_infections)
+        self._proj.share_output_births_exposed(self.births_exposed)
 
         med_age_debut, med_age_union, avg_dur_union, kp_size, kp_stay, kp_turnover = Utils.xlsx_load_popsize(wb[CONST.XLSX_TAB_POPSIZE])
         self._initialize_population_sizes(med_age_debut, med_age_union, avg_dur_union, kp_size, kp_stay, kp_turnover)

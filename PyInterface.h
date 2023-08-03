@@ -49,6 +49,10 @@ public:
 	/// @param births Births by year and sex
 	void share_output_births(np::ndarray& births);
 
+	/// Pass memory for storing output births to mothers living with HIV
+	/// @param births Births by year
+	void share_output_births_exposed(np::ndarray& births);
+
 	/// Pass memory for storing output all-cause deaths counts.
 	/// @param adult_neg HIV-negative adults, by year, sex, age (15:80), risk
 	/// @param adult_hiv HIV-positive adults, by year, sex, age (15:80), risk, CD4, and care status
@@ -253,6 +257,7 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("share_output_population",     &PyInterface::share_output_population)
 		.def("share_output_births",         &PyInterface::share_output_births)
 		.def("share_output_deaths",         &PyInterface::share_output_deaths)
+		.def("share_output_births_exposed", &PyInterface::share_output_births_exposed)
 		.def("share_output_new_infections", &PyInterface::share_output_new_infections)
 		.def("share_input_partner_rate",    &PyInterface::share_input_partner_rate)
 		.def("share_input_age_mixing",      &PyInterface::share_input_age_mixing)
