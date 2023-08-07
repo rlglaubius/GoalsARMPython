@@ -1,9 +1,12 @@
 import openpyxl as xlsx
 import os
+import pandas as pd
+import plotnine
 import sys
 import src.goals_model as Goals
 import src.goals_const as CONST
 from percussion import ancprev, hivprev
+
 
 ## Install percussion, the likelihood model package:
 ## python -m pip install git+https://rlglaubius:${token}@github.com/rlglaubius/percussion.git
@@ -35,6 +38,28 @@ def fill_hivprev_template(hivsim, template):
         pop_neg = hivsim.pop_adult_neg[yidx[row], sex_min:sex_max, amin[row]:amax[row], pop_min:pop_max].sum()
         template.at[row,'Prevalence'] = pop_hiv / (pop_hiv + pop_neg)
 
+def plot_fit_anc(hivsim, ancdat, tiffname):
+    anc_data = ancdat.anc_data.copy()
+    anc_data['Source'] = ['Census' if site=='Census' else 'ANC-%s' % (kind) for site, kind in zip(anc_data['Site'], anc_data['Type'])]
+
+    mod_data = pd.DataFrame({'Year'     : list(range(hivsim.year_first, hivsim.year_final + 1)),
+                             'Prevalence' : hivsim.births_exposed / hivsim.births.sum((1)),
+                             'Site'       : 'Goals',
+                             'Source'     : 'Goals'})
+
+    p = (plotnine.ggplot(anc_data[anc_data['Site'] != 'Census'])
+         + plotnine.aes(x='Year', y='Prevalence', color='Source', group='Site')
+         + plotnine.geom_line()
+         + plotnine.geom_point()
+         + plotnine.geom_line(data=anc_data[anc_data['Site'] == 'Census'])
+         + plotnine.geom_point(data=anc_data[anc_data['Site'] == 'Census'])
+         + plotnine.geom_line(data=mod_data)
+         + plotnine.theme_bw())
+    p.save(filename=tiffname, dpi=600, units="in", width=6.5, height=5.0, pil_kwargs={"compression" : "tiff_lzw"})
+
+def plot_fit_hiv(hivsim, hivdat):
+    pass
+
 def main(par_file, anc_file, hiv_file, out_file):
     # Initialize GoalsARM
     hivsim = Goals.Model()
@@ -49,7 +74,9 @@ def main(par_file, anc_file, hiv_file, out_file):
     hiv_proj = hivdat.projection_template()    
 
     # Run a model simulation
-    hivsim.project(2022)
+    hivsim.project(2030)
+
+    plot_fit_anc(hivsim, ancdat, "ancfit.tiff")
 
     ## Set ANC likleihood parameters
     ancdat.bias_ancss = hivsim.anc_par['ancss.bias']
