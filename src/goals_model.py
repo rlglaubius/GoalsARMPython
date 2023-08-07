@@ -144,6 +144,8 @@ class Model:
         art_elig, art_num, art_pct, art_stop, art_mrr, art_vs = Utils.xlsx_load_adult_art(wb[CONST.XLSX_TAB_ADULT_ART])
         uptake_mc = Utils.xlsx_load_mc_uptake(wb[CONST.XLSX_TAB_MALE_CIRC])
 
+        self.anc_par = Utils.xlsx_load_fit_pars(wb[CONST.XLSX_TAB_FITTING_PARS])
+
         self._proj.init_hiv_fertility(frr_age_no_art, frr_cd4_no_art, frr_age_on_art)
         self._proj.init_adult_prog_from_10yr(0.01 * dist, prog, mort)
         self._proj.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)

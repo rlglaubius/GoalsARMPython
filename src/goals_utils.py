@@ -123,3 +123,13 @@ def xlsx_load_contact_params(tab_contact):
 
 def xlsx_load_direct_clhiv(tab_clhiv):
     return xlsx_load_range(tab_clhiv, 'D3', 'CF86').transpose()
+
+def xlsx_load_fit_pars(tab_fit):
+    """! Load model fitting parameters
+    @param tab_fit an openpyxl workbook tab
+    @return a dict mapping parameter tags to values
+    """
+    vals = [cell[0].value for cell in tab_fit['B2:B5']]
+    keys = [cell[0].value for cell in tab_fit['D2:D5']]
+    rval = dict(zip(keys, vals))
+    return {key : rval[key] for key in keys if keys != None} # Prune empty rows

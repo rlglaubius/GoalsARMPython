@@ -14,6 +14,7 @@ XLSX_TAB_ADULT_PROG   = "HIVDiseaseInputs"
 XLSX_TAB_ADULT_ART    = "ARTAdultInputs"
 XLSX_TAB_MALE_CIRC    = "MCInputs"
 XLSX_TAB_DIRECT_CLHIV = "DirectCLHIV"
+XLSX_TAB_FITTING_PARS = "FittingParams"
 
 ## The Excel file specifies inputs for 1970-2050, the projection
 ## uses a subset of these
