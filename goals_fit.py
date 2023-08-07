@@ -1,3 +1,4 @@
+import numpy as np
 import openpyxl as xlsx
 import os
 import pandas as pd
@@ -6,7 +7,6 @@ import sys
 import src.goals_model as Goals
 import src.goals_const as CONST
 from percussion import ancprev, hivprev
-
 
 ## Install percussion, the likelihood model package:
 ## python -m pip install git+https://rlglaubius:${token}@github.com/rlglaubius/percussion.git
@@ -31,7 +31,7 @@ def fill_hivprev_template(hivsim, template):
         match sex[row]:
             case 'All':    sex_min, sex_max = CONST.SEX_MC_MIN, CONST.SEX_MC_MAX + 1
             case 'Female': sex_min, sex_max = CONST.SEX_FEMALE, CONST.SEX_FEMALE + 1
-            case 'Male':   sex_min, sex_max = CONST.SEX_MALE, CONST.SEX_MALE + 1
+            case 'Male':   sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
             case _: sys.stderr.write("Error: Unrecognized gender %s" % (sex[row]))
 
         pop_hiv = hivsim.pop_adult_hiv[yidx[row], sex_min:sex_max, amin[row]:amax[row], pop_min:pop_max, :, :].sum()
@@ -57,10 +57,30 @@ def plot_fit_anc(hivsim, ancdat, tiffname):
          + plotnine.theme_bw())
     p.save(filename=tiffname, dpi=600, units="in", width=6.5, height=5.0, pil_kwargs={"compression" : "tiff_lzw"})
 
-def plot_fit_hiv(hivsim, hivdat):
-    pass
+def plot_fit_hiv(hivsim, hivdat, tiffname):
+    hiv_data = hivdat.hiv_data.copy()
+    hiv_data['Age'] = ['%s-%s' % (amin, amax) for (amin, amax) in zip(hiv_data['AgeMin'], hiv_data['AgeMax'])]
+    hiv_data.rename(columns={'Value' : 'Prevalence'}, inplace=True)
+
+    # Capture HIV prevalence every year for the populations with data
+    pop_frame = hiv_data.groupby(['Population', 'Gender', 'AgeMin', 'AgeMax']).size().reset_index(name='Prevalence')
+    yrs_frame = pd.DataFrame({'Year' : range(hivsim.year_first, hivsim.year_final + 1)})
+    mod_data = yrs_frame.join(pop_frame, how='cross')
+    fill_hivprev_template(hivsim, mod_data)
+    mod_data['Age'] = ['%s-%s' % (amin, amax) for (amin, amax) in zip(mod_data['AgeMin'], mod_data['AgeMax'])]
+
+    p = (plotnine.ggplot(hiv_data[hiv_data['AgeMax'] > 14])
+         + plotnine.aes(x='Year', y='Prevalence', color='Gender')
+         + plotnine.geom_point()
+         + plotnine.geom_line(data=mod_data[mod_data['AgeMax'] > 14])
+         + plotnine.facet_grid('Population~Age', scales='free_y')
+         + plotnine.theme_bw()
+         + plotnine.theme(axis_text_x = plotnine.element_text(angle=90)))
+    p.save(filename=tiffname, dpi=600, units="in", width=16, height=9, pil_kwargs={"compression" : "tiff_lzw"})
 
 def main(par_file, anc_file, hiv_file, out_file):
+    ## TODO: outfile - xlsx workbook with fitted parameter estimates
+
     # Initialize GoalsARM
     hivsim = Goals.Model()
     hivsim.init_from_xlsx(par_file)
@@ -77,6 +97,7 @@ def main(par_file, anc_file, hiv_file, out_file):
     hivsim.project(2030)
 
     plot_fit_anc(hivsim, ancdat, "ancfit.tiff")
+    plot_fit_hiv(hivsim, hivdat, "hivfit.tiff")
 
     ## Set ANC likleihood parameters
     ancdat.bias_ancss = hivsim.anc_par['ancss.bias']
