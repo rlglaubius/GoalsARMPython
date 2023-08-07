@@ -3,6 +3,8 @@ import openpyxl as xlsx
 import os
 import pandas as pd
 import plotnine
+import scipy.optimize as optimize
+import scipy.stats as stats
 import sys
 import src.goals_model as Goals
 import src.goals_const as CONST
@@ -78,45 +80,122 @@ def plot_fit_hiv(hivsim, hivdat, tiffname):
          + plotnine.theme(axis_text_x = plotnine.element_text(angle=90)))
     p.save(filename=tiffname, dpi=600, units="in", width=16, height=9, pil_kwargs={"compression" : "tiff_lzw"})
 
+class GoalsFitter:
+    def __init__(self, par_xlsx, anc_csv, hiv_csv):
+        self.init_hivsim(par_xlsx)
+        self.init_data_anc(anc_csv)
+        self.init_data_hiv(hiv_csv)
+
+    def init_hivsim(self, par_xlsx):
+        self._hivsim = Goals.Model()
+        self._hivsim.init_from_xlsx(par_xlsx)
+        self.year_first = self._hivsim.year_first
+        self.year_final = self._hivsim.year_final
+
+    def init_data_anc(self, anc_csv):
+        self._ancdat = ancprev.ancprev(self.year_first)
+        self._ancdat.read_csv(anc_csv)
+
+    def init_data_hiv(self, hiv_csv):
+        self._hivdat = hivprev.hivprev(self.year_first)
+        self._hivdat.read_csv(hiv_csv)
+        self._hivest = self._hivdat.projection_template()
+
+    def prior(self, params):
+        """! Prior density on log scale """
+        return (stats.norm.logpdf(params[0], 0.15, 1.00) +          # ANC-SS bias term
+                stats.norm.logpdf(params[1], 0.00, 1.00) +          # ANC-RT calibration term
+                stats.expon.logpdf(params[2], scale=1.0 / 0.015) +  # ANC variance inflation term, site
+                stats.expon.logpdf(params[3], scale=1.0 / 0.015))   # ANC variance inflation term, census
+
+    def likelihood(self, params):
+        """! Log-likelihood """
+        # self.project(params)
+        # fill_hivprev_template(self._hivsim, self._hivest)
+        self._ancdat.set_parameters(params[0], params[1], params[2], params[3]) # TODO: once testing with real parameters, cut this line (redundant with self.project)
+        self._ancest = self._hivsim.births_exposed / self._hivsim.births.sum((1))
+        lhood_hiv = self._hivdat.likelihood(self._hivest)
+        lhood_anc = self._ancdat.likelihood(self._ancest)
+        return lhood_hiv + lhood_anc
+
+    def posterior(self, params):
+        """"! Posterior density on log scale """
+        return self.prior(params) + self.likelihood(params)
+    
+    def project(self, params):
+        """! Set fitting parameter values into the model then run a projection """
+        self._ancdat.set_parameters(params[0], params[1], params[2], params[3])
+        self._hivsim.project(self.year_final)
+
+    def calibrate(self, ancss_bias, ancrt_bias, var_infl_site, var_infl_census):
+        """! Calibrate the model to HIV prevalence data
+        ancss_bias      -- Initial ANC-SS bias parameter value
+        ancrt_bias      -- Initial ANC-SS bias parameter value
+        var_infl_site   -- Variance inflation to account for non-sampling error in ANC data at site level
+        var_infl_census -- Variance inflation to account for non-sampling error in ANC data at census level
+        """
+        bounds = optimize.Bounds(lb = [-np.inf, -np.inf, 0.0, 0.0],
+                                 ub = [+np.inf, +np.inf, +np.inf, +np.inf])
+        par_init = np.array([ancss_bias, ancrt_bias, var_infl_site, var_infl_census])
+
+        ## TODO: As a special case when calibrating ANC likelihood parameters
+        ## only, we only need to calculate the projection once. Once we start
+        ## estimating more parameters we will need to reproject repeatedly in
+        ## the likelihood calculation instead
+        self.project(par_init)
+        fill_hivprev_template(self._hivsim, self._hivest)
+
+        par = optimize.minimize(lambda p : -self.posterior(p),
+                                par_init,
+                                method = 'Nelder-Mead',
+                                bounds = bounds) # TODO: use a better method (L-BFGS-B)
+        return par
+
 def main(par_file, anc_file, hiv_file, out_file):
-    ## TODO: outfile - xlsx workbook with fitted parameter estimates
-
-    # Initialize GoalsARM
-    hivsim = Goals.Model()
-    hivsim.init_from_xlsx(par_file)
-
-    # Initialize likelihood evaluation objects
-    ancdat = ancprev.ancprev(hivsim.year_first)
-    hivdat = hivprev.hivprev(hivsim.year_first)
-    ancdat.read_csv(anc_file)
-    hivdat.read_csv(hiv_file)
-
-    hiv_proj = hivdat.projection_template()    
-
-    # Run a model simulation
-    hivsim.project(2030)
-
-    plot_fit_anc(hivsim, ancdat, "ancfit.tiff")
-    plot_fit_hiv(hivsim, hivdat, "hivfit.tiff")
-
-    ## Set ANC likleihood parameters
-    ancdat.bias_ancss = hivsim.anc_par['ancss.bias']
-    ancdat.bias_ancrt = hivsim.anc_par['ancrt.bias']
-    ancdat.var_inflate_site = hivsim.anc_par['var.infl.site']
-    ancdat.var_inflate_census = hivsim.anc_par['var.infl.census']
-
-    ## Evaluate the ANC likelihood
-    anc_proj = hivsim.births_exposed / hivsim.births.sum((1))
-    lnlhood_anc = ancdat.likelihood(anc_proj)
-
-    # Evaluate the HIV prevalence likelihood
-    fill_hivprev_template(hivsim, hiv_proj)
-    lnlhood_hiv = hivdat.likelihood(hiv_proj)
-
-    print(lnlhood_anc)
-    print(lnlhood_hiv)
-
+    Fitter = GoalsFitter(par_file, anc_file, hiv_file)
+    par = Fitter.calibrate(0.15, 0.00, 0.20, 0.00)
+    ## TODO: use the fitted model to update the goodness-of-fit plots
     pass
+
+
+    # TODO: outfile - xlsx workbook with fitted parameter estimates
+
+    # # Initialize GoalsARM
+    # hivsim = Goals.Model()
+    # hivsim.init_from_xlsx(par_file)
+
+    # # Initialize likelihood evaluation objects
+    # ancdat = ancprev.ancprev(hivsim.year_first)
+    # hivdat = hivprev.hivprev(hivsim.year_first)
+    # ancdat.read_csv(anc_file)
+    # hivdat.read_csv(hiv_file)
+
+    # hiv_proj = hivdat.projection_template()    
+
+    # # Run a model simulation
+    # hivsim.project(2030)
+
+    # plot_fit_anc(hivsim, ancdat, "ancfit.tiff")
+    # plot_fit_hiv(hivsim, hivdat, "hivfit.tiff")
+
+    # ## Set ANC likleihood parameters
+    # ancdat.bias_ancss = hivsim.anc_par['ancss.bias']
+    # ancdat.bias_ancrt = hivsim.anc_par['ancrt.bias']
+    # ancdat.var_inflate_site = hivsim.anc_par['var.infl.site']
+    # ancdat.var_inflate_census = hivsim.anc_par['var.infl.census']
+
+    # ## Evaluate the ANC likelihood
+    # anc_proj = hivsim.births_exposed / hivsim.births.sum((1))
+    # lnlhood_anc = ancdat.likelihood(anc_proj)
+
+    # # Evaluate the HIV prevalence likelihood
+    # fill_hivprev_template(hivsim, hiv_proj)
+    # lnlhood_hiv = hivdat.likelihood(hiv_proj)
+
+    # print(lnlhood_anc)
+    # print(lnlhood_hiv)
+
+    # pass
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
