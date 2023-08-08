@@ -8,6 +8,7 @@ import scipy.stats as stats
 import sys
 import src.goals_model as Goals
 import src.goals_const as CONST
+import time
 from percussion import ancprev, hivprev
 
 ## Install percussion, the likelihood model package:
@@ -85,6 +86,7 @@ class GoalsFitter:
         self.init_hivsim(par_xlsx)
         self.init_data_anc(anc_csv)
         self.init_data_hiv(hiv_csv)
+        self.eval_count = 0
 
     def init_hivsim(self, par_xlsx):
         self._hivsim = Goals.Model()
@@ -112,6 +114,7 @@ class GoalsFitter:
         """! Log-likelihood """
         # self.project(params)
         # fill_hivprev_template(self._hivsim, self._hivest)
+        self.eval_count += 1
         self._ancdat.set_parameters(params[0], params[1], params[2], params[3]) # TODO: once testing with real parameters, cut this line (redundant with self.project)
         self._ancest = self._hivsim.births_exposed / self._hivsim.births.sum((1))
         lhood_hiv = self._hivdat.likelihood(self._hivest)
@@ -134,6 +137,8 @@ class GoalsFitter:
         var_infl_site   -- Variance inflation to account for non-sampling error in ANC data at site level
         var_infl_census -- Variance inflation to account for non-sampling error in ANC data at census level
         """
+        self.eval_count = 0
+
         bounds = optimize.Bounds(lb = [-np.inf, -np.inf, 0.0, 0.0],
                                  ub = [+np.inf, +np.inf, +np.inf, +np.inf])
         par_init = np.array([ancss_bias, ancrt_bias, var_infl_site, var_infl_census])
@@ -148,12 +153,16 @@ class GoalsFitter:
         par = optimize.minimize(lambda p : -self.posterior(p),
                                 par_init,
                                 method = 'Nelder-Mead',
-                                bounds = bounds) # TODO: use a better method (L-BFGS-B)
+                                bounds = bounds,
+                                callback = lambda res : print(res))
         return par
 
 def main(par_file, anc_file, hiv_file, out_file):
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
+    print(Fitter.eval_count)
     par = Fitter.calibrate(0.15, 0.00, 0.20, 0.00)
+    print(par.x)
+    print(Fitter.eval_count)
     ## TODO: use the fitted model to update the goodness-of-fit plots
     pass
 
@@ -199,6 +208,7 @@ def main(par_file, anc_file, hiv_file, out_file):
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
+    time_start = time.time()
     if len(sys.argv) == 1:
         par_file = "inputs/mwi-2023-inputs.xlsx"
         anc_file = "inputs/mwi-2023-anc-prev.csv"
@@ -213,3 +223,4 @@ if __name__ == "__main__":
         hiv_file = sys.argv[3]
         out_file = sys.argv[4]
         main(par_file, anc_file, hiv_file, out_file)
+    print("Completed in %s seconds" % (time.time() - time_start))
