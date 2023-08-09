@@ -424,3 +424,7 @@ void PyInterface::init_effect_condom(const double effect) {
 void PyInterface::project(const int year_final) {
 	proj->project(year_final);
 }
+
+void PyInterface::invalidate(const int year) {
+	proj->invalidate(year);
+}

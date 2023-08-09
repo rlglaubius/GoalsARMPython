@@ -243,8 +243,21 @@ public:
 	// Initialize 14-year-old CLHIV from direct inputs
 	void init_clhiv_agein(np::ndarray& clhiv);
 
-	// Calculate projection from year_start to year_final
+	/// Calculate the projection
+	/// @param year_final the last year to project
+	/// @details If project(...) is called repeatedly, each calculation will
+	/// resume from the latest year calculated in previous calls. Use invalidate(...)
+	/// to resume calculations from an earlier year.
 	void project(const int year_final);
+
+
+	/// Invalidate projected calculations from year onward.
+	/// @param year Invalidate calculated outcomes from this year onward.
+	/// @details After project(t) is called, subsequent calls to project(...)
+	/// will not recalculate years <= t. Use invalidate(...) to reset 
+	/// this to a selected year. Setting year < 0 will cause the next
+	/// project(...) call to start from the first year of projection.
+	inline void invalidate(const int year);
 
 private:
 	DP::Projection* proj;
@@ -291,7 +304,8 @@ BOOST_PYTHON_MODULE(GoalsARM) {
 		.def("init_effect_vmmc",   &PyInterface::init_effect_vmmc)
 		.def("init_effect_condom", &PyInterface::init_effect_condom)
 
-		.def("project", &PyInterface::project)
+		.def("project",    &PyInterface::project)
+		.def("invalidate", &PyInterface::invalidate)
 
 		.def("use_direct_incidence",     &PyInterface::use_direct_incidence)
 	;

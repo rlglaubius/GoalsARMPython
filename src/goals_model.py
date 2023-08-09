@@ -99,11 +99,11 @@ class Model:
             self._proj.use_direct_incidence(True)
             self._proj.init_direct_incidence(0.01 * inci, sirr, airr_f, airr_m, rirr_f, rirr_m)
         else:
-            time_trend, age_params, pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
+            self.partner_time_trend, self.partner_age_params, self.partner_pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
             age_prefs, pop_prefs, self.p_married = Utils.xlsx_load_partner_prefs(wb[CONST.XLSX_TAB_PARTNER])
             mix_raw = Utils.xlsx_load_mixing_levels(wb[CONST.XLSX_TAB_MIXNG_MATRIX])
             self.sex_acts, condom_freq, self.pwid_force, needle_sharing = Utils.xlsx_load_contact_params(wb[CONST.XLSX_TAB_CONTACT])
-            self.partner_rate = self.calc_partner_rates(time_trend, age_params, pop_ratios)
+            self.partner_rate = self.calc_partner_rates(self.partner_time_trend, self.partner_age_params, self.partner_pop_ratios)
             self.age_mixing = self.calc_partner_prefs(age_prefs)
             self.pop_assort = self.calc_pop_assort(pop_prefs)
             self.mix_levels = self.calc_mix_levels(mix_raw)
@@ -167,6 +167,13 @@ class Model:
         """
         self._proj.project(year_stop)
         self._projected = year_stop
+
+    def invalidate(self, year):
+        """! Invalidate projections from a given year onward. Call this after project(year_stop) if
+        you need to recalculate indicators for years before year_stop, otherwise projection will
+        resume from year_stop. """
+        self._proj.invalidate(year)
+        self._projected = min(year, self._projected)
         
     def _initialize_population_sizes(self, med_age_debut, med_age_union, avg_dur_union, kp_size, kp_stay, kp_turnover):
         """! Convenience function for initializing model population sizes
