@@ -139,14 +139,14 @@ class Model:
             direct_clhiv = Utils.xlsx_load_direct_clhiv(wb[CONST.XLSX_TAB_DIRECT_CLHIV])
             self._proj.init_clhiv_agein(direct_clhiv)
 
-        frr_age_no_art, frr_cd4_no_art, frr_age_on_art = Utils.xlsx_load_hiv_fert(wb[CONST.XLSX_TAB_HIV_FERT])
+        self.hiv_frr = Utils.xlsx_load_hiv_fert(wb[CONST.XLSX_TAB_HIV_FERT])
         dist, prog, mort, art1, art2, art3 = Utils.xlsx_load_adult_prog(wb[CONST.XLSX_TAB_ADULT_PROG])
         art_elig, art_num, art_pct, art_stop, art_mrr, art_vs = Utils.xlsx_load_adult_art(wb[CONST.XLSX_TAB_ADULT_ART])
         uptake_mc = Utils.xlsx_load_mc_uptake(wb[CONST.XLSX_TAB_MALE_CIRC])
 
         self.anc_par = Utils.xlsx_load_fit_pars(wb[CONST.XLSX_TAB_FITTING_PARS])
 
-        self._proj.init_hiv_fertility(frr_age_no_art, frr_cd4_no_art, frr_age_on_art)
+        self._proj.init_hiv_fertility(self.hiv_frr['age'] * self.hiv_frr['laf'], self.hiv_frr['cd4'], self.hiv_frr['art'] * self.hiv_frr['laf'])
         self._proj.init_adult_prog_from_10yr(0.01 * dist, prog, mort)
         self._proj.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)
         self._proj.init_adult_art_eligibility(art_elig)

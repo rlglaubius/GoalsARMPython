@@ -67,11 +67,14 @@ def xlsx_load_inci(tab_inci):
     return inci[0], sirr[0], airr_m, airr_f, rirr_m, rirr_f
 
 def xlsx_load_hiv_fert(tab_frr):
-    age_no_art = xlsx_load_range(tab_frr, 'B2',  'CD8')
-    cd4_no_art = xlsx_load_range(tab_frr, 'B11', 'B17')[:,0] # X[:,0] converts to 1d array
-    age_on_art = xlsx_load_range(tab_frr, 'B20', 'B26')[:,0]
-    adj = tab_frr['B29'].value # local adjustment factor
-    return age_no_art.transpose() * adj, cd4_no_art, age_on_art * adj
+    frr_age = xlsx_load_range(tab_frr, 'B2',  'CD8')
+    frr_cd4 = xlsx_load_range(tab_frr, 'B11', 'B17')[:,0] # X[:,0] converts to 1d array
+    frr_art = xlsx_load_range(tab_frr, 'B20', 'B26')[:,0]
+    frr_laf = tab_frr['B29'].value # local adjustment factor
+    return {'age' : frr_age.transpose(),
+            'cd4' : frr_cd4,
+            'art' : frr_art,
+            'laf' : frr_laf}
 
 def xlsx_load_adult_prog(tab_prog):
     dist = xlsx_load_range(tab_prog, 'B4',  'I9')  # CD4 distribution after primary infection
