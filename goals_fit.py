@@ -180,48 +180,9 @@ def main(par_file, anc_file, hiv_file, out_file):
 
     print(par.x)
     print(Fitter.eval_count)
-    ## TODO: use the fitted model to update the goodness-of-fit plots
-    pass
 
-
-    # TODO: outfile - xlsx workbook with fitted parameter estimates
-
-    # # Initialize GoalsARM
-    # hivsim = Goals.Model()
-    # hivsim.init_from_xlsx(par_file)
-
-    # # Initialize likelihood evaluation objects
-    # ancdat = ancprev.ancprev(hivsim.year_first)
-    # hivdat = hivprev.hivprev(hivsim.year_first)
-    # ancdat.read_csv(anc_file)
-    # hivdat.read_csv(hiv_file)
-
-    # hiv_proj = hivdat.projection_template()    
-
-    # # Run a model simulation
-    # hivsim.project(2030)
-
-    # plot_fit_anc(hivsim, ancdat, "ancfit.tiff")
-    # plot_fit_hiv(hivsim, hivdat, "hivfit.tiff")
-
-    # ## Set ANC likleihood parameters
-    # ancdat.bias_ancss = hivsim.anc_par['ancss.bias']
-    # ancdat.bias_ancrt = hivsim.anc_par['ancrt.bias']
-    # ancdat.var_inflate_site = hivsim.anc_par['var.infl.site']
-    # ancdat.var_inflate_census = hivsim.anc_par['var.infl.census']
-
-    # ## Evaluate the ANC likelihood
-    # anc_proj = hivsim.births_exposed / hivsim.births.sum((1))
-    # lnlhood_anc = ancdat.likelihood(anc_proj)
-
-    # # Evaluate the HIV prevalence likelihood
-    # fill_hivprev_template(hivsim, hiv_proj)
-    # lnlhood_hiv = hivdat.likelihood(hiv_proj)
-
-    # print(lnlhood_anc)
-    # print(lnlhood_hiv)
-
-    # pass
+    plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
+    plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
