@@ -11,6 +11,13 @@ import src.goals_const as CONST
 import time
 from percussion import ancprev, hivprev
 
+## TODO: change to use a dict of parameters that may be fitted. Add a column to 
+## the input workbook "FittingParams" tab that allows parameter prior specification
+## and a True/False indicator for whether to vary each input. Extend the workbook reader in goals_model
+## and goals_util as needed to support this selection. This is important since
+## we may only want to vary (e.g.) behavioral parameters for a key population if
+## there are data to fit to for that population.
+
 ## Install percussion, the likelihood model package:
 ## python -m pip install git+https://rlglaubius:${token}@github.com/rlglaubius/percussion.git
 
@@ -89,10 +96,10 @@ class GoalsFitter:
         self.eval_count = 0
 
     def init_hivsim(self, par_xlsx):
-        self._hivsim = Goals.Model()
-        self._hivsim.init_from_xlsx(par_xlsx)
-        self.year_first = self._hivsim.year_first
-        self.year_final = self._hivsim.year_final
+        self.hivsim = Goals.Model()
+        self.hivsim.init_from_xlsx(par_xlsx)
+        self.year_first = self.hivsim.year_first
+        self.year_final = self.hivsim.year_final
 
     def init_data_anc(self, anc_csv):
         self._ancdat = ancprev.ancprev(self.year_first)
@@ -113,10 +120,10 @@ class GoalsFitter:
     def likelihood(self, params):
         """! Log-likelihood """
         # self.project(params)
-        # fill_hivprev_template(self._hivsim, self._hivest)
+        # fill_hivprev_template(self.hivsim, self._hivest)
         self.eval_count += 1
         self._ancdat.set_parameters(params[0], params[1], params[2], params[3]) # TODO: once testing with real parameters, cut this line (redundant with self.project)
-        self._ancest = self._hivsim.births_exposed / self._hivsim.births.sum((1))
+        self._ancest = self.hivsim.births_exposed / self.hivsim.births.sum((1))
         lhood_hiv = self._hivdat.likelihood(self._hivest)
         lhood_anc = self._ancdat.likelihood(self._ancest)
         return lhood_hiv + lhood_anc
@@ -128,9 +135,9 @@ class GoalsFitter:
     def project(self, params):
         """! Set fitting parameter values into the model then run a projection """
         self._ancdat.set_parameters(params[0], params[1], params[2], params[3])
-        self._hivsim.project(self.year_final)
+        self.hivsim.project(self.year_final)
 
-    def calibrate(self, ancss_bias, ancrt_bias, var_infl_site, var_infl_census):
+    def calibrate(self, ancss_bias, ancrt_bias, var_infl_site, var_infl_census, method='Nelder-Mead'):
         """! Calibrate the model to HIV prevalence data
         ancss_bias      -- Initial ANC-SS bias parameter value
         ancrt_bias      -- Initial ANC-SS bias parameter value
@@ -139,8 +146,6 @@ class GoalsFitter:
         """
         self.eval_count = 0
 
-        bounds = optimize.Bounds(lb = [-np.inf, -np.inf, 0.0, 0.0],
-                                 ub = [+np.inf, +np.inf, +np.inf, +np.inf])
         par_init = np.array([ancss_bias, ancrt_bias, var_infl_site, var_infl_census])
 
         ## TODO: As a special case when calibrating ANC likelihood parameters
@@ -148,11 +153,13 @@ class GoalsFitter:
         ## estimating more parameters we will need to reproject repeatedly in
         ## the likelihood calculation instead
         self.project(par_init)
-        fill_hivprev_template(self._hivsim, self._hivest)
+        fill_hivprev_template(self.hivsim, self._hivest)
 
+        bounds = optimize.Bounds(lb = [-np.inf, -np.inf, 0.0, 0.0],
+                                 ub = [+np.inf, +np.inf, +np.inf, +np.inf])
         par = optimize.minimize(lambda p : -self.posterior(p),
                                 par_init,
-                                method = 'Nelder-Mead',
+                                method = method,
                                 bounds = bounds,
                                 callback = lambda res : print(res))
         return par
@@ -160,7 +167,17 @@ class GoalsFitter:
 def main(par_file, anc_file, hiv_file, out_file):
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
     print(Fitter.eval_count)
-    par = Fitter.calibrate(0.15, 0.00, 0.20, 0.00)
+
+    # Get initial conditions from the fitter's model instance
+    ancss_bias    = Fitter.hivsim.anc_par['ancss.bias']
+    ancrt_bias    = Fitter.hivsim.anc_par['ancrt.bias']
+    varinf_site   = Fitter.hivsim.anc_par['var.infl.site']
+    varinf_census = Fitter.hivsim.anc_par['var.infl.census']
+
+    # TODO: Adjust lifetime partners levels for males and females
+
+    par = Fitter.calibrate(ancss_bias, ancrt_bias, varinf_site, varinf_census, method='L-BFGS-B')
+
     print(par.x)
     print(Fitter.eval_count)
     ## TODO: use the fitted model to update the goodness-of-fit plots
