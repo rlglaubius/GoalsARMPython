@@ -14,7 +14,8 @@ XLSX_TAB_ADULT_PROG   = "HIVDiseaseInputs"
 XLSX_TAB_ADULT_ART    = "ARTAdultInputs"
 XLSX_TAB_MALE_CIRC    = "MCInputs"
 XLSX_TAB_DIRECT_CLHIV = "DirectCLHIV"
-XLSX_TAB_FITTING_PARS = "FittingParams"
+XLSX_TAB_LIKELIHOOD   = "LikelihoodInputs"
+XLSX_TAB_FITTING      = "FittingInputs"
 
 ## The Excel file specifies inputs for 1970-2050, the projection
 ## uses a subset of these
@@ -44,6 +45,22 @@ EPI_EFFECT_CONDOM    = "effect.condom"
 EPI_ART_MORT_WEIGHT  = "art.mort.weight"
 EPI_INITIAL_YEAR     = "seed.time"
 EPI_INITIAL_PREV     = "seed.prev"
+
+## LikelihoodInputs tab tags
+LHOOD_ANCSS_BIAS     = "ancss.bias"
+LHOOD_ANCRT_BIAS     = "ancrt.bias"
+LHOOD_VARINFL_SITE   = "var.infl.site"
+LHOOD_VARINFL_CENSUS = "var.infl.census"
+
+## FittingInputs tab tags
+FIT_TRANSMIT_M2F   = EPI_TRANSMIT_M2F
+FIT_LT_PARTNER_F   = "lt.partner.f"
+FIT_LT_PARTNER_M   = "lt.partner.m"
+FIT_HIV_FRR_LAF    = "hiv.frr.laf"
+FIT_ANCSS_BIAS     = LHOOD_ANCSS_BIAS
+FIT_ANCRT_BIAS     = LHOOD_ANCRT_BIAS
+FIT_VARINFL_SITE   = LHOOD_VARINFL_SITE
+FIT_VARINFL_CENSUS = LHOOD_VARINFL_CENSUS
 
 ## +===+ Model constants +=====================================================+
 ## Model constants are aligned with values in GoalsARM_Core DPConst.H

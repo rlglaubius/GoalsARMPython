@@ -6,9 +6,10 @@ import plotnine
 import scipy.optimize as optimize
 import scipy.stats as stats
 import sys
+import time
 import src.goals_model as Goals
 import src.goals_const as CONST
-import time
+import src.goals_utils as Utils
 from percussion import ancprev, hivprev
 
 ## TODO: change to use a dict of parameters that may be fitted. Add a column to 
@@ -20,6 +21,8 @@ from percussion import ancprev, hivprev
 ##
 ## This should also allow specification of priors (at least gamma, normal, beta) and their parameters.
 ## The fitter can infer bounds from priors (gamma -> [0,\infty), normal -> (-\infty,\infty), beta -> [0,1])
+
+## TODO: make fill_hivprev_template, plot_fit_* members of GoalsFitter
 
 ## Install percussion, the likelihood model package:
 ## python -m pip install git+https://rlglaubius:${token}@github.com/rlglaubius/percussion.git
@@ -96,6 +99,7 @@ class GoalsFitter:
         self.init_hivsim(par_xlsx)
         self.init_data_anc(anc_csv)
         self.init_data_hiv(hiv_csv)
+        self.init_fitting(par_xlsx)
         self.eval_count = 0
 
     def init_hivsim(self, par_xlsx):
@@ -112,6 +116,14 @@ class GoalsFitter:
         self._hivdat = hivprev.hivprev(self.year_first)
         self._hivdat.read_csv(hiv_csv)
         self._hivest = self._hivdat.projection_template()
+
+    def init_fitting(self, par_xlsx):
+        # The data_only flag allows the fitter to use the calculated value of equations.
+        # This way, the FittingInputs form can automatically pull values from other
+        # input tabs.
+        wb = xlsx.load_workbook(filename=par_xlsx, read_only=True, data_only=True)
+        self._pardat = Utils.xlsx_load_fitting_pars(wb[CONST.XLSX_TAB_FITTING])
+        wb.close()
 
     def prior(self, params):
         """! Prior density on log scale """
@@ -194,33 +206,37 @@ def main(par_file, anc_file, hiv_file, out_file):
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
     print(Fitter.eval_count)
 
-    # Get initial conditions from the fitter's model instance
-    transmit_m2f = Fitter.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F]
-    partner_f    = np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_FEMALE,:])
-    partner_m    = np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_MALE,  :])
-    frr_laf      = Fitter.hivsim.hiv_frr['laf']
-    ancss_bias    = Fitter.hivsim.anc_par['ancss.bias']
-    ancrt_bias    = Fitter.hivsim.anc_par['ancrt.bias']
-    varinf_site   = Fitter.hivsim.anc_par['var.infl.site']
-    varinf_census = Fitter.hivsim.anc_par['var.infl.census']
+    # Get initial conditions from the model fitting tab
+    transmit_m2f  = Fitter._pardat[CONST.FIT_TRANSMIT_M2F]
+    partner_f     = Fitter._pardat[CONST.FIT_LT_PARTNER_F] # np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_FEMALE,:])
+    partner_m     = Fitter._pardat[CONST.FIT_LT_PARTNER_M] # np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_MALE,  :])
+    frr_laf       = Fitter._pardat[CONST.FIT_HIV_FRR_LAF] # Fitter.hivsim.hiv_frr['laf']
+    ancss_bias    = Fitter._pardat[CONST.FIT_ANCSS_BIAS]
+    ancrt_bias    = Fitter._pardat[CONST.FIT_ANCRT_BIAS]
+    varinf_site   = Fitter._pardat[CONST.FIT_VARINFL_SITE]
+    varinf_census = Fitter._pardat[CONST.FIT_VARINFL_CENSUS]
 
-    # par = np.array([transmit_m2f,
-    #                 partner_f, partner_m,
-    #                 frr_laf,
-    #                 ancss_bias, ancrt_bias, varinf_site, varinf_census])
-    # Fitter.likelihood(par)
+    par = np.array([transmit_m2f,
+                    partner_f, partner_m,
+                    frr_laf,
+                    ancss_bias, ancrt_bias, varinf_site, varinf_census])
+    Fitter.likelihood(par)
 
-    par = Fitter.calibrate(transmit_m2f,
-                           partner_f, partner_m,
-                           frr_laf,
-                           ancss_bias, ancrt_bias, varinf_site, varinf_census,
-                           method='L-BFGS-B')
-    Fitter.project(par.x)
-    plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
-    plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
-    print("+=+ Fitting completed +=+")
-    print("%d likelihood evaluations" % (Fitter.eval_count))
-    Fitter.likelihood(par.x)
+    # par = Fitter.calibrate(transmit_m2f,
+    #                        partner_f, partner_m,
+    #                        frr_laf,
+    #                        ancss_bias, ancrt_bias, varinf_site, varinf_census,
+    #                        method='L-BFGS-B')
+    # Fitter.hivsim.likelihood_par[CONST.LHOOD_ANCSS_BIAS    ] = par.x[4]
+    # Fitter.hivsim.likelihood_par[CONST.LHOOD_ANCRT_BIAS    ] = par.x[5]
+    # Fitter.hivsim.likelihood_par[CONST.LHOOD_VARINFL_SITE  ] = par.x[6]
+    # Fitter.hivsim.likelihood_par[CONST.LHOOD_VARINFL_CENSUS] = par.x[7]
+    # Fitter.project(par.x)
+    # plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
+    # plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
+    # print("+=+ Fitting completed +=+")
+    # print("%d likelihood evaluations" % (Fitter.eval_count))
+    # Fitter.likelihood(par.x)
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
