@@ -115,13 +115,14 @@ class GoalsFitter:
 
     def prior(self, params):
         """! Prior density on log scale """
-        return (float(params[0] > 0) +                              # partnership exposure in females
-                float(params[1] > 0) +                              # partnership exposure in males
-                stats.norm.logpdf(np.log(params[2]), 0.00, 0.05) +  # HIV fertility rate ratio local adjustment factor, country-specific prior!
-                stats.norm.logpdf(params[3], 0.15, 1.00) +          # ANC-SS bias term
-                stats.norm.logpdf(params[4], 0.00, 1.00) +          # ANC-RT calibration term
-                stats.expon.logpdf(params[5], scale=1.0 / 0.015) +  # ANC variance inflation term, site
-                stats.expon.logpdf(params[6], scale=1.0 / 0.015))   # ANC variance inflation term, census
+        return (stats.norm.logpdf(np.log(params[0]), 0.00, 1.00) +  # odds ratio of male-to-female transmission relative to female-to-male transmission
+                float(params[1] > 0) +                              # partnership exposure in females
+                float(params[2] > 0) +                              # partnership exposure in males
+                stats.norm.logpdf(np.log(params[3]), 0.00, 0.05) +  # HIV fertility rate ratio local adjustment factor, country-specific prior!
+                stats.norm.logpdf(params[4], 0.15, 1.00) +          # ANC-SS bias term
+                stats.norm.logpdf(params[5], 0.00, 1.00) +          # ANC-RT calibration term
+                stats.expon.logpdf(params[6], scale=1.0 / 0.015) +  # ANC variance inflation term, site
+                stats.expon.logpdf(params[7], scale=1.0 / 0.015))   # ANC variance inflation term, census
 
     def likelihood(self, params):
         """! Log-likelihood """
@@ -142,23 +143,35 @@ class GoalsFitter:
         """! Set fitting parameter values into the model then run a projection """
         num_years = self.year_final - self.year_first + 1
 
-        self.hivsim.partner_time_trend = np.tile(params[0:2], (num_years, 1)).T
+        self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F] = params[0]
+        self.hivsim._proj.init_transmission(
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_F2M],
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F],
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2M],
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_PRIMARY],
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_CHRONIC],
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_ART_VS],
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_ART_VF])
+
+        self.hivsim.partner_time_trend = np.tile(params[1:3], (num_years, 1)).T
         self.hivsim.partner_rate[:] = self.hivsim.calc_partner_rates(self.hivsim.partner_time_trend,
                                                                      self.hivsim.partner_age_params,
                                                                      self.hivsim.partner_pop_ratios)
         
-        frr_laf = params[2]
+        frr_laf = params[3]
         frr_age = self.hivsim.hiv_frr['age'] * frr_laf
         frr_cd4 = self.hivsim.hiv_frr['cd4']
         frr_art = self.hivsim.hiv_frr['art'] * frr_laf
         self.hivsim._proj.init_hiv_fertility(frr_age, frr_cd4, frr_art)
 
-        self._ancdat.set_parameters(params[3], params[4], params[5], params[6])
+        self._ancdat.set_parameters(params[4], params[5], params[6], params[7])
         self.hivsim.invalidate(-1) # needed so that Goals will recalculate the projection
         self.hivsim.project(self.year_final)
 
-    def calibrate(self, partner_f, partner_m, frr_laf, ancss_bias, ancrt_bias, var_infl_site, var_infl_census, method='Nelder-Mead'):
+    def calibrate(self, transmit_m2f, partner_f, partner_m, frr_laf, ancss_bias, ancrt_bias, var_infl_site, var_infl_census, method='Nelder-Mead'):
         """! Calibrate the model to HIV prevalence data
+        transmit_m2f    -- odds ratio of male-to-female HIV transmission relative to female-to-male transmission per coital act
         partner_f       -- Partnership exposure for females
         partner_m       -- Partnership exposure for males
         frr_laf         -- HIV-related fertility rate ratio local adjustment factor
@@ -168,9 +181,9 @@ class GoalsFitter:
         var_infl_census -- Variance inflation to account for non-sampling error in ANC data at census level
         """
         self.eval_count = 0
-        par_init = np.array([partner_f, partner_m, frr_laf, ancss_bias, ancrt_bias, var_infl_site, var_infl_census])
-        bounds = optimize.Bounds(lb = [0.0,     0.0,     0.0,     -np.inf, -np.inf, 0.0,     0.0],
-                                 ub = [+np.inf, +np.inf, +np.inf, +np.inf, +np.inf, +np.inf, +np.inf])
+        par_init = np.array([transmit_m2f,partner_f, partner_m, frr_laf, ancss_bias, ancrt_bias, var_infl_site, var_infl_census])
+        bounds = optimize.Bounds(lb = [0.0,     0.0,     0.0,     0.0,     -np.inf, -np.inf, 0.0,     0.0],
+                                 ub = [+np.inf, +np.inf, +np.inf, +np.inf, +np.inf, +np.inf, +np.inf, +np.inf])
         par = optimize.minimize(lambda p : -self.posterior(p),
                                 par_init,
                                 method = method,
@@ -182,26 +195,29 @@ def main(par_file, anc_file, hiv_file, out_file):
     print(Fitter.eval_count)
 
     # Get initial conditions from the fitter's model instance
-    partner_f = np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_FEMALE,:])
-    partner_m = np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_MALE,  :])
-    frr_laf   = Fitter.hivsim.hiv_frr['laf']
+    transmit_m2f = Fitter.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F]
+    partner_f    = np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_FEMALE,:])
+    partner_m    = np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_MALE,  :])
+    frr_laf      = Fitter.hivsim.hiv_frr['laf']
     ancss_bias    = Fitter.hivsim.anc_par['ancss.bias']
     ancrt_bias    = Fitter.hivsim.anc_par['ancrt.bias']
     varinf_site   = Fitter.hivsim.anc_par['var.infl.site']
     varinf_census = Fitter.hivsim.anc_par['var.infl.census']
 
-    # par = np.array([partner_f, partner_m, frr_laf, ancss_bias, ancrt_bias, varinf_site, varinf_census])
+    # par = np.array([transmit_m2f,
+    #                 partner_f, partner_m,
+    #                 frr_laf,
+    #                 ancss_bias, ancrt_bias, varinf_site, varinf_census])
     # Fitter.likelihood(par)
 
-    par = Fitter.calibrate(partner_f, partner_m,
+    par = Fitter.calibrate(transmit_m2f,
+                           partner_f, partner_m,
                            frr_laf,
                            ancss_bias, ancrt_bias, varinf_site, varinf_census,
                            method='L-BFGS-B')
-
     Fitter.project(par.x)
     plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
     plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
-
     print("+=+ Fitting completed +=+")
     print("%d likelihood evaluations" % (Fitter.eval_count))
     Fitter.likelihood(par.x)
