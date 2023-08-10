@@ -94,6 +94,48 @@ def plot_fit_hiv(hivsim, hivdat, tiffname):
          + plotnine.theme(axis_text_x = plotnine.element_text(angle=90)))
     p.save(filename=tiffname, dpi=600, units="in", width=16, height=9, pil_kwargs={"compression" : "tiff_lzw"})
 
+# wrappers around scipy stats log densities that can be used
+# in standard ways
+def wrap_beta(x, shape1, shape2):
+    return stats.beta.logpdf(x, shape1, shape2)
+
+def wrap_gamma(x, shape, scale):
+    return stats.gamma.logpdf(x, shape, scale=scale)
+
+def wrap_lognorm(x, meanlog, sdlog):
+    return stats.lognorm.logpdf(x, sdlog, loc=meanlog)
+
+def wrap_norm(x, mean, sd):
+    return stats.norm.logpdf(x, loc=mean, scale=sd)
+
+class Parameter:
+    def __init__(self, init, dist, par1, par2):
+        self.initial_value = init
+        self.prior_name = dist
+        self.parameter1 = par1
+        self.parameter2 = par2
+        self.fitted_value = np.nan # placeholder
+
+        match dist:
+            case CONST.DIST_BETA:
+                self._prior = stats.beta.logpdf
+                self.support = (0.0, 1.0)
+            case CONST.DIST_GAMMA:
+                self._prior = wrap_gamma
+                self.parameter2 = 1.0 / par2 # convert rate to scale
+                self.support = (0.0, +np.inf)
+            case CONST.DIST_LOGNORMAL:
+                self._prior = wrap_lognorm
+                self.support = (0.0, +np.inf)
+            case CONST.DIST_NORMAL:
+                self._prior = wrap_norm
+                self.support = (-np.inf, +np.inf)
+            case _:
+                raise ValueError('Unrecognized probability distribution %s' % (dist))
+    
+    def prior(self, theta):
+        return self._prior(theta, self.parameter1, self.parameter2)
+
 class GoalsFitter:
     def __init__(self, par_xlsx, anc_csv, hiv_csv):
         self.init_hivsim(par_xlsx)
@@ -118,23 +160,25 @@ class GoalsFitter:
         self._hivest = self._hivdat.projection_template()
 
     def init_fitting(self, par_xlsx):
-        # The data_only flag allows the fitter to use the calculated value of equations.
-        # This way, the FittingInputs form can automatically pull values from other
-        # input tabs.
+        # Setting data_only=True lets the fitter use the calculated value of Excel
+        # equations. This way the FittingInputs sheet can automatically pull values
+        # from other input tabs.
         wb = xlsx.load_workbook(filename=par_xlsx, read_only=True, data_only=True)
-        self._pardat = Utils.xlsx_load_fitting_pars(wb[CONST.XLSX_TAB_FITTING])
+        par_dict = Utils.xlsx_load_fitting_pars(wb[CONST.XLSX_TAB_FITTING])
         wb.close()
+
+        # Create Parameter objects out of the parameter data. Drop parameters 
+        # that the user has indicated should not be fitted
+        self._pardat = {key : Parameter(val[0], val[1], val[2], val[3]) for key, val in par_dict.items() if val[4] != False}
+
+        # Several methods need to refer to parameter values stored in an array,
+        # without corresponding metadata. We keep a sorted list of keys so that
+        # these values can be used appropriately.
+        self._par_keys = sorted(self._pardat.keys())
 
     def prior(self, params):
         """! Prior density on log scale """
-        return (stats.norm.logpdf(np.log(params[0]), 0.00, 1.00) +  # odds ratio of male-to-female transmission relative to female-to-male transmission
-                float(params[1] > 0) +                              # partnership exposure in females
-                float(params[2] > 0) +                              # partnership exposure in males
-                stats.norm.logpdf(np.log(params[3]), 0.00, 0.05) +  # HIV fertility rate ratio local adjustment factor, country-specific prior!
-                stats.norm.logpdf(params[4], 0.15, 1.00) +          # ANC-SS bias term
-                stats.norm.logpdf(params[5], 0.00, 1.00) +          # ANC-RT calibration term
-                stats.expon.logpdf(params[6], scale=1.0 / 0.015) +  # ANC variance inflation term, site
-                stats.expon.logpdf(params[7], scale=1.0 / 0.015))   # ANC variance inflation term, census
+        return sum([self._pardat[key].prior(params[idx]) for idx, key in enumerate(self._par_keys)])
 
     def likelihood(self, params):
         """! Log-likelihood """
@@ -155,7 +199,31 @@ class GoalsFitter:
         """! Set fitting parameter values into the model then run a projection """
         num_years = self.year_final - self.year_first + 1
 
-        self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F] = params[0]
+        # TODO: consider adding a function variable Parameter.set_param(self, simulator)
+        # that does the corresponding work below. This indirection would eliminate the
+        # loop + case statement abomination below
+        for idx, key in enumerate(self._par_keys):
+            match key:
+                case CONST.FIT_TRANSMIT_M2F:
+                    self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F] = params[idx]
+                case CONST.FIT_LT_PARTNER_F:
+                    self.hivsim.partner_time_trend[CONST.SEX_FEMALE,:] = params[idx]
+                case CONST.FIT_LT_PARTNER_M:
+                    self.hivsim.partner_time_trend[CONST.SEX_MALE,  :] = params[idx]
+                case CONST.FIT_HIV_FRR_LAF:
+                    self.hivsim.hiv_frr['laf'] = params[idx]
+                case CONST.FIT_ANCSS_BIAS:
+                    self.hivsim.likelihood_par[CONST.LHOOD_ANCSS_BIAS] = params[idx]
+                case CONST.FIT_ANCRT_BIAS:
+                    self.hivsim.likelihood_par[CONST.LHOOD_ANCRT_BIAS] = params[idx]
+                case CONST.FIT_VARINFL_SITE:
+                    self.hivsim.likelihood_par[CONST.LHOOD_VARINFL_SITE] = params[idx]
+                case CONST.FIT_VARINFL_CENSUS:
+                    self.hivsim.likelihood_par[CONST.LHOOD_VARINFL_CENSUS] = params[idx]
+                case _:
+                    raise ValueError('Unrecognized parameter %s' % (key))
+        
+        ## TODO: could skip these calls if none of the constituent inputs are being varied
         self.hivsim._proj.init_transmission(
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_F2M],
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F],
@@ -166,77 +234,58 @@ class GoalsFitter:
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_ART_VS],
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_ART_VF])
 
-        self.hivsim.partner_time_trend = np.tile(params[1:3], (num_years, 1)).T
         self.hivsim.partner_rate[:] = self.hivsim.calc_partner_rates(self.hivsim.partner_time_trend,
                                                                      self.hivsim.partner_age_params,
                                                                      self.hivsim.partner_pop_ratios)
         
-        frr_laf = params[3]
-        frr_age = self.hivsim.hiv_frr['age'] * frr_laf
+        frr_age = self.hivsim.hiv_frr['age'] * self.hivsim.hiv_frr['laf']
         frr_cd4 = self.hivsim.hiv_frr['cd4']
-        frr_art = self.hivsim.hiv_frr['art'] * frr_laf
+        frr_art = self.hivsim.hiv_frr['art'] * self.hivsim.hiv_frr['laf']
         self.hivsim._proj.init_hiv_fertility(frr_age, frr_cd4, frr_art)
 
-        self._ancdat.set_parameters(params[4], params[5], params[6], params[7])
+        self._ancdat.set_parameters(self.hivsim.likelihood_par[CONST.LHOOD_ANCSS_BIAS],
+                                    self.hivsim.likelihood_par[CONST.LHOOD_ANCRT_BIAS],
+                                    self.hivsim.likelihood_par[CONST.LHOOD_VARINFL_SITE],
+                                    self.hivsim.likelihood_par[CONST.LHOOD_VARINFL_CENSUS])
+        
+        ## TODO: could skip invalidation if only ANC likelihood parameters are being varied
         self.hivsim.invalidate(-1) # needed so that Goals will recalculate the projection
         self.hivsim.project(self.year_final)
 
-    def calibrate(self, transmit_m2f, partner_f, partner_m, frr_laf, ancss_bias, ancrt_bias, var_infl_site, var_infl_census, method='Nelder-Mead'):
-        """! Calibrate the model to HIV prevalence data
-        transmit_m2f    -- odds ratio of male-to-female HIV transmission relative to female-to-male transmission per coital act
-        partner_f       -- Partnership exposure for females
-        partner_m       -- Partnership exposure for males
-        frr_laf         -- HIV-related fertility rate ratio local adjustment factor
-        ancss_bias      -- Initial ANC-SS bias parameter value
-        ancrt_bias      -- Initial ANC-SS bias parameter value
-        var_infl_site   -- Variance inflation to account for non-sampling error in ANC data at site level
-        var_infl_census -- Variance inflation to account for non-sampling error in ANC data at census level
+    def calibrate(self, method='Nelder-Mead'):
+        """! Calibrate the model to ANC and HIV prevalence data
+        @param method see scipy.optimize.minimize. Only methods that allow bounds can be used.
+        @return a dictionary that lists the fitted parameters with their final values
+        @return the diagnostic object returned by scipy optimize
         """
         self.eval_count = 0
-        par_init = np.array([transmit_m2f,partner_f, partner_m, frr_laf, ancss_bias, ancrt_bias, var_infl_site, var_infl_census])
-        bounds = optimize.Bounds(lb = [0.0,     0.0,     0.0,     0.0,     -np.inf, -np.inf, 0.0,     0.0],
-                                 ub = [+np.inf, +np.inf, +np.inf, +np.inf, +np.inf, +np.inf, +np.inf, +np.inf])
-        par = optimize.minimize(lambda p : -self.posterior(p),
-                                par_init,
-                                method = method,
-                                bounds = bounds)
-        return par
+
+        bounds = optimize.Bounds(lb = [self._pardat[key].support[0] for key in self._par_keys],
+                                 ub = [self._pardat[key].support[1] for key in self._par_keys])
+        p_init = np.array([self._pardat[key].initial_value for key in self._par_keys])
+        optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds)
+        p_best = optres.x
+
+        for i in range(len(self._par_keys)):
+            self._pardat[self._par_keys[i]].fitted_value = p_best[i]
+
+        return self._pardat, optres
 
 def main(par_file, anc_file, hiv_file, out_file):
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
-    print(Fitter.eval_count)
+    pars, diag = Fitter.calibrate(method='L-BFGS-B')
 
-    # Get initial conditions from the model fitting tab
-    transmit_m2f  = Fitter._pardat[CONST.FIT_TRANSMIT_M2F]
-    partner_f     = Fitter._pardat[CONST.FIT_LT_PARTNER_F] # np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_FEMALE,:])
-    partner_m     = Fitter._pardat[CONST.FIT_LT_PARTNER_M] # np.mean(Fitter.hivsim.partner_time_trend[CONST.SEX_MALE,  :])
-    frr_laf       = Fitter._pardat[CONST.FIT_HIV_FRR_LAF] # Fitter.hivsim.hiv_frr['laf']
-    ancss_bias    = Fitter._pardat[CONST.FIT_ANCSS_BIAS]
-    ancrt_bias    = Fitter._pardat[CONST.FIT_ANCRT_BIAS]
-    varinf_site   = Fitter._pardat[CONST.FIT_VARINFL_SITE]
-    varinf_census = Fitter._pardat[CONST.FIT_VARINFL_CENSUS]
-
-    par = np.array([transmit_m2f,
-                    partner_f, partner_m,
-                    frr_laf,
-                    ancss_bias, ancrt_bias, varinf_site, varinf_census])
-    Fitter.likelihood(par)
-
-    # par = Fitter.calibrate(transmit_m2f,
-    #                        partner_f, partner_m,
-    #                        frr_laf,
-    #                        ancss_bias, ancrt_bias, varinf_site, varinf_census,
-    #                        method='L-BFGS-B')
-    # Fitter.hivsim.likelihood_par[CONST.LHOOD_ANCSS_BIAS    ] = par.x[4]
-    # Fitter.hivsim.likelihood_par[CONST.LHOOD_ANCRT_BIAS    ] = par.x[5]
-    # Fitter.hivsim.likelihood_par[CONST.LHOOD_VARINFL_SITE  ] = par.x[6]
-    # Fitter.hivsim.likelihood_par[CONST.LHOOD_VARINFL_CENSUS] = par.x[7]
-    # Fitter.project(par.x)
-    # plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
-    # plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
-    # print("+=+ Fitting completed +=+")
-    # print("%d likelihood evaluations" % (Fitter.eval_count))
-    # Fitter.likelihood(par.x)
+    ## TODO: The outro below violates encapsuation by accessing "private"
+    ## data in _ancdat and _hivdat (drop "_", or move the plot methods into
+    ## Fitter?) and by calling the Fitter.likelihood(...) method, which
+    ## relies on using implementation details gleaned from diag that the 
+    ## caller should not know or care about.
+    print("+=+ Fitting complete +=+")
+    print({key : val.fitted_value for key, val in pars.items()})
+    print("%d likelihood evaluations" % (Fitter.eval_count))
+    print(Fitter.likelihood(diag.x))
+    plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
+    plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))

@@ -185,3 +185,9 @@ DTX_ART_MAX = 5
 
 N_DTX = DTX_MAX - DTX_MIN + 1
 N_ART = DTX_ART_MAX - DTX_ART_MIN + 1
+
+## +===+ Fitting constants +===================================================+
+DIST_LOGNORMAL = 'Lognormal'
+DIST_NORMAL    = 'Normal'
+DIST_GAMMA     = 'Gamma'
+DIST_BETA      = 'Beta'
