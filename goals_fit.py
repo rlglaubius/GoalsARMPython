@@ -12,16 +12,6 @@ import src.goals_const as CONST
 import src.goals_utils as Utils
 from percussion import ancprev, hivprev
 
-## TODO: change to use a dict of parameters that may be fitted. Add a column to 
-## the input workbook "FittingParams" tab that allows parameter prior specification
-## and a True/False indicator for whether to vary each input. Extend the workbook reader in goals_model
-## and goals_util as needed to support this selection. This is important since
-## we may only want to vary (e.g.) behavioral parameters for a key population if
-## there are data to fit to for that population.
-##
-## This should also allow specification of priors (at least gamma, normal, beta) and their parameters.
-## The fitter can infer bounds from priors (gamma -> [0,\infty), normal -> (-\infty,\infty), beta -> [0,1])
-
 ## TODO: make fill_hivprev_template, plot_fit_* members of GoalsFitter
 
 ## Install percussion, the likelihood model package:
@@ -110,6 +100,12 @@ def wrap_norm(x, mean, sd):
 
 class Parameter:
     def __init__(self, init, dist, par1, par2):
+        ## We pad the support of prior distributions to exclude values near
+        ## finite boundaries. The distributions typically have log density
+        ## of -inf at their boundaries, which can cause some otherwise fast
+        ## optimization methods to fail.
+        self.padding = 1e-10
+
         self.initial_value = init
         self.prior_name = dist
         self.parameter1 = par1
@@ -118,15 +114,15 @@ class Parameter:
 
         match dist:
             case CONST.DIST_BETA:
-                self._prior = stats.beta.logpdf
-                self.support = (0.0, 1.0)
+                self._prior = wrap_beta
+                self.support = (self.padding, 1.0 - self.padding)
             case CONST.DIST_GAMMA:
                 self._prior = wrap_gamma
                 self.parameter2 = 1.0 / par2 # convert rate to scale
-                self.support = (0.0, +np.inf)
+                self.support = (self.padding, +np.inf)
             case CONST.DIST_LOGNORMAL:
                 self._prior = wrap_lognorm
-                self.support = (0.0, +np.inf)
+                self.support = (self.padding, +np.inf)
             case CONST.DIST_NORMAL:
                 self._prior = wrap_norm
                 self.support = (-np.inf, +np.inf)
@@ -204,6 +200,8 @@ class GoalsFitter:
         # loop + case statement abomination below
         for idx, key in enumerate(self._par_keys):
             match key:
+                case CONST.FIT_INITIAL_PREV:
+                    self.hivsim.epi_pars[CONST.EPI_INITIAL_PREV] = params[idx]
                 case CONST.FIT_TRANSMIT_M2F:
                     self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F] = params[idx]
                 case CONST.FIT_LT_PARTNER_F:
@@ -233,6 +231,8 @@ class GoalsFitter:
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_ART_VS],
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_ART_VF])
+        self.hivsim._proj.init_epidemic_seed(self.hivsim.epi_pars[CONST.EPI_INITIAL_YEAR] - self.year_first,
+                                             self.hivsim.epi_pars[CONST.EPI_INITIAL_PREV])
 
         self.hivsim.partner_rate[:] = self.hivsim.calc_partner_rates(self.hivsim.partner_time_trend,
                                                                      self.hivsim.partner_age_params,
@@ -273,7 +273,7 @@ class GoalsFitter:
 
 def main(par_file, anc_file, hiv_file, out_file):
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
-    pars, diag = Fitter.calibrate(method='L-BFGS-B')
+    pars, diag = Fitter.calibrate(method='Nelder-Mead')
 
     ## TODO: The outro below violates encapsuation by accessing "private"
     ## data in _ancdat and _hivdat (drop "_", or move the plot methods into
