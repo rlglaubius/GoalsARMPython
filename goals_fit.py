@@ -208,6 +208,14 @@ class GoalsFitter:
                     self.hivsim.partner_time_trend[CONST.SEX_FEMALE,:] = params[idx]
                 case CONST.FIT_LT_PARTNER_M:
                     self.hivsim.partner_time_trend[CONST.SEX_MALE,  :] = params[idx]
+                case CONST.FIT_PARTNER_AGE_MEAN_F:
+                    self.hivsim.partner_age_params[0,CONST.SEX_FEMALE] = (80.0 - 15.0) * params[idx] + 15.0
+                case CONST.FIT_PARTNER_AGE_MEAN_M:
+                    self.hivsim.partner_age_params[0,CONST.SEX_MALE  ] = (80.0 - 15.0) * params[idx] + 15.0
+                case CONST.FIT_PARTNER_AGE_SCALE_F:
+                    self.hivsim.partner_age_params[1,CONST.SEX_FEMALE] = params[idx]
+                case CONST.FIT_PARTNER_AGE_SCALE_M:
+                    self.hivsim.partner_age_params[1,CONST.SEX_MALE  ] = params[idx]
                 case CONST.FIT_HIV_FRR_LAF:
                     self.hivsim.hiv_frr['laf'] = params[idx]
                 case CONST.FIT_ANCSS_BIAS:

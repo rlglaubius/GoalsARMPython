@@ -53,15 +53,19 @@ LHOOD_VARINFL_SITE   = "var.infl.site"
 LHOOD_VARINFL_CENSUS = "var.infl.census"
 
 ## FittingInputs tab tags
-FIT_INITIAL_PREV   = EPI_INITIAL_PREV
-FIT_TRANSMIT_M2F   = EPI_TRANSMIT_M2F
-FIT_LT_PARTNER_F   = "lt.partner.f"
-FIT_LT_PARTNER_M   = "lt.partner.m"
-FIT_HIV_FRR_LAF    = "hiv.frr.laf"
-FIT_ANCSS_BIAS     = LHOOD_ANCSS_BIAS
-FIT_ANCRT_BIAS     = LHOOD_ANCRT_BIAS
-FIT_VARINFL_SITE   = LHOOD_VARINFL_SITE
-FIT_VARINFL_CENSUS = LHOOD_VARINFL_CENSUS
+FIT_INITIAL_PREV        = EPI_INITIAL_PREV
+FIT_TRANSMIT_M2F        = EPI_TRANSMIT_M2F
+FIT_LT_PARTNER_F        = "lt.partner.f"
+FIT_LT_PARTNER_M        = "lt.partner.m"
+FIT_PARTNER_AGE_MEAN_F  = "partner.age.mean.f"
+FIT_PARTNER_AGE_MEAN_M  = "partner.age.mean.m"
+FIT_PARTNER_AGE_SCALE_F = "partner.age.scale.f"
+FIT_PARTNER_AGE_SCALE_M = "partner.age.scale.m"
+FIT_HIV_FRR_LAF         = "hiv.frr.laf"
+FIT_ANCSS_BIAS          = LHOOD_ANCSS_BIAS
+FIT_ANCRT_BIAS          = LHOOD_ANCRT_BIAS
+FIT_VARINFL_SITE        = LHOOD_VARINFL_SITE
+FIT_VARINFL_CENSUS      = LHOOD_VARINFL_CENSUS
 
 ## +===+ Model constants +=====================================================+
 ## Model constants are aligned with values in GoalsARM_Core DPConst.H
