@@ -279,7 +279,7 @@ class GoalsFitter:
 
         return self._pardat, optres
 
-def main(par_file, anc_file, hiv_file, out_file):
+def main(par_file, anc_file, hiv_file):
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
     pars, diag = Fitter.calibrate(method='Nelder-Mead')
 
@@ -302,14 +302,12 @@ if __name__ == "__main__":
         par_file = "inputs/mwi-2023-inputs.xlsx"
         anc_file = "inputs/mwi-2023-anc-prev.csv"
         hiv_file = "inputs/mwi-2023-hiv-prev.csv"
-        out_file = ""
-        main(par_file, anc_file, hiv_file, out_file)
-    elif len(sys.argv) < 4:
-        sys.stderr.write("USAGE: %s <input_param>.xlsx <anc_data>.csv <hiv_data>.csv <output_param>.xlsx" % (sys.argv[0]))
+        main(par_file, anc_file, hiv_file)
+    elif len(sys.argv) < 3:
+        sys.stderr.write("USAGE: %s <input_param>.xlsx <anc_data>.csv <hiv_data>.csv" % (sys.argv[0]))
     else:
         par_file = sys.argv[1]
         anc_file = sys.argv[2]
         hiv_file = sys.argv[3]
-        out_file = sys.argv[4]
-        main(par_file, anc_file, hiv_file, out_file)
+        main(par_file, anc_file, hiv_file)
     print("Completed in %s seconds" % (time.time() - time_start))
