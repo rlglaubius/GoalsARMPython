@@ -151,8 +151,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>C:\Proj\Util\boost_1_82_0\stage\lib;$(LOCALAPPDATA)\Programs\Python\Python310\DLLs;$(LOCALAPPDATA)\Programs\Python\Python310\Lib;$(LOCALAPPDATA)\Programs\Python\Python310\libs;$(LOCALAPPDATA)\Programs\Python\Python310\tcl;C:\Proj\Repositories\GoalsARM\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GoalsARM.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Proj\Util\boost_1_82_0\stage\lib;$(LOCALAPPDATA)\Programs\Python\Python310\DLLs;$(LOCALAPPDATA)\Programs\Python\Python310\Lib;$(LOCALAPPDATA)\Programs\Python\Python310\libs;$(LOCALAPPDATA)\Programs\Python\Python310\tcl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -174,8 +174,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>C:\Proj\Util\boost_1_82_0\stage\lib;$(LOCALAPPDATA)\Programs\Python\Python310\DLLs;$(LOCALAPPDATA)\Programs\Python\Python310\Lib;$(LOCALAPPDATA)\Programs\Python\Python310\libs;$(LOCALAPPDATA)\Programs\Python\Python310\tcl;C:\Proj\Repositories\GoalsARM\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GoalsARM.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Proj\Util\boost_1_82_0\stage\lib;$(LOCALAPPDATA)\Programs\Python\Python310\DLLs;$(LOCALAPPDATA)\Programs\Python\Python310\Lib;$(LOCALAPPDATA)\Programs\Python\Python310\libs;$(LOCALAPPDATA)\Programs\Python\Python310\tcl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
