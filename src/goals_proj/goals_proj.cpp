@@ -136,13 +136,13 @@ void GoalsProj::init_migr_from_5yr(array_double_t netmigr, array_double_t patter
 	// underlying the input arrays.
 	DP::year_sex_ref_t migr(ptr_netmigr, boost::extents[shape_netmigr[0]][shape_netmigr[1]]);
 	DP::year_age_ref_t migr_f(ptr_pattern_f, boost::extents[shape_pattern[0]][shape_pattern[1]]);
-	DP::year_age_ref_t migr_m(ptr_pattern_f, boost::extents[shape_pattern[0]][shape_pattern[1]]);
+	DP::year_age_ref_t migr_m(ptr_pattern_m, boost::extents[shape_pattern[0]][shape_pattern[1]]);
 
 	// Convert patterns from multipliers to absolute net migrant numbers
 	for (int t(0); t < num_years; ++t) {
 		for (int a(0); a < n_age5y; ++a) {
-			migr_f[t][a] = migr[t][DP::FEMALE] * migr_f[t][a];
-			migr_m[t][a] = migr[t][DP::MALE  ] * migr_m[t][a];
+			migr_m[t][a] = migr[t][0] * migr_m[t][a]; // Sex order is swapped in Excel (Male, Female) compared to Goals ARM (Female, Male)
+			migr_f[t][a] = migr[t][1] * migr_f[t][a];
 		}
 	}
 
