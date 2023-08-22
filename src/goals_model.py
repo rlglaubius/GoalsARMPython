@@ -4,7 +4,8 @@ import scipy as sp
 import openpyxl as xlsx
 import src.goals_const as CONST
 import src.goals_utils as Utils
-import lib.Release.GoalsARM as Goals # At last check, calculation was ~100-fold slower with the Debug version of the library
+# import lib.Release.GoalsARM as Goals # At last check, calculation was ~100-fold slower with the Debug version of the library
+import src.goals_proj.x64.Release.goals_proj as Goals
 
 ## TODO:
 ## Create an Excel reader that just loads the raw inputs from Excel into member
@@ -53,6 +54,8 @@ class Model:
         self.year_final = cfg_opts[CONST.CFG_FINAL_YEAR]
 
         num_years = self.year_final - self.year_first + 1
+        year_range = range(0, num_years)
+
         shp_adult_neg = (num_years, CONST.N_SEX_MC, CONST.N_AGE_ADULT, CONST.N_POP)
         shp_adult_hiv = (num_years, CONST.N_SEX_MC, CONST.N_AGE_ADULT, CONST.N_POP, CONST.N_HIV_ADULT, CONST.N_DTX)
         shp_child_neg = (num_years, CONST.N_SEX_MC, CONST.N_AGE_CHILD)
@@ -86,18 +89,18 @@ class Model:
 
         if not cfg_opts[CONST.CFG_USE_UPD_PASFRS]:
             pasfrs = Utils.xlsx_load_pasfrs(wb[CONST.XLSX_TAB_PASFRS])
-            self._proj.init_pasfrs_from_5yr(pasfrs)
+            self._proj.init_pasfrs_from_5yr(pasfrs[year_range,:])
 
         if not cfg_opts[CONST.CFG_USE_UPD_MIGR]:
             migr_net, migr_dist_m, migr_dist_f = Utils.xlsx_load_migr(wb[CONST.XLSX_TAB_MIGR])
-            self._proj.init_migr_from_5yr(migr_net, migr_dist_f, migr_dist_m)
+            self._proj.init_migr_from_5yr(migr_net[year_range,:], migr_dist_f[year_range,:], migr_dist_m[year_range,:])
 
         self._proj.init_effect_vmmc(self.epi_pars[CONST.EPI_EFFECT_VMMC])
         self._proj.init_effect_condom(self.epi_pars[CONST.EPI_EFFECT_CONDOM])
         if cfg_opts[CONST.CFG_USE_DIRECT_INCI]:
             inci, sirr, airr_m, airr_f, rirr_m, rirr_f = Utils.xlsx_load_inci(wb[CONST.XLSX_TAB_INCI])
             self._proj.use_direct_incidence(True)
-            self._proj.init_direct_incidence(0.01 * inci, sirr, airr_f, airr_m, rirr_f, rirr_m)
+            self._proj.init_direct_incidence(0.01 * inci[year_range], sirr[year_range], airr_f[year_range,:], airr_m[year_range,:], rirr_f[year_range,:], rirr_m[year_range,:])
         else:
             self.partner_time_trend, self.partner_age_params, self.partner_pop_ratios = Utils.xlsx_load_partner_rates(wb[CONST.XLSX_TAB_PARTNER])
             age_prefs, pop_prefs, self.p_married = Utils.xlsx_load_partner_prefs(wb[CONST.XLSX_TAB_PARTNER])
@@ -118,7 +121,7 @@ class Model:
             self._proj.share_input_partner_rate(self.partner_rate)
             self._proj.share_input_age_mixing(self.age_mixing)
             self._proj.share_input_pop_assort(self.pop_assort)
-            self._proj.share_input_pwid_risk(self.pwid_force, self.needle_sharing)
+            self._proj.share_input_pwid_risk(self.pwid_force[year_range,:], self.needle_sharing[year_range])
             self._proj.use_direct_incidence(False)
             self._proj.init_epidemic_seed(self.epi_pars[CONST.EPI_INITIAL_YEAR] - self.year_first, self.epi_pars[CONST.EPI_INITIAL_PREV])
             self._proj.init_transmission(
@@ -133,11 +136,11 @@ class Model:
             self._proj.init_keypop_married(self.p_married)
             self._proj.init_mixing_matrix(self.mix_levels)
             self._proj.init_sex_acts(self.sex_acts)
-            self._proj.init_condom_freq(self.condom_freq)
+            self._proj.init_condom_freq(self.condom_freq[year_range,:])
 
         if cfg_opts[CONST.CFG_USE_DIRECT_CLHIV]:
             direct_clhiv = Utils.xlsx_load_direct_clhiv(wb[CONST.XLSX_TAB_DIRECT_CLHIV])
-            self._proj.init_clhiv_agein(direct_clhiv)
+            self._proj.init_clhiv_agein(direct_clhiv[year_range,:])
 
         self.hiv_frr = Utils.xlsx_load_hiv_fert(wb[CONST.XLSX_TAB_HIV_FERT])
         dist, prog, mort, art1, art2, art3 = Utils.xlsx_load_adult_prog(wb[CONST.XLSX_TAB_ADULT_PROG])
@@ -146,16 +149,18 @@ class Model:
 
         self.likelihood_par = Utils.xlsx_load_likelihood_pars(wb[CONST.XLSX_TAB_LIKELIHOOD])
 
-        self._proj.init_hiv_fertility(self.hiv_frr['age'] * self.hiv_frr['laf'], self.hiv_frr['cd4'], self.hiv_frr['art'] * self.hiv_frr['laf'])
+        frr_age = self.hiv_frr['age'] * self.hiv_frr['laf']
+        frr_art = self.hiv_frr['art'] * self.hiv_frr['laf']
+        self._proj.init_hiv_fertility(frr_age[year_range,:], self.hiv_frr['cd4'], frr_art)
         self._proj.init_adult_prog_from_10yr(0.01 * dist, prog, mort)
-        self._proj.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr)
-        self._proj.init_adult_art_eligibility(art_elig)
-        self._proj.init_adult_art_curr(art_num, 0.01 * art_pct)
+        self._proj.init_adult_art_mort_from_10yr(art1, art2, art3, art_mrr[year_range,:])
+        self._proj.init_adult_art_eligibility(art_elig[year_range])
+        self._proj.init_adult_art_curr(art_num[year_range,:], 0.01 * art_pct[year_range,:])
         self._proj.init_adult_art_allocation(self.epi_pars[CONST.EPI_ART_MORT_WEIGHT])
-        self._proj.init_adult_art_interruption(-np.log(1.0 - 0.01 * art_stop)) # convert %/year to an event rate
-        self._proj.init_adult_art_suppressed(0.01 * art_vs)
+        self._proj.init_adult_art_interruption(-np.log(1.0 - 0.01 * art_stop[year_range,:])) # convert %/year to an event rate
+        self._proj.init_adult_art_suppressed(0.01 * art_vs[year_range,:])
 
-        self._proj.init_male_circumcision_uptake(uptake_mc)
+        self._proj.init_male_circumcision_uptake(uptake_mc[year_range,:])
         self._initialized = True
 
         wb.close()
