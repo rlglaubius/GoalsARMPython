@@ -93,7 +93,8 @@ def wrap_gamma(x, shape, scale):
     return stats.gamma.logpdf(x, shape, scale=scale)
 
 def wrap_lognorm(x, meanlog, sdlog):
-    return stats.lognorm.logpdf(x, sdlog, loc=meanlog)
+    # https://stats.stackexchange.com/questions/33036/fitting-log-normal-distribution-in-r-vs-scipy
+    return stats.lognorm.logpdf(x, sdlog, scale=np.exp(meanlog))
 
 def wrap_norm(x, mean, sd):
     return stats.norm.logpdf(x, loc=mean, scale=sd)
@@ -138,7 +139,6 @@ class GoalsFitter:
         self.init_data_anc(anc_csv)
         self.init_data_hiv(hiv_csv)
         self.init_fitting(par_xlsx)
-        self.eval_count = 0
 
     def init_hivsim(self, par_xlsx):
         self.hivsim = Goals.Model()
@@ -178,7 +178,6 @@ class GoalsFitter:
 
     def likelihood(self, params):
         """! Log-likelihood """
-        self.eval_count += 1
         self.project(params)
         self._ancest = self.hivsim.births_exposed / self.hivsim.births.sum((1))
         fill_hivprev_template(self.hivsim, self._hivest)
@@ -193,11 +192,11 @@ class GoalsFitter:
     
     def project(self, params):
         """! Set fitting parameter values into the model then run a projection """
-        num_years = self.year_final - self.year_first + 1
-
-        # TODO: consider adding a function variable Parameter.set_param(self, simulator)
-        # that does the corresponding work below. This indirection would eliminate the
-        # loop + case statement abomination below
+        # TODO: Move the parameter setting code into its own code so that it can
+        # be benchmarked.
+        # TODO: replace this looped case statement with a dictionary from keys to
+        # functions that set the specific parameter. That should be populated
+        # in self.__init__. Check if this helps with speed at all.
         for idx, key in enumerate(self._par_keys):
             match key:
                 case CONST.FIT_INITIAL_PREV:
@@ -216,6 +215,10 @@ class GoalsFitter:
                     self.hivsim.partner_age_params[1,CONST.SEX_FEMALE] = params[idx]
                 case CONST.FIT_PARTNER_AGE_SCALE_M:
                     self.hivsim.partner_age_params[1,CONST.SEX_MALE  ] = params[idx]
+                case CONST.FIT_PARTNER_POP_FSW:
+                    self.hivsim.partner_pop_ratios[CONST.POP_FSW-1,CONST.SEX_FEMALE] = params[idx] # subtract 1 since partner_pop_ratios starts at POP_NEVER=1 instead of POP_NOSEX=0
+                case CONST.FIT_PARTNER_POP_CLIENT:
+                    self.hivsim.partner_pop_ratios[CONST.POP_CSW-1,CONST.SEX_MALE  ] = params[idx]
                 case CONST.FIT_HIV_FRR_LAF:
                     self.hivsim.hiv_frr['laf'] = params[idx]
                 case CONST.FIT_ANCSS_BIAS:
@@ -266,8 +269,6 @@ class GoalsFitter:
         @return a dictionary that lists the fitted parameters with their final values
         @return the diagnostic object returned by scipy optimize
         """
-        self.eval_count = 0
-
         bounds = optimize.Bounds(lb = [self._pardat[key].support[0] for key in self._par_keys],
                                  ub = [self._pardat[key].support[1] for key in self._par_keys])
         p_init = np.array([self._pardat[key].initial_value for key in self._par_keys])
@@ -290,7 +291,8 @@ def main(par_file, anc_file, hiv_file):
     ## caller should not know or care about.
     print("+=+ Fitting complete +=+")
     print({key : val.fitted_value for key, val in pars.items()})
-    print("%d likelihood evaluations" % (Fitter.eval_count))
+    print("%d likelihood evaluations" % (diag.nfev))
+    print("Converged: %s" % (diag.success))
     print(Fitter.likelihood(diag.x))
     plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
     plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
