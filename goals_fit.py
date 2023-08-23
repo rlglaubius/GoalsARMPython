@@ -145,6 +145,7 @@ class GoalsFitter:
         self.hivsim.init_from_xlsx(par_xlsx)
         self.year_first = self.hivsim.year_first
         self.year_final = self.hivsim.year_final
+        self.year_range = range(0, self.year_final - self.year_first + 1)
 
     def init_data_anc(self, anc_csv):
         self._ancdat = ancprev.ancprev(self.year_first)
@@ -252,7 +253,7 @@ class GoalsFitter:
         frr_age = self.hivsim.hiv_frr['age'] * self.hivsim.hiv_frr['laf']
         frr_cd4 = self.hivsim.hiv_frr['cd4']
         frr_art = self.hivsim.hiv_frr['art'] * self.hivsim.hiv_frr['laf']
-        self.hivsim._proj.init_hiv_fertility(frr_age, frr_cd4, frr_art)
+        self.hivsim._proj.init_hiv_fertility(frr_age[self.year_range,:], frr_cd4, frr_art)
 
         self._ancdat.set_parameters(self.hivsim.likelihood_par[CONST.LHOOD_ANCSS_BIAS],
                                     self.hivsim.likelihood_par[CONST.LHOOD_ANCRT_BIAS],
