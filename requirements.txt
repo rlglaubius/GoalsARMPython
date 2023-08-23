@@ -10,6 +10,7 @@ openpyxl==3.1.2
 packaging==23.1
 pandas==2.0.3
 patsy==0.5.3
+percussion @ git+https://github.com/rlglaubius/percussion.git@6e2631c19d37b29da1c1ed97de1105c273e7d849
 Pillow==10.0.0
 plotnine==0.12.2
 pybind11==2.11.1

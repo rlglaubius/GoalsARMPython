@@ -4,7 +4,6 @@ import scipy as sp
 import openpyxl as xlsx
 import src.goals_const as CONST
 import src.goals_utils as Utils
-# import lib.Release.GoalsARM as Goals # At last check, calculation was ~100-fold slower with the Debug version of the library
 import src.goals_proj.x64.Release.goals_proj as Goals
 
 ## TODO:
