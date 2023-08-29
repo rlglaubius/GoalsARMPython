@@ -1,0 +1,758 @@
+Region,Site,Type,Year,Prevalence,N,UseDataInFit
+All,Census,RT,2011,0.084892791,255110,TRUE
+All,Census,RT,2012,0.088161247,459170,TRUE
+All,Census,RT,2013,0.080197756,498393,TRUE
+All,Census,RT,2014,0.077100671,521500,TRUE
+All,Census,RT,2015,0.077550785,571187,TRUE
+All,Census,RT,2016,0.077399794,584123,TRUE
+All,Census,RT,2017,0.076973457,477905,TRUE
+All,Census,RT,2018,0.073765315,647635,TRUE
+All,Census,RT,2019,0.06927022,622201,TRUE
+All,Census,RT,2020,0.065833642,650321,TRUE
+All,Census,RT,2021,0.063618094,617513,TRUE
+All,Census,RT,2022,0.053987066,645136,TRUE
+National,Balaka,SS,2007,0.174,524,TRUE
+National,Balaka,SS,2010,0.13,500,TRUE
+National,Balaka,RT,2013,0.1086,3203,TRUE
+National,Balaka,RT,2014,0.1191,3090,TRUE
+National,Balaka,RT,2015,0.1236,3365,TRUE
+National,Balaka,RT,2016,0.1105,3492,TRUE
+National,Balaka,RT,2017,0.1221,3472,TRUE
+National,Balaka,RT,2018,0.1188,3753,TRUE
+National,Balaka,RT,2019,0.1137,3456,TRUE
+National,Balaka,RT,2020,0.1148,3275,TRUE
+National,Balaka,RT,2021,0.0884,2637,TRUE
+National,Balaka,RT,2022,0.0793,2887,TRUE
+National,Blantyre Limbe HC,SS,1994,0.316,250,TRUE
+National,Blantyre Limbe HC,SS,1995,0.33,400,TRUE
+National,Blantyre Limbe HC,SS,1996,0.34,400,TRUE
+National,Blantyre Limbe HC,SS,1997,0.303,617,TRUE
+National,Blantyre Limbe HC,SS,1998,0.304,677,TRUE
+National,Blantyre Limbe HC,SS,1999,0.279,681,TRUE
+National,Blantyre Limbe HC,SS,2001,0.285,650,TRUE
+National,Blantyre Limbe HC,SS,2003,0.276,804,TRUE
+National,Blantyre Limbe HC,SS,2005,0.27,847,TRUE
+National,Blantyre Limbe HC,SS,2007,0.24,887,TRUE
+National,Blantyre Limbe HC,SS,2010,0.2062,805,TRUE
+National,Blantyre Limbe HC,RT,2015,0.1444,3553,TRUE
+National,Blantyre Limbe HC,RT,2016,0.1472,4390,TRUE
+National,Blantyre Limbe HC,RT,2017,0.1395,5089,TRUE
+National,Blantyre Limbe HC,RT,2018,0.1568,3865,TRUE
+National,Blantyre Limbe HC,RT,2019,0.1704,3421,TRUE
+National,Blantyre Limbe HC,RT,2020,0.1086,1611,TRUE
+National,Blantyre Limbe HC,RT,2021,0.128,2890,TRUE
+National,Blantyre Limbe HC,RT,2022,0.0993,3254,TRUE
+National,Bolero HC,SS,2007,0.067,179,TRUE
+National,Bolero HC,SS,2010,0.066,320,TRUE
+National,Bolero HC,RT,2011,0.079,730,TRUE
+National,Bolero HC,RT,2015,0.0427,1544,TRUE
+National,Bolero HC,RT,2016,0.0481,1434,TRUE
+National,Bolero HC,RT,2017,0.0578,1383,TRUE
+National,Bolero HC,RT,2018,0.0559,1269,TRUE
+National,Bolero HC,RT,2019,0.0545,1414,TRUE
+National,Bolero HC,RT,2020,0.0395,1394,TRUE
+National,Bolero HC,RT,2021,0.0431,1276,TRUE
+National,Bolero HC,RT,2022,0.0409,1148,TRUE
+National,Chikwawa,SS,2007,0.15,399,TRUE
+National,Chikwawa,SS,2010,0.123,529,TRUE
+National,Chikwawa,RT,2011,0.1292,1254,TRUE
+National,Chikwawa,RT,2017,0.1241,2700,TRUE
+National,Chikwawa,RT,2018,0.1101,2996,TRUE
+National,Chikwawa,RT,2019,0.1408,2741,TRUE
+National,Chikwawa,RT,2020,0.1201,2798,TRUE
+National,Chikwawa,RT,2021,0.1081,2498,TRUE
+National,Chikwawa,RT,2022,0.1023,2697,TRUE
+National,Chilipa HC,SS,2007,0.125,296,TRUE
+National,Chilipa HC,SS,2010,0.077,300,TRUE
+National,Chilipa HC,RT,2011,0.0693,635,TRUE
+National,Chilipa HC,RT,2013,0.0673,1308,TRUE
+National,Chilipa HC,RT,2014,0.0688,1482,TRUE
+National,Chilipa HC,RT,2015,0.0544,1619,TRUE
+National,Chilipa HC,RT,2016,0.0638,1772,TRUE
+National,Chilipa HC,RT,2017,0.0604,1657,TRUE
+National,Chilipa HC,RT,2018,0.0593,2073,TRUE
+National,Chilipa HC,RT,2019,0.0485,1958,TRUE
+National,Chilipa HC,RT,2020,0.0612,1667,TRUE
+National,Chilipa HC,RT,2021,0.0555,1531,TRUE
+National,Chilipa HC,RT,2022,0.051,1706,TRUE
+National,Chinthenche HC,SS,2007,0.1,300,TRUE
+National,Chinthenche HC,SS,2010,0.125,313,TRUE
+National,Chinthenche HC,RT,2011,0.084,452,TRUE
+National,Chinthenche HC,RT,2014,0.0795,969,TRUE
+National,Chinthenche HC,RT,2015,0.0942,987,TRUE
+National,Chinthenche HC,RT,2016,0.0842,1069,TRUE
+National,Chinthenche HC,RT,2017,0.0759,1185,TRUE
+National,Chinthenche HC,RT,2018,0.0721,1276,TRUE
+National,Chinthenche HC,RT,2019,0.0619,1131,TRUE
+National,Chinthenche HC,RT,2020,0.0581,1205,TRUE
+National,Chinthenche HC,RT,2021,0.0579,1346,TRUE
+National,Chinthenche HC,RT,2022,0.0639,1331,TRUE
+National,Chiradzulu,SS,2007,0.227,321,TRUE
+National,Chiradzulu,SS,2010,0.225,530,TRUE
+National,Chiradzulu,RT,2011,0.1281,601,TRUE
+National,Chiradzulu,RT,2012,0.1318,2277,TRUE
+National,Chiradzulu,RT,2013,0.1216,2261,TRUE
+National,Chiradzulu,RT,2014,0.1235,1822,TRUE
+National,Chiradzulu,RT,2015,0.1254,1914,TRUE
+National,Chiradzulu,RT,2016,0.1163,1969,TRUE
+National,Chiradzulu,RT,2017,0.1232,2069,TRUE
+National,Chiradzulu,RT,2018,0.1218,2579,TRUE
+National,Chiradzulu,RT,2019,0.1293,2598,TRUE
+National,Chiradzulu,RT,2020,0.1307,2914,TRUE
+National,Chiradzulu,RT,2021,0.1152,2526,TRUE
+National,Chiradzulu,RT,2022,0.0921,2443,TRUE
+National,Chitipa,SS,2007,0.095,495,TRUE
+National,Chitipa,SS,2010,0.063,495,TRUE
+National,Chitipa,RT,2016,0.0471,2249,TRUE
+National,Chitipa,RT,2017,0.0478,2471,TRUE
+National,Chitipa,RT,2018,0.0366,2625,TRUE
+National,Chitipa,RT,2019,0.0267,2693,TRUE
+National,Chitipa,RT,2020,0.0301,2857,TRUE
+National,Chitipa,RT,2021,0.0343,2591,TRUE
+National,Chitipa,RT,2022,0.0334,3056,TRUE
+National,Chonde HC,SS,2007,0.214,318,TRUE
+National,Chonde HC,SS,2010,0.19,306,TRUE
+National,Chonde HC,RT,2011,0.1879,862,TRUE
+National,Chonde HC,RT,2012,0.163,1976,TRUE
+National,Chonde HC,RT,2015,0.1645,1678,TRUE
+National,Chonde HC,RT,2016,0.1546,1740,TRUE
+National,Chonde HC,RT,2017,0.1605,1987,TRUE
+National,Chonde HC,RT,2018,0.1459,2056,TRUE
+National,Chonde HC,RT,2019,0.1512,2004,TRUE
+National,Chonde HC,RT,2020,0.132,1947,TRUE
+National,Chonde HC,RT,2021,0.1281,2076,TRUE
+National,Chonde HC,RT,2022,0.1011,2205,TRUE
+National,Dedza,SS,2007,0.116,405,TRUE
+National,Dedza,SS,2010,0.0987,618,TRUE
+National,Dedza,RT,2014,0.0659,4385,TRUE
+National,Dedza,RT,2015,0.0673,6375,TRUE
+National,Dedza,RT,2016,0.0525,7830,TRUE
+National,Dedza,RT,2017,0.0591,6138,TRUE
+National,Dedza,RT,2018,0.0655,5601,TRUE
+National,Dedza,RT,2019,0.0597,4318,TRUE
+National,Dedza,RT,2020,0.0593,5414,TRUE
+National,Dedza,RT,2021,0.0545,4076,TRUE
+National,Dedza,RT,2022,0.0432,4330,TRUE
+National,Domasi HC,SS,2007,0.343,207,TRUE
+National,Domasi HC,SS,2010,0.116,363,TRUE
+National,Domasi HC,RT,2011,0.0923,715,TRUE
+National,Domasi HC,RT,2017,0.0991,1221,TRUE
+National,Domasi HC,RT,2018,0.1019,1345,TRUE
+National,Domasi HC,RT,2019,0.0844,1102,TRUE
+National,Domasi HC,RT,2020,0.0854,1042,TRUE
+National,Domasi HC,RT,2021,0.0658,1109,TRUE
+National,Domasi HC,RT,2022,0.069,1363,TRUE
+National,Gawanani HC,SS,1994,0.16,100,TRUE
+National,Gawanani HC,SS,1996,0.16,145,TRUE
+National,Gawanani HC,SS,1997,0.127,134,TRUE
+National,Gawanani HC,SS,1998,0.149,114,TRUE
+National,Gawanani HC,SS,2001,0.133,135,TRUE
+National,Gawanani HC,SS,2003,0.17,206,TRUE
+National,Gawanani HC,SS,2005,0.15,301,TRUE
+National,Gawanani HC,SS,2007,0.121,207,TRUE
+National,Gawanani HC,SS,2010,0.1016,374,TRUE
+National,Gawanani HC,RT,2012,0.0933,772,TRUE
+National,Gawanani HC,RT,2015,0.0969,609,TRUE
+National,Gawanani HC,RT,2016,0.0781,666,TRUE
+National,Gawanani HC,RT,2017,0.0791,657,TRUE
+National,Gawanani HC,RT,2018,0.0699,672,TRUE
+National,Gawanani HC,RT,2019,0.0948,591,TRUE
+National,Gawanani HC,RT,2020,0.0879,785,TRUE
+National,Gawanani HC,RT,2021,0.0743,700,TRUE
+National,Gawanani HC,RT,2022,0.0579,760,TRUE
+National,Kalemba HC,SS,2007,0.205,190,TRUE
+National,Kalemba HC,SS,2010,0.1623,302,TRUE
+National,Kalemba HC,RT,2011,0.1676,716,TRUE
+National,Kalemba HC,RT,2013,0.129,1217,TRUE
+National,Kalemba HC,RT,2014,0.1403,1169,TRUE
+National,Kalemba HC,RT,2015,0.1827,1341,TRUE
+National,Kalemba HC,RT,2016,0.1686,1014,TRUE
+National,Kalemba HC,RT,2017,0.1565,786,TRUE
+National,Kalemba HC,RT,2018,0.1683,1331,TRUE
+National,Kalemba HC,RT,2019,0.1433,1312,TRUE
+National,Kalemba HC,RT,2020,0.1325,1336,TRUE
+National,Kalemba HC,RT,2021,0.1352,1198,TRUE
+National,Kalemba HC,RT,2022,0.1191,1402,TRUE
+National,Kamboni HC,SS,1994,0.069,101,TRUE
+National,Kamboni HC,SS,1997,0.067,75,TRUE
+National,Kamboni HC,SS,1999,0.029,171,TRUE
+National,Kamboni HC,SS,2001,0.051,158,TRUE
+National,Kamboni HC,SS,2003,0.067,238,TRUE
+National,Kamboni HC,SS,2005,0.064,297,TRUE
+National,Kamboni HC,SS,2007,0.072,319,TRUE
+National,Kamboni HC,RT,2011,0.019,475,TRUE
+National,Kamboni HC,RT,2012,0.024,865,TRUE
+National,Kamboni HC,RT,2015,0.0249,844,TRUE
+National,Kapiri HC,SS,2007,0.063,300,TRUE
+National,Kapiri HC,SS,2010,0.055,328,TRUE
+National,Kapiri HC,RT,2015,0.047,2469,TRUE
+National,Kapiri HC,RT,2016,0.0445,2269,TRUE
+National,Kapiri HC,RT,2017,0.0434,2326,TRUE
+National,Kapiri HC,RT,2018,0.0447,2441,TRUE
+National,Kapiri HC,RT,2019,0.032,2220,TRUE
+National,Kapiri HC,RT,2020,0.0349,2208,TRUE
+National,Kapiri HC,RT,2021,0.0284,2432,TRUE
+National,Kapiri HC,RT,2022,0.0262,2484,TRUE
+National,Kapolo HC,SS,1994,0.083,84,TRUE
+National,Kapolo HC,SS,1995,0.07,94,TRUE
+National,Kapolo HC,SS,1996,0.02,87,TRUE
+National,Kapolo HC,SS,1998,0.066,136,TRUE
+National,Kapolo HC,SS,2001,0.121,190,TRUE
+National,Kapolo HC,SS,2005,0.127,307,TRUE
+National,Kapolo HC,SS,2007,0.127,323,TRUE
+National,Kapolo HC,SS,2010,0.101,357,TRUE
+National,Kapolo HC,RT,2011,0.067,1035,TRUE
+National,Kapolo HC,RT,2012,0.092,1483,TRUE
+National,Kapolo HC,RT,2013,0.0487,1581,TRUE
+National,Kapolo HC,RT,2014,0.0541,1534,TRUE
+National,Kapolo HC,RT,2015,0.072,1806,TRUE
+National,Kapolo HC,RT,2016,0.0717,1563,TRUE
+National,Kapolo HC,RT,2017,0.0578,1645,TRUE
+National,Kapolo HC,RT,2018,0.0648,1388,TRUE
+National,Kapolo HC,RT,2019,0.0509,1199,TRUE
+National,Kapolo HC,RT,2020,0.053,1359,TRUE
+National,Kapolo HC,RT,2021,0.0422,1446,TRUE
+National,Kapolo HC,RT,2022,0.0427,1054,TRUE
+National,Karonga,SS,2007,0.121,413,TRUE
+National,Karonga,SS,2010,0.125,496,TRUE
+National,Karonga,RT,2011,0.103,1334,TRUE
+National,Karonga,RT,2012,0.092,2437,TRUE
+National,Karonga,RT,2013,0.0781,2524,TRUE
+National,Karonga,RT,2014,0.0746,1850,TRUE
+National,Karonga,RT,2015,0.0895,2725,TRUE
+National,Karonga,RT,2016,0.0829,3185,TRUE
+National,Karonga,RT,2017,0.0751,2890,TRUE
+National,Karonga,RT,2018,0.0769,3275,TRUE
+National,Karonga,RT,2019,0.0704,3594,TRUE
+National,Karonga,RT,2020,0.0729,3843,TRUE
+National,Karonga,RT,2021,0.0654,4466,TRUE
+National,Karonga,RT,2022,0.0583,3945,TRUE
+National,Kasina HC,SS,1994,0.07,100,TRUE
+National,Kasina HC,SS,1996,0.07,126,TRUE
+National,Kasina HC,SS,1997,0.055,55,TRUE
+National,Kasina HC,SS,1998,0.045,76,TRUE
+National,Kasina HC,SS,1999,0.045,110,TRUE
+National,Kasina HC,SS,2001,0.05,161,TRUE
+National,Kasina HC,SS,2003,0.072,153,TRUE
+National,Kasina HC,SS,2005,0.083,300,TRUE
+National,Kasina HC,SS,2007,0.065,260,TRUE
+National,Kasina HC,SS,2010,0.076,302,TRUE
+National,Kasina HC,RT,2012,0.033,916,TRUE
+National,Kasina HC,RT,2013,0.0216,1064,TRUE
+National,Kasina HC,RT,2014,0.0317,1073,TRUE
+National,Kasina HC,RT,2015,0.037,1161,TRUE
+National,Kasina HC,RT,2016,0.0168,950,TRUE
+National,Kasina HC,RT,2017,0.0288,867,TRUE
+National,Kasina HC,RT,2018,0.0281,998,TRUE
+National,Kasina HC,RT,2019,0.0291,1100,TRUE
+National,Kasina HC,RT,2020,0.0203,1182,TRUE
+National,Kasina HC,RT,2021,0.0379,1239,TRUE
+National,Kasina HC,RT,2022,0.0254,1260,TRUE
+National,Kasinje HC,SS,2007,0.082,294,TRUE
+National,Kasinje HC,SS,2010,0.088,297,TRUE
+National,Kasinje HC,RT,2016,0.0666,1803,TRUE
+National,Kasinje HC,RT,2017,0.054,1834,TRUE
+National,Kasinje HC,RT,2018,0.0435,2067,TRUE
+National,Kasinje HC,RT,2019,0.0418,1772,TRUE
+National,Kasinje HC,RT,2020,0.0428,1867,TRUE
+National,Kasinje HC,RT,2021,0.0291,1614,TRUE
+National,Kasinje HC,RT,2022,0.0301,1825,TRUE
+National,Kasungu,SS,2007,0.066,500,TRUE
+National,Kasungu,SS,2010,0.085,577,TRUE
+National,Kasungu,RT,2011,0.097,2052,TRUE
+National,Kasungu,RT,2012,0.076,3847,TRUE
+National,Kasungu,RT,2014,0.0796,3051,TRUE
+National,Kasungu,RT,2015,0.0693,4100,TRUE
+National,Kasungu,RT,2016,0.0756,4496,TRUE
+National,Kasungu,RT,2017,0.0619,4589,TRUE
+National,Kasungu,RT,2018,0.0681,4599,TRUE
+National,Kasungu,RT,2019,0.0683,4159,TRUE
+National,Kasungu,RT,2020,0.0658,4754,TRUE
+National,Kasungu,RT,2021,0.0607,4336,TRUE
+National,Kasungu,RT,2022,0.0484,4134,TRUE
+National,Khombedza HC,SS,2007,0.033,300,TRUE
+National,Khombedza HC,SS,2010,0.03,301,TRUE
+National,Khombedza HC,RT,2014,0.0375,1895,TRUE
+National,Khombedza HC,RT,2015,0.0426,2181,TRUE
+National,Khombedza HC,RT,2016,0.0384,2450,TRUE
+National,Khombedza HC,RT,2017,0.0422,3036,TRUE
+National,Khombedza HC,RT,2018,0.0347,2306,TRUE
+National,Khombedza HC,RT,2019,0.0286,1996,TRUE
+National,Khombedza HC,RT,2020,0.032,1877,TRUE
+National,Khombedza HC,RT,2021,0.0253,2138,TRUE
+National,Khombedza HC,RT,2022,0.0194,2062,TRUE
+National,Kunenekude HC,SS,2007,0.097,299,TRUE
+National,Kunenekude HC,SS,2010,0.063,221,TRUE
+National,Kunenekude HC,RT,2015,0.0257,1089,TRUE
+National,Kunenekude HC,RT,2016,0.0329,1033,TRUE
+National,Kunenekude HC,RT,2017,0.0212,1037,TRUE
+National,Kunenekude HC,RT,2018,0.0344,1016,TRUE
+National,Kunenekude HC,RT,2019,0.0248,1009,TRUE
+National,Kunenekude HC,RT,2020,0.0219,1051,TRUE
+National,Kunenekude HC,RT,2021,0.0266,976,TRUE
+National,Kunenekude HC,RT,2022,0.0268,970,TRUE
+National,Lilongwe,SS,1995,0.225,400,TRUE
+National,Lilongwe,SS,1996,0.27,400,TRUE
+National,Lilongwe,SS,1997,0.25,600,TRUE
+National,Lilongwe,SS,1998,0.26,800,TRUE
+National,Lilongwe,SS,1999,0.252,610,TRUE
+National,Lilongwe,SS,2001,0.201,602,TRUE
+National,Lilongwe,SS,2003,0.169,810,TRUE
+National,Lilongwe,SS,2005,0.186,867,TRUE
+National,Lilongwe,SS,2007,0.146,842,TRUE
+National,Lilongwe,SS,2010,0.1672,867,TRUE
+National,Lilongwe,RT,2011,0.153,4103,TRUE
+National,Lilongwe,RT,2012,0.137,11884,TRUE
+National,Lilongwe,RT,2013,0.1198,14463,TRUE
+National,Lilongwe,RT,2014,0.1121,13205,TRUE
+National,Lilongwe,RT,2015,0.1261,14006,TRUE
+National,Lilongwe,RT,2016,0.1087,14383,TRUE
+National,Lilongwe,RT,2017,0.1157,14141,TRUE
+National,Lilongwe,RT,2018,0.1057,14837,TRUE
+National,Lilongwe,RT,2019,0.0946,15089,TRUE
+National,Lilongwe,RT,2020,0.0991,14501,TRUE
+National,Lilongwe,RT,2021,0.0995,12108,TRUE
+National,Lilongwe,RT,2022,0.0852,12939,TRUE
+National,Machinga,SS,2007,0.263,520,TRUE
+National,Machinga,SS,2010,0.156,532,TRUE
+National,Machinga,RT,2011,0.1349,2395,TRUE
+National,Machinga,RT,2012,0.1326,3552,TRUE
+National,Machinga,RT,2014,0.1389,3895,TRUE
+National,Machinga,RT,2015,0.1274,4160,TRUE
+National,Machinga,RT,2016,0.1438,3908,TRUE
+National,Machinga,RT,2017,0.134,4247,TRUE
+National,Machinga,RT,2018,0.1192,4431,TRUE
+National,Machinga,RT,2019,0.1233,3600,TRUE
+National,Machinga,RT,2020,0.098,4828,TRUE
+National,Machinga,RT,2021,0.1007,4200,TRUE
+National,Machinga,RT,2022,0.0858,4299,TRUE
+National,Makhuwira HC,SS,2007,0.115,305,TRUE
+National,Makhuwira HC,SS,2010,0.106,320,TRUE
+National,Makhuwira HC,RT,2016,0.0862,1716,TRUE
+National,Makhuwira HC,RT,2017,0.0748,1978,TRUE
+National,Makhuwira HC,RT,2018,0.0896,1943,TRUE
+National,Makhuwira HC,RT,2019,0.0826,1331,TRUE
+National,Makhuwira HC,RT,2020,0.0795,1773,TRUE
+National,Makhuwira HC,RT,2021,0.0599,1369,TRUE
+National,Makhuwira HC,RT,2022,0.0627,1915,TRUE
+National,Malomo HC,SS,2007,0.036,305,TRUE
+National,Malomo HC,SS,2010,0.044,299,TRUE
+National,Malomo HC,RT,2016,0.0213,1644,TRUE
+National,Malomo HC,RT,2017,0.0202,1829,TRUE
+National,Malomo HC,RT,2018,0.0245,1593,TRUE
+National,Malomo HC,RT,2019,0.0202,1632,TRUE
+National,Malomo HC,RT,2020,0.0243,1438,TRUE
+National,Malomo HC,RT,2021,0.0194,1440,TRUE
+National,Malomo HC,RT,2022,0.0139,1439,TRUE
+National,Mangochi,SS,1994,0.165,200,TRUE
+National,Mangochi,SS,1995,0.18,250,TRUE
+National,Mangochi,SS,1996,0.17,250,TRUE
+National,Mangochi,SS,1997,0.2,400,TRUE
+National,Mangochi,SS,1998,0.194,500,TRUE
+National,Mangochi,SS,2001,0.164,542,TRUE
+National,Mangochi,SS,2003,0.145,510,TRUE
+National,Mangochi,SS,2005,0.173,502,TRUE
+National,Mangochi,SS,2007,0.131,495,TRUE
+National,Mangochi,SS,2010,0.128,501,TRUE
+National,Mangochi,RT,2015,0.1212,6650,TRUE
+National,Mangochi,RT,2016,0.1173,7776,TRUE
+National,Mangochi,RT,2017,0.1099,7069,TRUE
+National,Mangochi,RT,2018,0.1093,8146,TRUE
+National,Mangochi,RT,2019,0.112,7101,TRUE
+National,Mangochi,RT,2020,0.0986,6626,TRUE
+National,Mangochi,RT,2021,0.1068,6507,TRUE
+National,Mangochi,RT,2022,0.0839,7084,TRUE
+National,Matawale,SS,2007,0.154,785,TRUE
+National,Matawale,SS,2010,0.178,617,TRUE
+National,Matawale,RT,2011,0.1657,821,TRUE
+National,Matawale,RT,2012,0.1408,1633,TRUE
+National,Matawale,RT,2013,0.1498,1622,TRUE
+National,Matawale,RT,2014,0.1562,1613,TRUE
+National,Matawale,RT,2015,0.1397,1782,TRUE
+National,Matawale,RT,2016,0.1425,1916,TRUE
+National,Matawale,RT,2017,0.1476,1904,TRUE
+National,Matawale,RT,2018,0.1394,2238,TRUE
+National,Matawale,RT,2019,0.1261,2117,TRUE
+National,Matawale,RT,2020,0.1149,2429,TRUE
+National,Matawale,RT,2021,0.0981,2171,TRUE
+National,Matawale,RT,2022,0.0844,2452,TRUE
+National,Mbalachanda HC,SS,1994,0.07,100,TRUE
+National,Mbalachanda HC,SS,1995,0.073,124,TRUE
+National,Mbalachanda HC,SS,1996,0.059,102,TRUE
+National,Mbalachanda HC,SS,1997,0.082,134,TRUE
+National,Mbalachanda HC,SS,1999,0.095,137,TRUE
+National,Mbalachanda HC,SS,2001,0.105,172,TRUE
+National,Mbalachanda HC,SS,2003,0.145,193,TRUE
+National,Mbalachanda HC,SS,2005,0.144,312,TRUE
+National,Mbalachanda HC,SS,2007,0.087,299,TRUE
+National,Mbalachanda HC,SS,2010,0.049,244,TRUE
+National,Mbalachanda HC,RT,2011,0.079,304,TRUE
+National,Mbalachanda HC,RT,2015,0.0609,476,TRUE
+National,Mbalachanda HC,RT,2016,0.0482,498,TRUE
+National,Mbalachanda HC,RT,2017,0.0409,489,TRUE
+National,Mbalachanda HC,RT,2018,0.046,500,TRUE
+National,Mbalachanda HC,RT,2019,0.0319,501,TRUE
+National,Mbalachanda HC,RT,2020,0.0291,413,TRUE
+National,Mbela HC,SS,2007,0.155,322,TRUE
+National,Mbela HC,SS,2010,0.093,312,TRUE
+National,Mbela HC,RT,2014,0.0853,1735,TRUE
+National,Mbela HC,RT,2015,0.0816,1974,TRUE
+National,Mbela HC,RT,2016,0.1021,1802,TRUE
+National,Mbela HC,RT,2017,0.0759,1883,TRUE
+National,Mbela HC,RT,2018,0.0747,2009,TRUE
+National,Mbela HC,RT,2019,0.058,1913,TRUE
+National,Mbela HC,RT,2020,0.0697,1995,TRUE
+National,Mbela HC,RT,2021,0.0711,1941,TRUE
+National,Mbela HC,RT,2022,0.0512,1971,TRUE
+National,Mchinji,SS,1994,0.13,100,TRUE
+National,Mchinji,SS,1995,0.13,250,TRUE
+National,Mchinji,SS,1996,0.16,250,TRUE
+National,Mchinji,SS,1997,0.177,350,TRUE
+National,Mchinji,SS,1998,0.17,500,TRUE
+National,Mchinji,SS,2003,0.181,548,TRUE
+National,Mchinji,SS,2005,0.148,522,TRUE
+National,Mchinji,SS,2007,0.088,500,TRUE
+National,Mchinji,SS,2010,0.131,510,TRUE
+National,Mchinji,RT,2011,0.096,925,TRUE
+National,Mchinji,RT,2012,0.089,1736,TRUE
+National,Mchinji,RT,2014,0.101,2672,TRUE
+National,Mchinji,RT,2015,0.0847,2703,TRUE
+National,Mchinji,RT,2016,0.0862,2924,TRUE
+National,Mchinji,RT,2017,0.0829,2993,TRUE
+National,Mchinji,RT,2018,0.077,2742,TRUE
+National,Mchinji,RT,2019,0.0836,2848,TRUE
+National,Mchinji,RT,2020,0.0739,2842,TRUE
+National,Mchinji,RT,2021,0.0631,2550,TRUE
+National,Mchinji,RT,2022,0.0557,2587,TRUE
+National,Mianga HC,SS,1994,0.19,100,TRUE
+National,Mianga HC,SS,1997,0.138,65,TRUE
+National,Mianga HC,SS,1998,0.209,105,TRUE
+National,Mianga HC,SS,1999,0.217,106,TRUE
+National,Mianga HC,SS,2001,0.169,201,TRUE
+National,Mianga HC,SS,2003,0.232,203,TRUE
+National,Mianga HC,SS,2005,0.193,321,TRUE
+National,Mianga HC,RT,2012,0.0853,633,TRUE
+National,Mianga HC,RT,2014,0.0924,855,TRUE
+National,Mianga HC,RT,2015,0.083,759,TRUE
+National,Mianga HC,RT,2016,0.0795,755,TRUE
+National,Mianga HC,RT,2017,0.0525,609,TRUE
+National,Mianga HC,RT,2018,0.1667,84,TRUE
+National,Mianga HC,RT,2019,0.0943,721,TRUE
+National,Mianga HC,RT,2020,0.0775,877,TRUE
+National,Mianga HC,RT,2021,0.0845,805,TRUE
+National,Mianga HC,RT,2022,0.06,950,TRUE
+National,Milepa HC,SS,1994,0.18,100,TRUE
+National,Milepa HC,SS,1995,0.18,147,TRUE
+National,Milepa HC,SS,1996,0.17,150,TRUE
+National,Milepa HC,SS,1997,0.234,158,TRUE
+National,Milepa HC,SS,1998,0.149,174,TRUE
+National,Milepa HC,SS,1999,0.141,191,TRUE
+National,Milepa HC,SS,2001,0.158,202,TRUE
+National,Milepa HC,SS,2003,0.151,205,TRUE
+National,Milepa HC,SS,2005,0.186,311,TRUE
+National,Milepa HC,SS,2007,0.17,288,TRUE
+National,Milepa HC,SS,2010,0.165,315,TRUE
+National,Milepa HC,RT,2011,0.1994,727,TRUE
+National,Milepa HC,RT,2012,0.2057,1410,TRUE
+National,Milepa HC,RT,2013,0.1518,1324,TRUE
+National,Milepa HC,RT,2014,0.1481,1323,TRUE
+National,Milepa HC,RT,2015,0.1517,1483,TRUE
+National,Milepa HC,RT,2016,0.1525,1095,TRUE
+National,Milepa HC,RT,2017,0.1474,1323,TRUE
+National,Milepa HC,RT,2018,0.1462,1211,TRUE
+National,Milepa HC,RT,2019,0.1055,834,TRUE
+National,Milepa HC,RT,2020,0.1149,1062,TRUE
+National,Milepa HC,RT,2021,0.1141,973,TRUE
+National,Milepa HC,RT,2022,0.1188,960,TRUE
+National,Mitundu HC,SS,2007,0.033,331,TRUE
+National,Mitundu HC,SS,2010,0.07,300,TRUE
+National,Mitundu HC,RT,2011,0.03,2302,TRUE
+National,Mitundu HC,RT,2012,0.03,4230,TRUE
+National,Mitundu HC,RT,2013,0.0303,5174,TRUE
+National,Mitundu HC,RT,2014,0.0368,4972,TRUE
+National,Mitundu HC,RT,2015,0.0391,4069,TRUE
+National,Mitundu HC,RT,2016,0.031,6520,TRUE
+National,Mitundu HC,RT,2017,0.0324,5124,TRUE
+National,Mitundu HC,RT,2018,0.021,5045,TRUE
+National,Mitundu HC,RT,2019,0.0277,4837,TRUE
+National,Mitundu HC,RT,2020,0.0275,4792,TRUE
+National,Mitundu HC,RT,2021,0.0288,3894,TRUE
+National,Mitundu HC,RT,2022,0.0223,4662,TRUE
+National,Mpemba HC,SS,2007,0.157,299,TRUE
+National,Mpemba HC,SS,2010,0.107,318,TRUE
+National,Mpemba HC,RT,2014,0.1096,1250,TRUE
+National,Mpemba HC,RT,2015,0.1131,1079,TRUE
+National,Mpemba HC,RT,2016,0.0967,1210,TRUE
+National,Mpemba HC,RT,2017,0.1176,927,TRUE
+National,Mpemba HC,RT,2018,0.0967,1386,TRUE
+National,Mpemba HC,RT,2019,0.0921,1205,TRUE
+National,Mpemba HC,RT,2020,0.0851,1175,TRUE
+National,Mpemba HC,RT,2021,0.0924,1169,TRUE
+National,Mpemba HC,RT,2022,0.0912,1481,TRUE
+National,Mponela,SS,2007,0.11,509,TRUE
+National,Mponela,SS,2010,0.055,542,TRUE
+National,Mponela,RT,2015,0.0291,3811,TRUE
+National,Mponela,RT,2016,0.0331,3624,TRUE
+National,Mponela,RT,2017,0.0287,3340,TRUE
+National,Mponela,RT,2018,0.0362,3430,TRUE
+National,Mponela,RT,2019,0.0311,3275,TRUE
+National,Mponela,RT,2020,0.0352,3380,TRUE
+National,Mponela,RT,2021,0.0348,2670,TRUE
+National,Mponela,RT,2022,0.0267,2921,TRUE
+National,Mulanje Mission Hospital,SS,1994,0.28,100,TRUE
+National,Mulanje Mission Hospital,SS,1995,0.29,250,TRUE
+National,Mulanje Mission Hospital,SS,1996,0.28,250,TRUE
+National,Mulanje Mission Hospital,SS,1997,0.261,398,TRUE
+National,Mulanje Mission Hospital,SS,1998,0.252,511,TRUE
+National,Mulanje Mission Hospital,SS,2001,0.241,497,TRUE
+National,Mulanje Mission Hospital,SS,2003,0.239,510,TRUE
+National,Mulanje Mission Hospital,SS,2005,0.235,524,TRUE
+National,Mulanje Mission Hospital,SS,2007,0.176,523,TRUE
+National,Mulanje Mission Hospital,SS,2010,0.198,526,TRUE
+National,Mulanje Mission Hospital,RT,2011,0.1423,1462,TRUE
+National,Mulanje Mission Hospital,RT,2012,0.1554,3024,TRUE
+National,Mulanje Mission Hospital,RT,2013,0.1501,2591,TRUE
+National,Mulanje Mission Hospital,RT,2014,0.1752,2592,TRUE
+National,Mulanje Mission Hospital,RT,2015,0.1624,2167,TRUE
+National,Mulanje Mission Hospital,RT,2016,0.1576,2221,TRUE
+National,Mulanje Mission Hospital,RT,2017,0.1598,2591,TRUE
+National,Mulanje Mission Hospital,RT,2018,0.1359,2604,TRUE
+National,Mulanje Mission Hospital,RT,2019,0.1183,2780,TRUE
+National,Mulanje Mission Hospital,RT,2020,0.1385,2808,TRUE
+National,Mulanje Mission Hospital,RT,2021,0.1213,2670,TRUE
+National,Mulanje Mission Hospital,RT,2022,0.104,2586,TRUE
+National,Mwansambo HC,SS,2007,0.089,305,TRUE
+National,Mwansambo HC,SS,2010,0.0719,292,TRUE
+National,Mwansambo HC,RT,2016,0.0191,995,TRUE
+National,Mwansambo HC,RT,2017,0.0221,1040,TRUE
+National,Mwansambo HC,RT,2018,0.0163,1106,TRUE
+National,Mwansambo HC,RT,2019,0.0174,1089,TRUE
+National,Mwansambo HC,RT,2020,0.0227,1147,TRUE
+National,Mwansambo HC,RT,2021,0.0104,961,TRUE
+National,Mwansambo HC,RT,2022,0.025,1002,TRUE
+National,Mwanza,SS,2007,0.259,444,TRUE
+National,Mwanza,SS,2010,0.1113,530,TRUE
+National,Mwanza,RT,2015,0.0834,3419,TRUE
+National,Mwanza,RT,2016,0.0989,3662,TRUE
+National,Mwanza,RT,2017,0.0898,3631,TRUE
+National,Mwanza,RT,2018,0.0886,3578,TRUE
+National,Mwanza,RT,2019,0.0675,3573,TRUE
+National,Mwanza,RT,2020,0.0932,3294,TRUE
+National,Mwanza,RT,2021,0.0689,3394,TRUE
+National,Mwanza,RT,2022,0.0546,3501,TRUE
+National,Mzimba,SS,2007,0.092,500,TRUE
+National,Mzimba,SS,2010,0.082,540,TRUE
+National,Mzimba,RT,2011,0.059,1611,TRUE
+National,Mzimba,RT,2012,0.066,2844,TRUE
+National,Mzimba,RT,2013,0.059,2930,TRUE
+National,Mzimba,RT,2014,0.0665,3100,TRUE
+National,Mzimba,RT,2015,0.0543,3076,TRUE
+National,Mzimba,RT,2016,0.061,3084,TRUE
+National,Mzimba,RT,2017,0.0441,3880,TRUE
+National,Mzimba,RT,2018,0.0651,5224,TRUE
+National,Mzimba,RT,2020,0.0499,3707,TRUE
+National,Mzuzu,SS,1994,0.212,250,TRUE
+National,Mzuzu,SS,1995,0.185,400,TRUE
+National,Mzuzu,SS,1996,0.214,397,TRUE
+National,Mzuzu,SS,1997,0.17,600,TRUE
+National,Mzuzu,SS,1998,0.185,595,TRUE
+National,Mzuzu,SS,2001,0.186,597,TRUE
+National,Mzuzu,SS,2003,0.208,846,TRUE
+National,Mzuzu,SS,2005,0.155,849,TRUE
+National,Mzuzu,SS,2007,0.138,812,TRUE
+National,Mzuzu,SS,2010,0.1099,801,TRUE
+National,Mzuzu,RT,2015,0.0706,5102,TRUE
+National,Mzuzu,RT,2016,0.0978,5769,TRUE
+National,Mzuzu,RT,2017,0.0988,6136,TRUE
+National,Mzuzu,RT,2018,0.0923,5729,TRUE
+National,Mzuzu,RT,2019,0.0828,5582,TRUE
+National,Mzuzu,RT,2020,0.0835,4767,TRUE
+National,Mzuzu,RT,2021,0.08,5609,TRUE
+National,Mzuzu,RT,2022,0.0763,5390,TRUE
+National,Neno,SS,2007,0.149,289,TRUE
+National,Neno,SS,2010,0.125,297,TRUE
+National,Neno,RT,2011,0.1161,620,TRUE
+National,Neno,RT,2013,0.0731,1217,TRUE
+National,Neno,RT,2014,0.082,1171,TRUE
+National,Neno,RT,2015,0.0865,971,TRUE
+National,Neno,RT,2016,0.0594,1060,TRUE
+National,Neno,RT,2017,0.0538,892,TRUE
+National,Neno,RT,2018,0.0627,1100,TRUE
+National,Neno,RT,2019,0.0775,877,TRUE
+National,Neno,RT,2021,0.0723,899,TRUE
+National,Nkhatabay,SS,1994,0.205,200,TRUE
+National,Nkhatabay,SS,1995,0.22,250,TRUE
+National,Nkhatabay,SS,1997,0.205,400,TRUE
+National,Nkhatabay,SS,1998,0.25,400,TRUE
+National,Nkhatabay,SS,1999,0.216,476,TRUE
+National,Nkhatabay,SS,2001,0.186,510,TRUE
+National,Nkhatabay,SS,2005,0.123,520,TRUE
+National,Nkhatabay,SS,2007,0.096,458,TRUE
+National,Nkhatabay,SS,2010,0.1037,511,TRUE
+National,Nkhatabay,RT,2011,0.09,769,TRUE
+National,Nkhatabay,RT,2012,0.07,1563,TRUE
+National,Nkhatabay,RT,2013,0.0707,1457,TRUE
+National,Nkhatabay,RT,2014,0.0854,1429,TRUE
+National,Nkhatabay,RT,2015,0.0734,1457,TRUE
+National,Nkhatabay,RT,2016,0.0692,1359,TRUE
+National,Nkhatabay,RT,2017,0.0673,1753,TRUE
+National,Nkhatabay,RT,2018,0.0626,1885,TRUE
+National,Nkhatabay,RT,2019,0.0657,1721,TRUE
+National,Nkhatabay,RT,2020,0.0705,1673,TRUE
+National,Nkhatabay,RT,2021,0.0591,1895,TRUE
+National,Nkhatabay,RT,2022,0.0602,1877,TRUE
+National,Nkhotakota,SS,1994,0.155,200,TRUE
+National,Nkhotakota,SS,1995,0.18,250,TRUE
+National,Nkhotakota,SS,1996,0.17,250,TRUE
+National,Nkhotakota,SS,1997,0.163,404,TRUE
+National,Nkhotakota,SS,1998,0.228,500,TRUE
+National,Nkhotakota,SS,1999,0.228,448,TRUE
+National,Nkhotakota,SS,2001,0.191,528,TRUE
+National,Nkhotakota,SS,2003,0.099,272,TRUE
+National,Nkhotakota,SS,2005,0.122,500,TRUE
+National,Nkhotakota,SS,2010,0.073,505,TRUE
+National,Nkhotakota,RT,2011,0.058,1409,TRUE
+National,Nkhotakota,RT,2014,0.0526,3079,TRUE
+National,Nkhotakota,RT,2015,0.0597,3766,TRUE
+National,Nkhotakota,RT,2016,0.0489,3786,TRUE
+National,Nkhotakota,RT,2017,0.0519,3837,TRUE
+National,Nkhotakota,RT,2018,0.0512,3631,TRUE
+National,Nkhotakota,RT,2019,0.0375,3678,TRUE
+National,Nkhotakota,RT,2020,0.0253,3634,TRUE
+National,Nkhotakota,RT,2021,0.0272,3867,TRUE
+National,Nkhotakota,RT,2022,0.0286,4332,TRUE
+National,Nkhulambe HC,SS,2007,0.319,304,TRUE
+National,Nkhulambe HC,SS,2010,0.133,376,TRUE
+National,Nkhulambe HC,RT,2015,0.1335,1588,TRUE
+National,Nkhulambe HC,RT,2016,0.124,1645,TRUE
+National,Nkhulambe HC,RT,2017,0.1374,1521,TRUE
+National,Nkhulambe HC,RT,2018,0.1419,1720,TRUE
+National,Nkhulambe HC,RT,2019,0.1344,1510,TRUE
+National,Nkhulambe HC,RT,2020,0.1109,1470,TRUE
+National,Nkhulambe HC,RT,2021,0.1079,1325,TRUE
+National,Nkhulambe HC,RT,2022,0.0825,1479,TRUE
+National,Nsanje,SS,1995,0.096,251,TRUE
+National,Nsanje,SS,1996,0.172,250,TRUE
+National,Nsanje,SS,1997,0.213,394,TRUE
+National,Nsanje,SS,1998,0.236,500,TRUE
+National,Nsanje,SS,1999,0.26,427,TRUE
+National,Nsanje,SS,2005,0.231,429,TRUE
+National,Nsanje,SS,2007,0.191,512,TRUE
+National,Nsanje,SS,2010,0.163,504,TRUE
+National,Nsanje,RT,2015,0.1194,2562,TRUE
+National,Nsanje,RT,2016,0.1109,3364,TRUE
+National,Nsanje,RT,2017,0.1218,3004,TRUE
+National,Nsanje,RT,2018,0.1099,3221,TRUE
+National,Nsanje,RT,2019,0.1177,3432,TRUE
+National,Nsanje,RT,2020,0.0979,3873,TRUE
+National,Nsanje,RT,2021,0.1149,3403,TRUE
+National,Nsanje,RT,2022,0.0891,4095,TRUE
+National,Ntcheu,SS,1994,0.18,200,TRUE
+National,Ntcheu,SS,1995,0.168,250,TRUE
+National,Ntcheu,SS,1997,0.225,400,TRUE
+National,Ntcheu,SS,1998,0.208,500,TRUE
+National,Ntcheu,SS,2001,0.186,515,TRUE
+National,Ntcheu,SS,2003,0.22,500,TRUE
+National,Ntcheu,SS,2005,0.22,500,TRUE
+National,Ntcheu,SS,2007,0.199,498,TRUE
+National,Ntcheu,SS,2010,0.135,510,TRUE
+National,Ntcheu,RT,2011,0.11,1335,TRUE
+National,Ntcheu,RT,2012,0.124,2707,TRUE
+National,Ntcheu,RT,2014,0.0783,4281,TRUE
+National,Ntcheu,RT,2015,0.0949,3964,TRUE
+National,Ntcheu,RT,2016,0.1192,3918,TRUE
+National,Ntcheu,RT,2017,0.0838,3688,TRUE
+National,Ntcheu,RT,2018,0.0771,3774,TRUE
+National,Ntcheu,RT,2019,0.0871,3500,TRUE
+National,Ntcheu,RT,2020,0.0847,3683,TRUE
+National,Ntcheu,RT,2021,0.0862,3352,TRUE
+National,Ntcheu,RT,2022,0.0737,3407,TRUE
+National,Ntchisi,SS,2007,0.099,465,TRUE
+National,Ntchisi,SS,2010,0.062,518,TRUE
+National,Ntchisi,RT,2011,0.033,1078,TRUE
+National,Ntchisi,RT,2012,0.042,2117,TRUE
+National,Ntchisi,RT,2013,0.0294,2380,TRUE
+National,Ntchisi,RT,2014,0.0271,2142,TRUE
+National,Ntchisi,RT,2015,0.0437,4001,TRUE
+National,Ntchisi,RT,2016,0.0451,3526,TRUE
+National,Ntchisi,RT,2017,0.0262,2934,TRUE
+National,Ntchisi,RT,2018,0.0308,3739,TRUE
+National,Ntchisi,RT,2019,0.0263,2927,TRUE
+National,Ntchisi,RT,2020,0.0245,2897,TRUE
+National,Ntchisi,RT,2021,0.0298,2319,TRUE
+National,Ntchisi,RT,2022,0.0269,2194,TRUE
+National,Nthalire HC,SS,2007,0.02,299,TRUE
+National,Nthalire HC,SS,2010,0.027,378,TRUE
+National,Nthalire HC,RT,2016,0.0224,1386,TRUE
+National,Nthalire HC,RT,2017,0.0244,1435,TRUE
+National,Nthalire HC,RT,2018,0.014,1217,TRUE
+National,Nthalire HC,RT,2019,0.0192,1302,TRUE
+National,Nthalire HC,RT,2020,0.0163,1290,TRUE
+National,Nthalire HC,RT,2021,0.0177,1353,TRUE
+National,Nthalire HC,RT,2022,0.0172,1450,TRUE
+National,Phalombe,SS,2007,0.269,350,TRUE
+National,Phalombe,SS,2010,0.186,542,TRUE
+National,Phalombe,RT,2016,0.151,1987,TRUE
+National,Phalombe,RT,2017,0.1385,2058,TRUE
+National,Phalombe,RT,2018,0.1268,1853,TRUE
+National,Phalombe,RT,2020,0.1163,2441,TRUE
+National,Phalombe,RT,2021,0.1042,2304,TRUE
+National,Phalombe,RT,2022,0.085,2224,TRUE
+National,Rumphi,SS,1994,0.149,188,TRUE
+National,Rumphi,SS,1995,0.16,250,TRUE
+National,Rumphi,SS,1996,0.13,250,TRUE
+National,Rumphi,SS,1997,0.185,400,TRUE
+National,Rumphi,SS,1998,0.125,400,TRUE
+National,Rumphi,SS,2001,0.135,540,TRUE
+National,Rumphi,SS,2003,0.162,517,TRUE
+National,Rumphi,SS,2005,0.135,539,TRUE
+National,Rumphi,SS,2007,0.11,500,TRUE
+National,Rumphi,SS,2010,0.119,529,TRUE
+National,Rumphi,RT,2011,0.092,828,TRUE
+National,Rumphi,RT,2012,0.079,1717,TRUE
+National,Rumphi,RT,2013,0.0825,1782,TRUE
+National,Rumphi,RT,2015,0.0675,1482,TRUE
+National,Rumphi,RT,2016,0.0782,1278,TRUE
+National,Rumphi,RT,2017,0.07,1515,TRUE
+National,Rumphi,RT,2018,0.0815,1461,TRUE
+National,Rumphi,RT,2019,0.0677,1522,TRUE
+National,Rumphi,RT,2020,0.0701,1313,TRUE
+National,Rumphi,RT,2021,0.0694,1456,TRUE
+National,Rumphi,RT,2022,0.0576,1389,TRUE
+National,Salima,SS,2007,0.166,501,TRUE
+National,Salima,SS,2010,0.119,513,TRUE
+National,Salima,RT,2011,0.108,1810,TRUE
+National,Salima,RT,2012,0.101,3504,TRUE
+National,Salima,RT,2015,0.0973,3411,TRUE
+National,Salima,RT,2016,0.0858,3428,TRUE
+National,Salima,RT,2017,0.0857,6185,TRUE
+National,Salima,RT,2018,0.0791,5460,TRUE
+National,Salima,RT,2021,0.0898,4398,TRUE
+National,Salima,RT,2022,0.0598,4061,TRUE
+National,Thonje HC,SS,1994,0.03,100,TRUE
+National,Thonje HC,SS,1995,0.047,150,TRUE
+National,Thonje HC,SS,1996,0.047,150,TRUE
+National,Thonje HC,SS,1997,0.084,119,TRUE
+National,Thonje HC,SS,1998,0.065,110,TRUE
+National,Thonje HC,SS,1999,0.094,191,TRUE
+National,Thonje HC,SS,2001,0.045,156,TRUE
+National,Thonje HC,SS,2003,0.114,219,TRUE
+National,Thonje HC,SS,2005,0.063,205,TRUE
+National,Thonje HC,SS,2007,0.059,236,TRUE
+National,Thonje HC,SS,2010,0.071,310,TRUE
+National,Thonje HC,RT,2016,0.0158,570,TRUE
+National,Thonje HC,RT,2017,0.0263,532,TRUE
+National,Thonje HC,RT,2018,0.0266,602,TRUE
+National,Thyolo,SS,2007,0.38,510,TRUE
+National,Thyolo,SS,2010,0.252,540,TRUE
+National,Thyolo,RT,2011,0.1784,1710,TRUE
+National,Thyolo,RT,2012,0.1869,3270,TRUE
+National,Thyolo,RT,2013,0.195,2862,TRUE
+National,Thyolo,RT,2014,0.1998,2898,TRUE
+National,Thyolo,RT,2016,0.1722,8566,TRUE
+National,Thyolo,RT,2017,0.1762,5169,TRUE
+National,Thyolo,RT,2018,0.1793,3234,TRUE
+National,Thyolo,RT,2019,0.1419,1995,TRUE
+National,Thyolo,RT,2020,0.1075,8532,TRUE
+National,Thyolo,RT,2021,0.0665,6089,TRUE
+National,Thyolo,RT,2022,0.104,3289,TRUE
