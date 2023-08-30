@@ -202,6 +202,8 @@ class GoalsFitter:
             match key:
                 case CONST.FIT_INITIAL_PREV:
                     self.hivsim.epi_pars[CONST.EPI_INITIAL_PREV] = params[idx]
+                case CONST.FIT_TRANSMIT_F2M:
+                    self.hivsim.epi_pars[CONST.EPI_TRANSMIT_F2M] = params[idx]
                 case CONST.FIT_TRANSMIT_M2F:
                     self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F] = params[idx]
                 case CONST.FIT_LT_PARTNER_F:

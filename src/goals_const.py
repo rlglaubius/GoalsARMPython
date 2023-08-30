@@ -54,6 +54,7 @@ LHOOD_VARINFL_CENSUS = "var.infl.census"
 
 ## FittingInputs tab tags
 FIT_INITIAL_PREV        = EPI_INITIAL_PREV
+FIT_TRANSMIT_F2M        = EPI_TRANSMIT_F2M
 FIT_TRANSMIT_M2F        = EPI_TRANSMIT_M2F
 FIT_LT_PARTNER_F        = "lt.partner.f"
 FIT_LT_PARTNER_M        = "lt.partner.m"
