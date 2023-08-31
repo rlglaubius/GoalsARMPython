@@ -1,10 +1,8 @@
 import os
 import pandas as pd
 import sys
-import src.goals_const as CONST
 import time
 from src.goals_model import Model
-from src.goals_results import Results
 
 ## Convert a numpy ndarray to a long data frame
 ## @param array a numpy ndarray
@@ -28,10 +26,6 @@ def main(xlsx_name, data_path):
     model.project(2030)
     t3 = time.time()
 
-    results = Results(model)
-    pop = results.bigpop()
-    
-    pop_frame = array2frame(pop, ['Year', 'Sex', 'Age'])
     birth_frame = array2frame(model.births, ['Year', 'Sex'])
     pop_child_neg = array2frame(model.pop_child_neg, ['Year', 'Sex', 'Age'])
     pop_child_hiv = array2frame(model.pop_child_hiv, ['Year', 'Sex', 'Age', 'CD4', 'ART'])
@@ -40,7 +34,6 @@ def main(xlsx_name, data_path):
     new_hiv = array2frame(model.new_infections, ['Year', 'Sex', 'Age', 'Risk'])
     t4 = time.time()
 
-    pop_frame.to_csv(data_path + "/bigpop.csv")
     birth_frame.to_csv(data_path + "/births.csv")
     pop_child_neg.to_csv(data_path + "/child-neg.csv")
     pop_child_hiv.to_csv(data_path + "/child-hiv.csv")

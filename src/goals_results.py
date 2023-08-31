@@ -74,56 +74,49 @@ class Results:
 
         return pop
     
-    def _pop_aggregate(self, age_breaks=[0, np.inf]):
-        """! Return a copy of the population with age and circumcision status aggregated away"""
-        dict_sex = {CONST.SEX_FEMALE : CONST.SEX_FEMALE,
-                    CONST.SEX_MALE_U : CONST.SEX_MALE,
-                    CONST.SEX_MALE_C : CONST.SEX_MALE}
-
+    def _pop_remap_age(self, age_breaks = [0, np.inf]):
+        """! Return a copy of the population with ages replaced by age groups"""
         pop = self._pop.copy()
         pop[CONST.STR_AGE] = pd.cut(pop[CONST.STR_AGE], age_breaks, include_lowest=True, right=False)
-        pop[CONST.STR_SEX] = pop[CONST.STR_SEX].map(dict_sex)
         return pop
     
+    def _pop_remap_age_gender(self, age_breaks = [0, np.inf]):
+        """! Return a copy of the population with ages replaced by age groups
+        and sex + male circumcision status replaced by gender """
+        pop = self._pop_remap_age(age_breaks)
+        pop[CONST.STR_GENDER] = ((pop[CONST.STR_POP] == CONST.POP_TGW) | (pop[CONST.STR_SEX] == CONST.SEX_FEMALE))
+        pop[CONST.STR_GENDER] = pop[CONST.STR_GENDER].map({True  : CONST.GENDER_FEM,
+                                                           False : CONST.GENDER_MSC})
+        pop.drop(CONST.STR_SEX, axis=1)
+        return pop
+
+    def _pop_remap_age_sex(self, age_breaks = [0, np.inf]):
+        """! Return a copy of the population with ages replaced by age groups
+        and sex + male circumcision status replaced by sex alone """
+        pop = self._pop_remap_age(age_breaks)
+        pop[CONST.STR_SEX] = pop[CONST.STR_SEX].map({CONST.SEX_FEMALE : CONST.SEX_FEMALE,
+                                                     CONST.SEX_MALE_U : CONST.SEX_MALE,
+                                                     CONST.SEX_MALE_C : CONST.SEX_MALE})
+        return pop
+        
     def _series2df(self, series):
         """! Convert a pandas series to a pandas dataframe. This converts
         indices into columns to allow R style plotting and analysis"""
         return series.to_frame().reset_index()
-
-    ## TODO: phase out bigpop. pop_total does the same job more flexibly with less code
-    def bigpop(self):
-        """! Calculate the total population by year, sex, age"""
-        rval = np.zeros((self._years, CONST.N_SEX, CONST.N_AGE), dtype=self._dtype, order=self._order)
-
-        ## Add up children. We must sum males across circumcision states
-        rval[:, CONST.SEX_MALE, CONST.AGE_CHILD_MIN:(CONST.AGE_CHILD_MAX+1)] \
-            = self._model.pop_child_neg[:,CONST.SEX_MALE_U:,:].sum((1)) \
-            + self._model.pop_child_hiv[:,CONST.SEX_MALE_U:,:,:,:].sum((1,3,4))
-        rval[:, CONST.SEX_FEMALE, CONST.AGE_CHILD_MIN:(CONST.AGE_CHILD_MAX+1)] \
-            = self._model.pop_child_neg[:,CONST.SEX_FEMALE,:] \
-            + self._model.pop_child_hiv[:,CONST.SEX_FEMALE,:,:,:].sum((2,3))
-        
-        ## Add up adults. We must sum males across circumcision states
-        rval[:, CONST.SEX_MALE, CONST.AGE_ADULT_MIN:] \
-            = self._model.pop_adult_neg[:,CONST.SEX_MALE_U:,:,:].sum((1,3)) \
-            + self._model.pop_adult_hiv[:,CONST.SEX_MALE_U:,:,:,:,:].sum((1,3,4,5))
-        rval[:, CONST.SEX_FEMALE, CONST.AGE_ADULT_MIN:] \
-            = self._model.pop_adult_neg[:,CONST.SEX_FEMALE,:,:].sum((2)) \
-            + self._model.pop_adult_hiv[:,CONST.SEX_FEMALE,:,:,:,:].sum((2,3,4))
-        
-        return(rval)
     
     def pop_total(self, age_breaks=[0, np.inf]):
         """! Calculate the total population by year, sex, age"""
-        pop = self._pop_aggregate(age_breaks)
-        rval = pop.groupby([CONST.STR_YEAR, CONST.STR_SEX, CONST.STR_AGE])[CONST.STR_VALUE].sum()
+        pop = self._pop_remap_age_gender(age_breaks)
+        rval = pop.groupby([CONST.STR_YEAR, CONST.STR_GENDER, CONST.STR_AGE])[CONST.STR_VALUE].sum()
         return self._series2df(rval)
     
     def pop_risk(self, age_breaks=[0, np.inf]):
         """! Calculate the total population by year, sex, age, risk"""
-        aggr = self._pop_aggregate(age_breaks)
-        rval = aggr.groupby([CONST.STR_YEAR, CONST.STR_SEX, CONST.STR_AGE, CONST.STR_POP])[CONST.STR_VALUE].sum()
+        aggr = self._pop_remap_age_gender(age_breaks)
+        rval = aggr.groupby([CONST.STR_YEAR, CONST.STR_GENDER, CONST.STR_AGE, CONST.STR_POP])[CONST.STR_VALUE].sum()
         rval = self._series2df(rval)
+
         rval[CONST.STR_POP] = rval[CONST.STR_POP].astype("category")
         rval[CONST.STR_POP] = rval[CONST.STR_POP].cat.rename_categories(self.pop_strmap)
+
         return rval

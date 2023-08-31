@@ -88,6 +88,9 @@ N_SEX_MC = SEX_MC_MAX - SEX_MC_MIN + 1
 ## Map from sex and circumcision status (SEX_FEMALE, SEX_MALE_U, SEX_MALE_C) to sex alone
 sex = [SEX_FEMALE, SEX_MALE, SEX_MALE]
 
+GENDER_FEM = 0 # feminine
+GENDER_MSC = 1 # masculine
+
 ## +-+ Age constants +---------------------------------------------------------+
 AGE_MIN = 0
 AGE_MAX = 80
@@ -201,21 +204,28 @@ DIST_GAMMA     = 'Gamma'
 DIST_BETA      = 'Beta'
 
 ## +===+ Strings +=============================================================+
-STR_YEAR  = "Year"
-STR_SEX   = "Sex"
-STR_AGE   = "Age"
-STR_POP   = "Risk"
-STR_HIV   = "CD4"
-STR_DTX   = "DTX"
-STR_VALUE = "Value"
+STR_YEAR   = "Year"
+STR_SEX    = "Sex"
+STR_GENDER = "Gender"
+STR_AGE    = "Age"
+STR_POP    = "Risk"
+STR_HIV    = "CD4"
+STR_DTX    = "DTX"
+STR_VALUE  = "Value"
+
+STR_SEX_FEMALE = "Female"
+STR_SEX_MALE   = "Male"
+
+STR_GENDER_FEM = "Women"
+STR_GENDER_MSC = "Men"
 
 STR_POP_NOSEX = "Never had sex"
 STR_POP_NEVER = "Never married/cohabiting"
 STR_POP_UNION = "Married/cohabiting"
 STR_POP_SPLIT = "Previously married/cohabiting"
-STR_POP_PWID  = "PWID"
-STR_POP_FSW   = "FSW"
+STR_POP_PWID  = "People who inject drugs"
+STR_POP_FSW   = "Female sex workers"
 STR_POP_CSW   = "Male clients of FSW"
-STR_POP_BOTH  = "FSW or male clients of FSW"
+STR_POP_BOTH  = "FSW or clients"
 STR_POP_MSM   = "Men who have sex with men"
 STR_POP_TGW   = "Transgender women"
