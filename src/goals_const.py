@@ -199,3 +199,23 @@ DIST_LOGNORMAL = 'Lognormal'
 DIST_NORMAL    = 'Normal'
 DIST_GAMMA     = 'Gamma'
 DIST_BETA      = 'Beta'
+
+## +===+ Strings +=============================================================+
+STR_YEAR  = "Year"
+STR_SEX   = "Sex"
+STR_AGE   = "Age"
+STR_POP   = "Risk"
+STR_HIV   = "CD4"
+STR_DTX   = "DTX"
+STR_VALUE = "Value"
+
+STR_POP_NOSEX = "Never had sex"
+STR_POP_NEVER = "Never married/cohabiting"
+STR_POP_UNION = "Married/cohabiting"
+STR_POP_SPLIT = "Previously married/cohabiting"
+STR_POP_PWID  = "PWID"
+STR_POP_FSW   = "FSW"
+STR_POP_CSW   = "Male clients of FSW"
+STR_POP_BOTH  = "FSW or male clients of FSW"
+STR_POP_MSM   = "Men who have sex with men"
+STR_POP_TGW   = "Transgender women"
