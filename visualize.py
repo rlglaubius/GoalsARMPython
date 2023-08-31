@@ -22,13 +22,11 @@ def main(xlsx_name, data_path):
     pop_total = results.pop_total(bin)
     pop_risk  = results.pop_risk([0,15,25,50,np.inf])
 
-    ## TODO: replace gender indices with names
-    ## TODO: change color palette
-    ## TODO: use cProfile to check how expensive Results operations are
-
     p = (plotnine.ggplot(pop_risk)
          + plotnine.aes(x=CONST.STR_YEAR, y=CONST.STR_VALUE, fill=CONST.STR_POP, color=CONST.STR_POP)
          + plotnine.geom_col()
+         + plotnine.scale_fill_brewer(type="qual", palette="Dark2")
+         + plotnine.scale_color_brewer(type="qual", palette="Dark2")
          + plotnine.facet_grid('Age~Gender', scales="free_y")
          + plotnine.theme_bw())
     p.save("temp.tiff", dpi=600, units="in", width=6.5, height=4*2.25+0.25, pil_kwargs={"compression" : "tiff_lzw"})

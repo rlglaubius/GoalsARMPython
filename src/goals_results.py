@@ -23,7 +23,7 @@ class Results:
         self._order = model._order
         self._years = self._model.year_final - self._model.year_first + 1
 
-        self.pop_strmap = {CONST.POP_NOSEX : CONST.STR_POP_NOSEX,
+        self.strmap_pop = {CONST.POP_NOSEX : CONST.STR_POP_NOSEX,
                            CONST.POP_NEVER : CONST.STR_POP_NEVER,
                            CONST.POP_UNION : CONST.STR_POP_UNION,
                            CONST.POP_SPLIT : CONST.STR_POP_SPLIT,
@@ -31,6 +31,9 @@ class Results:
                            CONST.POP_BOTH  : CONST.STR_POP_BOTH,
                            CONST.POP_MSM   : CONST.STR_POP_MSM,
                            CONST.POP_TGW   : CONST.STR_POP_TGW}
+        
+        self.strmap_gender = {CONST.GENDER_FEM : CONST.STR_GENDER_FEM,
+                              CONST.GENDER_MSC : CONST.STR_GENDER_MSC}
 
         # Process the population for standardized reporting. This may be
         # trading a lot of time and memory for (hopefully) simpler code here
@@ -105,18 +108,25 @@ class Results:
         return series.to_frame().reset_index()
     
     def pop_total(self, age_breaks=[0, np.inf]):
-        """! Calculate the total population by year, sex, age"""
+        """! Calculate the total population by year, sex, age
+        @param age_breaks cut points for age aggregation
+        """
         pop = self._pop_remap_age_gender(age_breaks)
         rval = pop.groupby([CONST.STR_YEAR, CONST.STR_GENDER, CONST.STR_AGE])[CONST.STR_VALUE].sum()
         return self._series2df(rval)
     
     def pop_risk(self, age_breaks=[0, np.inf]):
-        """! Calculate the total population by year, sex, age, risk"""
+        """! Calculate the total population by year, sex, age, risk
+        @param age_breaks cut points for age aggregation
+        """
         aggr = self._pop_remap_age_gender(age_breaks)
         rval = aggr.groupby([CONST.STR_YEAR, CONST.STR_GENDER, CONST.STR_AGE, CONST.STR_POP])[CONST.STR_VALUE].sum()
         rval = self._series2df(rval)
 
         rval[CONST.STR_POP] = rval[CONST.STR_POP].astype("category")
-        rval[CONST.STR_POP] = rval[CONST.STR_POP].cat.rename_categories(self.pop_strmap)
+        rval[CONST.STR_POP] = rval[CONST.STR_POP].cat.rename_categories(self.strmap_pop)
+
+        rval[CONST.STR_GENDER] = rval[CONST.STR_GENDER].astype("category")
+        rval[CONST.STR_GENDER] = rval[CONST.STR_GENDER].cat.rename_categories(self.strmap_gender)
 
         return rval
