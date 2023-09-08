@@ -1,115 +1,121 @@
-Indicator,Population,Gender,AgeMin,AgeMax,Value,NumTested,Year,UseDataInFit,Source,Notes
-HIV prevalence,FSW,Female,15,19,0.231,258,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
-HIV prevalence,FSW,Female,20,24,0.378,924,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
-HIV prevalence,FSW,Female,25,29,0.547,900,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
-HIV prevalence,FSW,Female,30,34,0.59,540,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
-HIV prevalence,FSW,Female,35,49,0.682,481,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. AgeMax of 49 assumed but not explicitly stated in the source.
-HIV prevalence,FSW,Female,15,49,0.499,3103,2020,FALSE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. AgeMax of 49 assumed but not explicitly stated in the source. Not used for fitting because overall estimate is not independent from age-specific estimates.
-HIV prevalence,MSM,Male,15,19,0.035,200,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
-HIV prevalence,MSM,Male,20,24,0.042,802,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
-HIV prevalence,MSM,Male,25,29,0.131,471,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
-HIV prevalence,MSM,Male,30,34,0.181,227,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
-HIV prevalence,MSM,Male,35,49,0.415,256,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. AgeMax of 49 assumed but not explicitly stated in the source.
-HIV prevalence,MSM,Male,15,49,0.128,1956,2020,FALSE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. AgeMax of 49 assumed but not explicitly stated in the source. Not used for fitting because overall estimate is not independent from age-specific estimates.
-HIV prevalence,FSW,Female,18,19,0.446,92,2013,TRUE,malawi2014ibbs,
-HIV prevalence,FSW,Female,20,24,0.551,265,2013,TRUE,malawi2014ibbs,
-HIV prevalence,FSW,Female,25,29,0.711,190,2013,TRUE,malawi2014ibbs,
-HIV prevalence,FSW,Female,30,34,0.786,84,2013,TRUE,malawi2014ibbs,
-HIV prevalence,FSW,Female,35,49,0.821,39,2013,TRUE,malawi2014ibbs,AgeMax of 49 assumed but not explicitly stated in the source.
-HIV prevalence,FSW,Female,18,49,0.627,670,2013,FALSE,malawi2014ibbs,AgeMax of 49 assumed but not explicitly stated in the source. Not used for fitting because overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,Male,15,19,0.0041,464,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,20,24,0.0387,328,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,25,29,0.0981,372,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,30,34,0.2038,217,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,35,39,0.1842,146,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,40,44,0.1645,153,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,45,49,0.0948,121,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,50,54,0.1055,95,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,15,19,0.0369,457,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,20,24,0.1319,508,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,25,29,0.1554,447,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,30,34,0.1807,322,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,35,39,0.17,244,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,40,44,0.1789,174,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,45,49,0.1332,184,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,15,49,0.102,2465,2004,FALSE,malawi2004dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,Female,15,49,0.133,2686,2004,FALSE,malawi2004dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,All,15,49,0.118,5150,2004,FALSE,malawi2004dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,Male,15,19,0.0131,680,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,20,24,0.0279,564,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,25,29,0.0692,510,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,30,34,0.1068,453,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,35,39,0.1816,355,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,40,44,0.2078,253,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,45,49,0.1498,299,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,50,54,0.1308,174,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,15,19,0.0417,850,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,20,24,0.0638,849,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,25,29,0.1353,719,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,30,34,0.2077,532,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,35,39,0.2379,392,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,40,44,0.2041,361,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,45,49,0.1608,367,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,15,49,0.081,6497,2010,FALSE,malawi2010dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,Female,15,49,0.129,7091,2010,FALSE,malawi2010dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,All,15,49,0.118,13588,2010,FALSE,malawi2010dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,Male,15,19,0.0102,1608,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,20,24,0.0115,745,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,25,29,0.067,559,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,30,34,0.0957,498,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,35,39,0.1232,436,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,40,44,0.1465,340,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,45,49,0.1958,263,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,50,54,0.209,172,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,15,19,0.0339,813,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,20,24,0.0656,829,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,25,29,0.0942,885,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,30,34,0.1656,572,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,35,39,0.1858,665,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,40,44,0.2052,438,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,45,49,0.174,343,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,15,49,0.064,6720,2016,FALSE,malawi2016dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,Female,15,49,0.108,7737,2016,FALSE,malawi2016dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,All,15,49,0.088,14457,2016,FALSE,malawi2016dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
-HIV prevalence,All,Male,0,4,0.0131,582,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,5,9,0.014,847,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,10,14,0.0204,660,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,15,19,0.0089,1489,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,20,24,0.0231,1009,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,25,29,0.0472,959,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,30,34,0.1207,652,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,35,39,0.145,551,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,40,44,0.1862,535,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,45,49,0.2211,383,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,50,54,0.1749,286,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,55,59,0.1453,270,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,0,4,0.0088,887,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,5,9,0.0178,699,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,10,14,0.0216,637,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,15,19,0.0201,1234,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,20,24,0.0517,1434,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,25,29,0.1361,1002,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,30,34,0.1746,1003,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,35,39,0.2211,925,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,40,44,0.2456,538,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,45,49,0.2026,434,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,50,54,0.1642,426,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,55,59,0.161,275,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,15,19,0.017403,1942,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,20,24,0.040417,2265,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,25,29,0.076163,1846,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,30,34,0.140694,1441,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,35,39,0.200439,1451,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,40,44,0.211653,1045,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,45,49,0.221098,850,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,50,54,0.2061814,562,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Female,55,59,0.1261719,445,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,15,19,0.014341,1830,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,20,24,0.013079,1582,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,25,29,0.03241,1131,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,30,34,0.065085,957,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,35,39,0.093615,904,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,40,44,0.156762,777,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,45,49,0.194474,665,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,50,54,0.2004157,461,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
-HIV prevalence,All,Male,55,59,0.1748908,349,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+Indicator,Population,Gender,AgeMin,AgeMax,Value,Lower,Upper,NumTested,Year,UseDataInFit,Source,Notes
+HIV prevalence,FSW,Female,15,19,0.231,0.180990376,0.287304229,258,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. Clopper-Pearson 95% CI calculated from imputed sample size. This should account for sampling error but not uncertainty from IBBS design.
+HIV prevalence,FSW,Female,20,24,0.378,0.346625707,0.410154754,924,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. Clopper-Pearson 95% CI calculated from imputed sample size. This should account for sampling error but not uncertainty from IBBS design.
+HIV prevalence,FSW,Female,25,29,0.547,0.513813997,0.579877416,900,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. Clopper-Pearson 95% CI calculated from imputed sample size. This should account for sampling error but not uncertainty from IBBS design.
+HIV prevalence,FSW,Female,30,34,0.59,0.547192142,0.631817535,540,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. Clopper-Pearson 95% CI calculated from imputed sample size. This should account for sampling error but not uncertainty from IBBS design.
+HIV prevalence,FSW,Female,35,49,0.682,0.638317234,0.723427737,481,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. Clopper-Pearson 95% CI calculated from imputed sample size. This should account for sampling error but not uncertainty from IBBS design. AgeMax of 49 assumed but not explicitly stated in the source.
+HIV prevalence,FSW,Female,15,49,0.499,0.481254369,0.516747518,3103,2020,FALSE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. AgeMax of 49 assumed but not explicitly stated in the source. Not used for fitting because overall estimate is not independent from age-specific estimates.
+HIV prevalence,MSM,Male,15,19,0.035,0.014185526,0.070780998,200,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
+HIV prevalence,MSM,Male,20,24,0.042,0.029204317,0.058286314,802,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
+HIV prevalence,MSM,Male,25,29,0.131,0.101865242,0.164860342,471,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
+HIV prevalence,MSM,Male,30,34,0.181,0.133178784,0.237362293,227,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution.
+HIV prevalence,MSM,Male,35,49,0.415,0.353987275,0.478004334,256,2020,TRUE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. AgeMax of 49 assumed but not explicitly stated in the source.
+HIV prevalence,MSM,Male,15,49,0.128,0.113504724,0.143620322,1956,2020,FALSE,malawi2020ibbs,Number tested triangulated from overall sample size and age distribution. AgeMax of 49 assumed but not explicitly stated in the source. Not used for fitting because overall estimate is not independent from age-specific estimates.
+HIV prevalence,FSW,Female,18,19,0.446,0.342264095,0.553309237,92,2013,TRUE,malawi2014ibbs,Clopper-Pearson 95% CI calculated from reported sample size. This should account for sampling error but not uncertainty from IBBS design.
+HIV prevalence,FSW,Female,20,24,0.551,0.488942345,0.611904251,265,2013,TRUE,malawi2014ibbs,Clopper-Pearson 95% CI calculated from reported sample size. This should account for sampling error but not uncertainty from IBBS design.
+HIV prevalence,FSW,Female,25,29,0.711,0.640957157,0.774326666,190,2013,TRUE,malawi2014ibbs,Clopper-Pearson 95% CI calculated from reported sample size. This should account for sampling error but not uncertainty from IBBS design.
+HIV prevalence,FSW,Female,30,34,0.786,0.682960771,0.868009504,84,2013,TRUE,malawi2014ibbs,Clopper-Pearson 95% CI calculated from reported sample size. This should account for sampling error but not uncertainty from IBBS design.
+HIV prevalence,FSW,Female,35,49,0.821,0.66521418,0.924976065,39,2013,TRUE,malawi2014ibbs,Clopper-Pearson 95% CI calculated from reported sample size. This should account for sampling error but not uncertainty from IBBS design. AgeMax of 49 assumed but not explicitly stated in the source.
+HIV prevalence,FSW,Female,18,49,0.627,0.589140153,0.6637357,670,2013,FALSE,malawi2014ibbs,Clopper-Pearson 95% CI calculated from reported sample size. This should account for sampling error but not uncertainty from IBBS design. AgeMax of 49 assumed but not explicitly stated in the source. Not used for fitting because overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,Male,15,19,0.0041,0.001,0.0169,464,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,20,24,0.0387,0.0224,0.066,328,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,25,29,0.0981,0.0717,0.1329,372,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,30,34,0.2038,0.1551,0.2629,217,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,35,39,0.1842,0.129,0.256,146,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,40,44,0.1645,0.1135,0.2325,153,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,45,49,0.0948,0.0535,0.1626,121,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,50,54,0.1055,0.0573,0.1863,95,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,15,19,0.0369,0.023,0.0588,457,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,20,24,0.1319,0.105,0.1643,508,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,25,29,0.1554,0.1246,0.1922,447,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,30,34,0.1807,0.1423,0.2268,322,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,35,39,0.17,0.1277,0.2228,244,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,40,44,0.1789,0.1284,0.2436,174,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,45,49,0.1332,0.091,0.1909,184,2004,TRUE,malawi2004dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,15,49,0.102,0.084,0.12,2465,2004,FALSE,malawi2004dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,Female,15,49,0.133,0.117,0.149,2686,2004,FALSE,malawi2004dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,All,15,49,0.118,0.104,0.132,5150,2004,FALSE,malawi2004dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,Male,15,19,0.0131,0.0068,0.0252,680,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,20,24,0.0279,0.0171,0.0453,564,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,25,29,0.0692,0.0501,0.0948,510,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,30,34,0.1068,0.0815,0.1389,453,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,35,39,0.1816,0.1448,0.2253,355,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,40,44,0.2078,0.162,0.2625,253,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,45,49,0.1498,0.1136,0.1951,299,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,50,54,0.1308,0.0881,0.19,174,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,15,19,0.0417,0.0301,0.0574,850,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,20,24,0.0638,0.0491,0.0823,849,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,25,29,0.1353,0.1121,0.1623,719,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,30,34,0.2077,0.1753,0.2444,532,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,35,39,0.2379,0.1982,0.2827,392,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,40,44,0.2041,0.1655,0.249,361,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,45,49,0.1608,0.1266,0.2021,367,2010,TRUE,malawi2010dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,15,49,0.081,0.071,0.092,6497,2010,FALSE,malawi2010dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,Female,15,49,0.129,0.116,0.142,7091,2010,FALSE,malawi2010dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,All,15,49,0.106,0.096,0.116,13588,2010,FALSE,malawi2010dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,Male,15,19,0.0102,0.0063,0.0165,1608,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,20,24,0.0115,0.0059,0.0223,745,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,25,29,0.067,0.0489,0.091,559,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,30,34,0.0957,0.0728,0.125,498,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,35,39,0.1232,0.0955,0.1576,436,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,40,44,0.1465,0.1127,0.1884,340,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,45,49,0.1958,0.152,0.2484,263,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,50,54,0.209,0.1545,0.2766,172,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,15,19,0.0339,0.0234,0.0488,813,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,20,24,0.0656,0.0506,0.0847,829,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,25,29,0.0942,0.0766,0.1153,885,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,30,34,0.1656,0.1373,0.1984,572,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,35,39,0.1858,0.158,0.2173,665,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,40,44,0.2052,0.1698,0.2457,438,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,45,49,0.174,0.1373,0.2179,343,2016,TRUE,malawi2016dhs,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,15,49,0.064,0.056,0.073,6720,2016,FALSE,malawi2016dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,Female,15,49,0.108,0.096,0.119,7737,2016,FALSE,malawi2016dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,All,15,49,0.088,0.079,0.096,14457,2016,FALSE,malawi2016dhs,Values from DHS API. NumTested is DenominatorWeighted. Not used for fitting because  overall estimate is not independent from age-specific estimates.
+HIV prevalence,All,Male,0,4,0.0131,0.0064,0.0264,582,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,5,9,0.014,0.0079,0.0245,847,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,10,14,0.0204,0.012,0.0345,660,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,15,19,0.0089,0.0052,0.0152,1489,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,20,24,0.0231,0.0154,0.0344,1009,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,25,29,0.0472,0.0355,0.0626,959,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,30,34,0.1207,0.0978,0.148,652,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,35,39,0.145,0.118,0.1769,551,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,40,44,0.1862,0.1555,0.2215,535,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,45,49,0.2211,0.1824,0.2655,383,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,50,54,0.1749,0.1351,0.2234,286,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,55,59,0.1453,0.1081,0.1927,270,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,0,4,0.0088,0.0044,0.0177,887,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,5,9,0.0178,0.0102,0.0307,699,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,10,14,0.0216,0.0128,0.0363,637,2016,FALSE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,15,19,0.0201,0.0136,0.0296,1234,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,20,24,0.0517,0.0414,0.0645,1434,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,25,29,0.1361,0.1163,0.1588,1002,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,30,34,0.1746,0.1523,0.1993,1003,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,35,39,0.2211,0.1955,0.249,925,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,40,44,0.2456,0.211,0.2837,538,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,45,49,0.2026,0.1674,0.243,434,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,50,54,0.1642,0.132,0.2025,426,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,55,59,0.161,0.1221,0.2093,275,2016,TRUE,malawi2016phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,15,49,0.078,0.07,0.085,6306,2016,FALSE,malawi2016phia,"Estimates from MPHIA 2015-16 final report. The number tested is the raw sample size, unadjusted for survey design."
+HIV prevalence,All,Female,15,49,0.121,0.112,0.131,8949,2016,FALSE,malawi2016phia,"Estimates from MPHIA 2015-16 final report. The number tested is the raw sample size, unadjusted for survey design."
+HIV prevalence,All,All,15,49,0.1,0.093,0.107,15255,2016,FALSE,malawi2016phia,"Estimates from MPHIA 2015-16 final report. The number tested is the raw sample size, unadjusted for survey design."
+HIV prevalence,All,Male,15,19,0.0143,0.0099,0.0207,1701,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,20,24,0.0131,0.0082,0.0208,1477,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,25,29,0.0324,0.0226,0.0463,1035,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,30,34,0.0651,0.0508,0.083,877,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,35,39,0.0936,0.0746,0.1169,824,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,40,44,0.1568,0.1304,0.1873,703,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,45,49,0.1945,0.1643,0.2287,611,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,50,54,0.2004,0.1643,0.2421,425,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,55,59,0.1749,0.1362,0.2217,322,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,15,19,0.0174,0.0127,0.0237,1779,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,20,24,0.0404,0.0327,0.0498,2083,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,25,29,0.0762,0.0648,0.0894,1700,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,30,34,0.1407,0.1227,0.1609,1328,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,35,39,0.2004,0.1782,0.2247,1337,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,40,44,0.2117,0.185,0.241,969,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,45,49,0.2211,0.19,0.2556,781,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,50,54,0.2062,0.1741,0.2425,519,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Female,55,59,0.1262,0.0987,0.16,409,2020,TRUE,malawi2020phia,Number tested is adjusted for survey design. Extracted from Spectrum AMModData as provided by Jeff Eaton.
+HIV prevalence,All,Male,15,49,0.058,0.052,0.064,7846,2020,FALSE,malawi2020phia,"Estimates from MPHIA 2020-21 final report. The number tested is the raw sample size, unadjusted for survey design."
+HIV prevalence,All,Female,15,49,0.1,0.094,0.106,10840,2020,FALSE,malawi2020phia,"Estimates from MPHIA 2020-21 final report. The number tested is the raw sample size, unadjusted for survey design."
+HIV prevalence,All,All,15,49,0.08,0.075,0.085,18686,2020,FALSE,malawi2020phia,"Estimates from MPHIA 2020-21 final report. The number tested is the raw sample size, unadjusted for survey design."
