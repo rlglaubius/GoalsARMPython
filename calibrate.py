@@ -32,13 +32,14 @@ def fill_hivprev_template(hivsim, template):
             case 'All': pop_min, pop_max = CONST.POP_MIN, CONST.POP_MAX + 1
             case 'FSW': pop_min, pop_max = CONST.POP_FSW, CONST.POP_FSW + 1
             case 'MSM': pop_min, pop_max = CONST.POP_MSM, CONST.POP_MSM + 1
-            case _: sys.stderr.write("Error: Unrecognized population %s" % (pop[row]))
+            case 'Clients': pop_min, pop_max = CONST.POP_CSW, CONST.POP_CSW + 1
+            case _: sys.stderr.write("Error: Unrecognized population %s\n" % (pop[row]))
 
         match sex[row]:
             case 'All':    sex_min, sex_max = CONST.SEX_MC_MIN, CONST.SEX_MC_MAX + 1
             case 'Female': sex_min, sex_max = CONST.SEX_FEMALE, CONST.SEX_FEMALE + 1
             case 'Male':   sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
-            case _: sys.stderr.write("Error: Unrecognized gender %s" % (sex[row]))
+            case _: sys.stderr.write("Error: Unrecognized gender %s\n" % (sex[row]))
 
         pop_hiv = hivsim.pop_adult_hiv[yidx[row], sex_min:sex_max, amin[row]:amax[row], pop_min:pop_max, :, :].sum()
         pop_neg = hivsim.pop_adult_neg[yidx[row], sex_min:sex_max, amin[row]:amax[row], pop_min:pop_max].sum()
