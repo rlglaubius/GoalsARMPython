@@ -286,7 +286,7 @@ class GoalsFitter:
 
 def main(par_file, anc_file, hiv_file):
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
-    pars, diag = Fitter.calibrate(method='Nelder-Mead')
+    pars, diag = Fitter.calibrate(method='TNC')
 
     ## TODO: The outro below violates encapsuation by accessing "private"
     ## data in _ancdat and _hivdat (drop "_", or move the plot methods into
