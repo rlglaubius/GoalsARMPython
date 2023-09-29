@@ -23,7 +23,7 @@ def main(xlsx_name, data_path):
     t1 = time.time()
     model.init_from_xlsx(xlsx_name)
     t2 = time.time()
-    model.project(2030)
+    model.project(model.year_final)
     t3 = time.time()
 
     birth_frame = array2frame(model.births, ['Year', 'Sex'])

@@ -117,10 +117,17 @@ class Model:
                                               self.p_married[CONST.SEX_MALE,   CONST.POP_CSW  - CONST.POP_KEY_MIN],
                                               self.p_married[CONST.SEX_MALE,   CONST.POP_MSM  - CONST.POP_KEY_MIN],
                                               self.p_married[CONST.SEX_FEMALE, CONST.POP_TGW  - CONST.POP_KEY_MIN]])
+            
+            # Resize arrays before sharing memory with the calculation engine, otherwise
+            # modifying self.pwid_force or self.needle_sharing won't change the inputs
+            # the calculation engine uses.
+            self.pwid_force = self.pwid_force[year_range,:]
+            self.needle_sharing = self.needle_sharing[year_range]
+
             self._proj.share_input_partner_rate(self.partner_rate)
             self._proj.share_input_age_mixing(self.age_mixing)
             self._proj.share_input_pop_assort(self.pop_assort)
-            self._proj.share_input_pwid_risk(self.pwid_force[year_range,:], self.needle_sharing[year_range])
+            self._proj.share_input_pwid_risk(self.pwid_force, self.needle_sharing)
             self._proj.use_direct_incidence(False)
             self._proj.init_epidemic_seed(self.epi_pars[CONST.EPI_INITIAL_YEAR] - self.year_first, self.epi_pars[CONST.EPI_INITIAL_PREV])
             self._proj.init_transmission(

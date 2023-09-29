@@ -214,6 +214,8 @@ class GoalsFitter:
                     self.hivsim.epi_pars[CONST.EPI_TRANSMIT_F2M] = params[idx]
                 case CONST.FIT_TRANSMIT_M2F:
                     self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F] = params[idx]
+                case CONST.FIT_FORCE_PWID:
+                    self.hivsim.pwid_force[:] = params[idx]
                 case CONST.FIT_LT_PARTNER_F:
                     self.hivsim.partner_time_trend[CONST.SEX_FEMALE,:] = params[idx]
                 case CONST.FIT_LT_PARTNER_M:
@@ -230,6 +232,10 @@ class GoalsFitter:
                     self.hivsim.partner_pop_ratios[CONST.POP_FSW-1,CONST.SEX_FEMALE] = params[idx] # subtract 1 since partner_pop_ratios starts at POP_NEVER=1 instead of POP_NOSEX=0
                 case CONST.FIT_PARTNER_POP_CLIENT:
                     self.hivsim.partner_pop_ratios[CONST.POP_CSW-1,CONST.SEX_MALE  ] = params[idx]
+                case CONST.FIT_PARTNER_POP_MSM:
+                    self.hivsim.partner_pop_ratios[CONST.POP_MSM-1,CONST.SEX_MALE  ] = params[idx]
+                case CONST.FIT_PARTNER_POP_TGW:
+                    self.hivsim.partner_pop_ratios[CONST.POP_TGW-1,CONST.SEX_FEMALE] = params[idx]
                 case CONST.FIT_HIV_FRR_LAF:
                     self.hivsim.hiv_frr['laf'] = params[idx]
                 case CONST.FIT_ANCSS_BIAS:
@@ -293,7 +299,7 @@ class GoalsFitter:
 
 def main(par_file, anc_file, hiv_file):
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
-    pars, diag = Fitter.calibrate(method='TNC')
+    pars, diag = Fitter.calibrate(method='Nelder-Mead')
 
     ## TODO: The outro below violates encapsuation by accessing "private"
     ## data in _ancdat and _hivdat (drop "_", or move the plot methods into
