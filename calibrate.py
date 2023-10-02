@@ -236,6 +236,14 @@ class GoalsFitter:
                     self.hivsim.partner_pop_ratios[CONST.POP_MSM-1,CONST.SEX_MALE  ] = params[idx]
                 case CONST.FIT_PARTNER_POP_TGW:
                     self.hivsim.partner_pop_ratios[CONST.POP_TGW-1,CONST.SEX_FEMALE] = params[idx]
+                case CONST.FIT_ASSORT_GEN:
+                    self.hivsim.pop_assort[:,CONST.POP_NEVER:CONST.POP_PWID+1] = params[idx]
+                case CONST.FIT_ASSORT_FSW:
+                    self.hivsim.pop_assort[:,CONST.POP_FSW] = params[idx]
+                case CONST.FIT_ASSORT_MSM:
+                    self.hivsim.pop_assort[CONST.SEX_MALE,CONST.POP_MSM] = params[idx]
+                case CONST.FIT_ASSORT_TGW:
+                    self.hivsim.pop_assort[CONST.SEX_MALE,CONST.POP_TGW] = params[idx]
                 case CONST.FIT_HIV_FRR_LAF:
                     self.hivsim.hiv_frr['laf'] = params[idx]
                 case CONST.FIT_ANCSS_BIAS:
