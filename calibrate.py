@@ -192,12 +192,14 @@ class GoalsFitter:
         fill_hivprev_template(self.hivsim, self._hivest)
         lhood_hiv = self._hivdat.likelihood(self._hivest)
         lhood_anc = self._ancdat.likelihood(self._ancest)
-        print("%0.2f %0.2f\t%s" % (lhood_hiv, lhood_anc, params))
-        return lhood_hiv + lhood_anc
+        sys.stderr.write("%0.2f %0.2f\t%s\n" % (lhood_hiv, lhood_anc, params))
+        return lhood_hiv + lhood_anc, lhood_hiv, lhood_anc
 
     def posterior(self, params):
         """"! Posterior density on log scale """
-        return self.prior(params) + self.likelihood(params)
+        lhood_val = self.likelihood(params)
+        prior_val = self.prior(params)
+        return lhood_val[0] + prior_val
     
     def project(self, params):
         """! Set fitting parameter values into the model then run a projection """
@@ -306,6 +308,11 @@ class GoalsFitter:
         return self._pardat, optres
 
 def main(par_file, anc_file, hiv_file):
+    print("+=+ Inputs +=+")
+    print("par_file = %s" % (par_file))
+    print("anc_file = %s" % (anc_file))
+    print("hiv_file = %s" % (hiv_file))
+
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
     pars, diag = Fitter.calibrate(method='Nelder-Mead')
 
@@ -315,10 +322,13 @@ def main(par_file, anc_file, hiv_file):
     ## relies on using implementation details gleaned from diag that the 
     ## caller should not know or care about.
     print("+=+ Fitting complete +=+")
+    lhood_val, lhood_hiv, lhood_anc = Fitter.likelihood(diag.x)
+    prior_val = Fitter.prior(diag.x)
+
     print({key : val.fitted_value for key, val in pars.items()})
     print("%d likelihood evaluations" % (diag.nfev))
     print("Converged: %s" % (diag.success))
-    print(Fitter.likelihood(diag.x))
+    print("prior:\t\t%f\nlhood_hiv:\t%f\nlhood_anc:\t%f" % (prior_val, lhood_hiv, lhood_anc))
     plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
     plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
 

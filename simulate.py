@@ -9,8 +9,12 @@ from src.goals_model import Model
 ## @param names a list of names, one per dimension of ndarray
 ## @return a long data frame with one column per dimension of ndarray
 def array2frame(array, names):
-    array_index = pd.MultiIndex.from_product([range(s) for s in array.shape], names=names)
-    array_frame = pd.DataFrame({'Value' : array.flatten()}, index=array_index)['Value']
+    if len(names) > 1:
+        array_index = pd.MultiIndex.from_product([range(s) for s in array.shape], names=names)
+        array_frame = pd.DataFrame({'Value' : array.flatten()}, index=array_index)['Value']
+    else:
+        array_index = pd.Index(range(array.shape[0]), name=names[0])
+        array_frame = pd.DataFrame({'Value' : array}, index=array_index)['Value']
     return array_frame
 
 def main(xlsx_name, data_path):
@@ -26,7 +30,8 @@ def main(xlsx_name, data_path):
     model.project(model.year_final)
     t3 = time.time()
 
-    birth_frame = array2frame(model.births, ['Year', 'Sex'])
+    birth_all_frame = array2frame(model.births, ['Year', 'Sex'])
+    birth_exp_frame = array2frame(model.births_exposed, ['Year'])
     pop_child_neg = array2frame(model.pop_child_neg, ['Year', 'Sex', 'Age'])
     pop_child_hiv = array2frame(model.pop_child_hiv, ['Year', 'Sex', 'Age', 'CD4', 'ART'])
     pop_adult_neg = array2frame(model.pop_adult_neg, ['Year', 'Sex', 'Age', 'Risk'])
@@ -34,7 +39,8 @@ def main(xlsx_name, data_path):
     new_hiv = array2frame(model.new_infections, ['Year', 'Sex', 'Age', 'Risk'])
     t4 = time.time()
 
-    birth_frame.to_csv(data_path + "/births.csv")
+    birth_all_frame.to_csv(data_path + "/births.csv")
+    birth_exp_frame.to_csv(data_path + "/births-exposed.csv")
     pop_child_neg.to_csv(data_path + "/child-neg.csv")
     pop_child_hiv.to_csv(data_path + "/child-hiv.csv")
     pop_adult_neg.to_csv(data_path + "/adult-neg.csv")
