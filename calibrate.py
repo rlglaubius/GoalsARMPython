@@ -32,13 +32,21 @@ def fill_hivprev_template(hivsim, template):
             case 'All': pop_min, pop_max = CONST.POP_MIN, CONST.POP_MAX + 1
             case 'FSW': pop_min, pop_max = CONST.POP_FSW, CONST.POP_FSW + 1
             case 'MSM': pop_min, pop_max = CONST.POP_MSM, CONST.POP_MSM + 1
-            case _: sys.stderr.write("Error: Unrecognized population %s" % (pop[row]))
+            case 'TGW': pop_min, pop_max = CONST.POP_TGW, CONST.POP_TGW + 1
+            case 'PWID': pop_min, pop_max = CONST.POP_PWID, CONST.POP_PWID + 1
+            case 'Clients': pop_min, pop_max = CONST.POP_CSW, CONST.POP_CSW + 1
+            case _: sys.stderr.write("Error: Unrecognized population %s\n" % (pop[row]))
 
         match sex[row]:
-            case 'All':    sex_min, sex_max = CONST.SEX_MC_MIN, CONST.SEX_MC_MAX + 1
-            case 'Female': sex_min, sex_max = CONST.SEX_FEMALE, CONST.SEX_FEMALE + 1
-            case 'Male':   sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
-            case _: sys.stderr.write("Error: Unrecognized gender %s" % (sex[row]))
+            case 'All':   sex_min, sex_max = CONST.SEX_MC_MIN, CONST.SEX_MC_MAX + 1
+            case 'Women': sex_min, sex_max = CONST.SEX_FEMALE, CONST.SEX_FEMALE + 1
+            case 'Men':   sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
+            case _: sys.stderr.write("Error: Unrecognized gender %s\n" % (sex[row]))
+
+        # Model compartments track people by assigned sex at birth to speed up
+        # behavioral risk group dynamics calculations.
+        if pop[row] == 'TGW':
+            sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
 
         pop_hiv = hivsim.pop_adult_hiv[yidx[row], sex_min:sex_max, amin[row]:amax[row], pop_min:pop_max, :, :].sum()
         pop_neg = hivsim.pop_adult_neg[yidx[row], sex_min:sex_max, amin[row]:amax[row], pop_min:pop_max].sum()
@@ -184,12 +192,14 @@ class GoalsFitter:
         fill_hivprev_template(self.hivsim, self._hivest)
         lhood_hiv = self._hivdat.likelihood(self._hivest)
         lhood_anc = self._ancdat.likelihood(self._ancest)
-        print("%0.2f %0.2f\t%s" % (lhood_hiv, lhood_anc, params))
-        return lhood_hiv + lhood_anc
+        sys.stderr.write("%0.2f %0.2f\t%s\n" % (lhood_hiv, lhood_anc, params))
+        return lhood_hiv + lhood_anc, lhood_hiv, lhood_anc
 
     def posterior(self, params):
         """"! Posterior density on log scale """
-        return self.prior(params) + self.likelihood(params)
+        lhood_val = self.likelihood(params)
+        prior_val = self.prior(params)
+        return lhood_val[0] + prior_val
     
     def project(self, params):
         """! Set fitting parameter values into the model then run a projection """
@@ -206,6 +216,8 @@ class GoalsFitter:
                     self.hivsim.epi_pars[CONST.EPI_TRANSMIT_F2M] = params[idx]
                 case CONST.FIT_TRANSMIT_M2F:
                     self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F] = params[idx]
+                case CONST.FIT_FORCE_PWID:
+                    self.hivsim.pwid_force[:] = params[idx]
                 case CONST.FIT_LT_PARTNER_F:
                     self.hivsim.partner_time_trend[CONST.SEX_FEMALE,:] = params[idx]
                 case CONST.FIT_LT_PARTNER_M:
@@ -222,6 +234,18 @@ class GoalsFitter:
                     self.hivsim.partner_pop_ratios[CONST.POP_FSW-1,CONST.SEX_FEMALE] = params[idx] # subtract 1 since partner_pop_ratios starts at POP_NEVER=1 instead of POP_NOSEX=0
                 case CONST.FIT_PARTNER_POP_CLIENT:
                     self.hivsim.partner_pop_ratios[CONST.POP_CSW-1,CONST.SEX_MALE  ] = params[idx]
+                case CONST.FIT_PARTNER_POP_MSM:
+                    self.hivsim.partner_pop_ratios[CONST.POP_MSM-1,CONST.SEX_MALE  ] = params[idx]
+                case CONST.FIT_PARTNER_POP_TGW:
+                    self.hivsim.partner_pop_ratios[CONST.POP_TGW-1,CONST.SEX_FEMALE] = params[idx]
+                case CONST.FIT_ASSORT_GEN:
+                    self.hivsim.pop_assort[:,CONST.POP_NEVER:CONST.POP_PWID+1] = params[idx]
+                case CONST.FIT_ASSORT_FSW:
+                    self.hivsim.pop_assort[:,CONST.POP_FSW] = params[idx]
+                case CONST.FIT_ASSORT_MSM:
+                    self.hivsim.pop_assort[CONST.SEX_MALE,CONST.POP_MSM] = params[idx]
+                case CONST.FIT_ASSORT_TGW:
+                    self.hivsim.pop_assort[CONST.SEX_MALE,CONST.POP_TGW] = params[idx]
                 case CONST.FIT_HIV_FRR_LAF:
                     self.hivsim.hiv_frr['laf'] = params[idx]
                 case CONST.FIT_ANCSS_BIAS:
@@ -284,6 +308,11 @@ class GoalsFitter:
         return self._pardat, optres
 
 def main(par_file, anc_file, hiv_file):
+    print("+=+ Inputs +=+")
+    print("par_file = %s" % (par_file))
+    print("anc_file = %s" % (anc_file))
+    print("hiv_file = %s" % (hiv_file))
+
     Fitter = GoalsFitter(par_file, anc_file, hiv_file)
     pars, diag = Fitter.calibrate(method='Nelder-Mead')
 
@@ -293,10 +322,13 @@ def main(par_file, anc_file, hiv_file):
     ## relies on using implementation details gleaned from diag that the 
     ## caller should not know or care about.
     print("+=+ Fitting complete +=+")
+    lhood_val, lhood_hiv, lhood_anc = Fitter.likelihood(diag.x)
+    prior_val = Fitter.prior(diag.x)
+
     print({key : val.fitted_value for key, val in pars.items()})
     print("%d likelihood evaluations" % (diag.nfev))
     print("Converged: %s" % (diag.success))
-    print(Fitter.likelihood(diag.x))
+    print("prior:\t\t%f\nlhood_hiv:\t%f\nlhood_anc:\t%f" % (prior_val, lhood_hiv, lhood_anc))
     plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
     plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
 
