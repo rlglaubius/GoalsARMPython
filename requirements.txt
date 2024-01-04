@@ -10,7 +10,7 @@ openpyxl==3.1.2
 packaging==23.1
 pandas==2.0.3
 patsy==0.5.3
-percussion @ git+https://github.com/AvenirHealth-org/percussion.git@b1edb154af23539239dfa376dae971e01f6f4f13
+percussion @ git+https://github.com/AvenirHealth-org/percussion.git
 Pillow==10.0.0
 plotnine==0.12.2
 pybind11==2.11.1
