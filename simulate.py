@@ -55,7 +55,7 @@ def main(xlsx_name, data_path):
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
     if len(sys.argv) == 1:
-        xlsx_name = "inputs\\example-inputs.xlsx"
+        xlsx_name = "inputs\\zaf-2023-inputs-v10.xlsx"
         data_path = "."
         main(xlsx_name, data_path)
     elif len(sys.argv) < 3:

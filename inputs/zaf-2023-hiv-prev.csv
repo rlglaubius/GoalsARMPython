@@ -1,0 +1,204 @@
+Indicator,Population,Gender,AgeMin,AgeMax,Value,Lower,Upper,NumTested,Year,UseDataInFit,Source,Notes,City,Province
+HIV prevalence,All,Women,0,14,0.022,0.0132,0.033,843.3411448,2022,FALSE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,0,14,0.026,0.019852941,0.0375,1249.567647,2022,FALSE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,15,19,0.031,0.019852941,0.048529412,561.3144308,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,15,19,0.057,0.044117647,0.072794118,1004.401344,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,15,19,0.047,0.031,0.071,1106,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,15,19,0.058,0.044,0.075,1267,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,15,19,0.042,0.0187427,0.0896501,144.97536,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,15,19,0.060,0.0404871,0.0887479,392.19925,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,15,19,0.007,0.0035603,0.0124668,1461.2951,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,15,19,0.056,0.042358,0.0748569,793.95635,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,15,19,0.027,0.0092465,0.0765612,122.87748,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,15,19,0.064,0.0472284,0.0866223,610.61172,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,15,19,0.032,0.0144207,0.0707107,181.74326,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,15,19,0.094,0.0707256,0.1240393,469.90937,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,20,24,0.040,0.026470588,0.061764706,473.6948907,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,20,24,0.080,0.066176471,0.101470588,907.9152071,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,20,24,0.048,0.034,0.068,959,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,20,24,0.156,0.126,0.191,1240,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,20,24,0.026,0.0132495,0.0488636,346.61034,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,20,24,0.170,0.1245095,0.2269938,209.73183,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,20,24,0.051,0.037256,0.0702784,707.0395,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,20,24,0.174,0.1455964,0.2061761,604.79892,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,20,24,0.050,0.0307216,0.0807807,311.9892,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,20,24,0.209,0.1741497,0.2495828,449.08171,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,20,24,0.060,0.0381363,0.0940883,293.93665,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,20,24,0.239,0.1978645,0.2845411,372.37277,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,25,29,0.063,0.048529412,0.088235294,575.3638496,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,25,29,0.195,0.167647059,0.229411765,632.2980907,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,25,29,0.124,0.096,0.159,803,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,25,29,0.275,0.237,0.317,1161,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,25,29,0.102,0.062476,0.1628413,148.37879,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,25,29,0.325,0.2640657,0.3933705,201.95236,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,25,29,0.173,0.1374604,0.2158677,360.84498,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,25,29,0.284,0.2379433,0.3339614,338.52297,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,25,29,0.159,0.112821,0.2201146,182.04333,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,25,29,0.323,0.2689916,0.3827297,259.67747,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,25,29,0.121,0.0807514,0.1785691,176.94762,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,25,29,0.333,0.2766661,0.3952309,242.469,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,30,34,0.108,0.086029412,0.143382353,450.0381754,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,30,34,0.262,0.225,0.304411765,471.1509737,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,30,34,0.184,0.145,0.231,679,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,30,34,0.347,0.303,0.394,1051,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,30,34,0.274,0.1953817,0.3705718,100.30134,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,30,34,0.408,0.3419578,0.4768013,204.03905,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,30,34,0.256,0.1975553,0.3237993,183.47776,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,30,34,0.360,0.3090141,0.4142577,318.86999,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,30,34,0.268,0.1982394,0.352087,127.508,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,30,34,0.297,0.2387333,0.3637051,205.35795,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,30,34,0.233,0.1720834,0.3075212,150.55258,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,30,34,0.260,0.2146343,0.3100773,324.92004,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,35,39,0.169,0.136764706,0.211764706,383.6518844,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,35,39,0.342,0.295588235,0.390441177,384.3461454,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,35,39,0.237,0.193,0.289,584,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,35,39,0.394,0.345,0.445,840,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,35,39,0.224,0.142435,0.3328281,74.96885,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,35,39,0.385,0.3148811,0.4611222,170.18583,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,35,39,0.288,0.2272409,0.3573648,185.66674,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,35,39,0.316,0.2682965,0.3687205,329.21814,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,35,39,0.200,0.1366823,0.2818632,117.84886,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,35,39,0.255,0.2086542,0.30805,296.4026,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,35,39,0.193,0.149139,0.2457087,258.39551,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,35,39,0.233,0.1779094,0.2986828,189.28305,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,FSW,Women,16,43,0.464,0.41,0.52,295,1996,TRUE,dunkle2005intjourstiaids,"Johannesburg, min/max age not reported, self-report",Johannesburg,Gauteng
+HIV prevalence,All,Men,40,44,0.199,0.163235294,0.242647059,388.40788,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,40,44,0.338,0.297794118,0.383823529,464.571878,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,40,44,0.224,0.177,0.279,501,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,40,44,0.359,0.316,0.404,815,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,40,44,0.319,0.2299205,0.4229657,89.85601,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,40,44,0.440,0.3572174,0.5258105,132.71071,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,MSM,Men,18,44,0.317,0.24,0.4,139,2015,TRUE,sandfort2019plosone,Cape Town: Groups together MSM and TGW (estimated 1/5 identified as female or TG),Cape Town,Western Cape
+HIV prevalence,MSM,Men,18,44,0.491,0.41,0.57,171,2015,TRUE,sandfort2019plosone,Soweto: Groups together MSM and TGW (estimated 1/5 identified as female or TG),Cape Town,Western Cape
+HIV prevalence,All,Men,40,44,0.158,0.1177573,0.2077472,255.27714,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,40,44,0.280,0.2279137,0.339476,248.8205,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,MSM,Men,18,44,0.301,,,480,2012,TRUE,sandfort2016aidsbehav,"RDS adjusted prevalence; estimate groups together gay and transgender, bisexual, straight, other",,
+HIV prevalence,All,Women,40,44,0.170,0.129085,0.2209208,260.05035,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,40,44,0.196,0.1311659,0.281207,108.85962,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,40,44,0.124,0.094487,0.1618785,374.3225,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,40,44,0.175,0.1198339,0.2478799,137.43759,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,MSM,Men,18,48,0.109,0.065,0.146,293,2008,TRUE,lane2011aidsbehav,Soweto only; estimate is adjusted for missing data using multiple imputation; unclear whether adjusted for RDS sampling as well,Johannesburg,Gauteng
+HIV prevalence,All,Men,45,49,0.271,0.220588235,0.328676471,259.8436454,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,45,49,0.288,0.247058824,0.333088235,425.7461297,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,MSM,Men,18,49,0.167,0.14,0.198,804,2019,TRUE,samhms2019,Mahikeng; Those assigned male at birth only; adjusted for RDS; no max age,Mahikeng,North-West
+HIV prevalence,FSW,Women,18,49,0.255,0.21,0.3,377,2019,TRUE,milovanovic2021globhealthaction,Western Cape,Western Cape,Western Cape
+HIV prevalence,MSM,Men,18,49,0.268,0.226,0.314,737,2019,TRUE,samhms2019,Johannesburg; Those assigned male at birth only; adjusted for RDS; no max age,Johannesburg,Gauteng
+HIV prevalence,FSW,Women,18,49,0.370,0.31,0.43,260,2019,TRUE,milovanovic2021globhealthaction,Limpopo,Limpopo,Limpopo
+HIV prevalence,MSM,Men,18,49,0.443,0.392,0.496,604,2019,TRUE,samhms2019,Cape Town; Those assigned male at birth only; adjusted for RDS; no max age,Cape Town,Western Cape
+HIV prevalence,TGW,Women,18,49,0.456,0.367,0.547,252,2019,TRUE,cloete2023lancethiv,"RDS-adjusted prevalence, from IBBS",Cape Town,
+HIV prevalence,TGW,Women,18,49,0.461,0.387,0.536,277,2019,TRUE,cloete2023lancethiv,"RDS-adjusted prevalence, from IBBS",Buffalo City,
+HIV prevalence,TGW,Women,18,49,0.633,0.555,0.705,309,2019,TRUE,cloete2023lancethiv,"RDS-adjusted prevalence, from IBBS",Johannesburg,
+HIV prevalence,FSW,Women,18,49,0.651,0.62,0.68,865,2019,TRUE,milovanovic2021globhealthaction,Gauteng,gauteng,gauteng
+HIV prevalence,FSW,Women,18,49,0.651,0.59,0.71,261,2019,TRUE,milovanovic2021globhealthaction,Eastern Cape,Eastern Cape,Eastern Cape
+HIV prevalence,FSW,Women,18,49,0.671,0.56,0.77,82,2019,TRUE,milovanovic2021globhealthaction,Northern Cape,Northern Cape,Northern Cape
+HIV prevalence,FSW,Women,18,49,0.700,0.64,0.75,272,2019,TRUE,milovanovic2021globhealthaction,North-West,North-West,North-West
+HIV prevalence,FSW,Women,18,49,0.704,0.65,0.76,267,2019,TRUE,milovanovic2021globhealthaction,Mpumalanga,Mpumalanga,Mpumalanga
+HIV prevalence,FSW,Women,18,49,0.732,0.66,0.79,190,2019,TRUE,milovanovic2021globhealthaction,Free State,Free State,Free State
+HIV prevalence,FSW,Women,18,49,0.850,0.81,0.88,431,2019,TRUE,milovanovic2021globhealthaction,Kwazulu-Natal,Kwazulu-Natal,Kwazulu-Natal
+HIV prevalence,FSW,Women,16,49,0.310,25.6,36,772,2018,TRUE,anova2018SAHMS,"Survey in Cape Town, no max age",Cape Town,Western Cape
+HIV prevalence,MSM,Men,18,49,0.310,0.24,0.39,153,2018,TRUE,jobson2018aidscare,Cape Town;  Year is the study year.,Cape Town,Western Cape
+HIV prevalence,FSW,Women,16,49,0.391,34,44.4,540,2018,TRUE,anova2018SAHMS,"Survey in Johannesburg, no max age",Johannesburg,Gauteng
+HIV prevalence,TGW,Women,18,49,0.570,,,18,2018,TRUE,jobson2018aidscare,"Cape Town: note TGW grouped with female but the latter only n=9 vs n=27 for TGW. Cannot derive confidence interval because number reported as 12/18 tested positive, but proportion reported as 57%. Year is the study year.",Cape Town,Western Cape
+HIV prevalence,FSW,Women,16,49,0.674,62.3,72.1,584,2018,TRUE,anova2018SAHMS,"Survey in eThekwini, no max age",eThekwini,Kwazulu-Natal
+HIV prevalence,PWID,All,15,49,0.020,0.01,0.04,367,2017,TRUE,scheibe2020bmcinfdis,Cape Town: no max age,Cape Town,Western Cape
+HIV prevalence,PWID,All,15,49,0.020,0.01,0.04,400,2017,TRUE,scheibe2020bmcinfdis,Pretoria; no max age; no derived CI because could not reconcile absolute number of positives (n=97),Pretoria,Gauteng
+HIV prevalence,PWID,Men,18,49,0.070,0.04,0.1,244,2017,TRUE,scheibe2019harmredjourn,Cape Town,cape Town,Western Cape
+HIV prevalence,PWID,All,15,49,0.080,0.05,0.11,398,2017,TRUE,scheibe2020bmcinfdis,Durban; no max age,Durban,Kwazulu-Natal
+HIV prevalence,PWID,Women,18,49,0.090,0.02,0.21,46,2017,TRUE,scheibe2019harmredjourn,Cape town; no upper age,Cape town,Western Cape
+HIV prevalence,PWID,Men,18,49,0.150,0.11,0.19,286,2017,TRUE,scheibe2019harmredjourn,Durban,Durban,Kwazulu-Natal
+HIV prevalence,FSW,Women,18,49,0.180,,,384,2017,FALSE,scheibe2020bmcinfdis,Cape Town: Includes 12% male sex workers; did not derive CI because proportion was not exact relative to the numbers provided; assumed it was estimated or adjusted,Cape Town,Western Cape
+HIV prevalence,All,Men,45,49,0.248,0.188,0.32,478,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,45,49,0.303,0.262,0.348,818,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,MSM,Men,15,49,0.313,,,150,2017,TRUE,jobson2017aidscare,No full access: estimate taken from Oli's sheet; year is study year,no,
+HIV prevalence,PWID,Women,18,49,0.360,0.22,0.52,42,2017,TRUE,scheibe2019harmredjourn,Pretoria,Pretoria,Gauteng
+HIV prevalence,MSM,Men,18,49,0.375,,,300,2017,TRUE,fearon2020plosone,Johannesburg only; may have included males who were assigned female at birth; RDS weighted estimate - therefore unclear how to derive the CI; no upper age,Johannesburg,Gauteng
+HIV prevalence,FSW,Women,18,49,0.380,,,248,2017,TRUE,scheibe2020bmcinfdis,Port Elizabeth only; did not derive CI because proportion was not exact relative to the numbers provided; assumed it was estimated or adjusted,Port Elizabeth,Eastern Cape
+HIV prevalence,PWID,Women,18,49,0.390,0.22,0.58,31,2017,TRUE,scheibe2019harmredjourn,Durban,Durban,Kwazulu-Natal
+HIV prevalence,PWID,Men,18,49,0.390,0.33,0.45,277,2017,TRUE,scheibe2019harmredjourn,Pretoria,Pretoria,Gauteng
+HIV prevalence,MSM,Men,18,49,0.400,0.34,0.47,746,2017,TRUE,scheibe2020bmcinfdis,Cape Town: no max age,Cape Town,Western Cape
+HIV prevalence,MSM,Men,18,49,0.410,,,746,2017,TRUE,scheibe2020bmcinfdis,Pretoria; no max age; no derived CI because could not reconcile absolute number of positives (n=97),Pretoria,Gauteng
+HIV prevalence,MSM,Men,18,49,0.490,0.42,0.55,746,2017,TRUE,scheibe2020bmcinfdis,Johannesburg; no max age,Johannesburg,Gauteng
+HIV prevalence,FSW,Women,18,49,0.550,,,399,2017,TRUE,scheibe2020bmcinfdis,Durban only; did not derive CI because proportion was not exact relative to the numbers provided; assumed it was estimated or adjusted,Durban,Kwazulu-Natal
+HIV prevalence,FSW,Women,18,49,0.560,,,248,2017,TRUE,scheibe2020bmcinfdis,Mathatha only; did not derive CI because proportion was not exact relative to the numbers provided; assumed it was estimated or adjusted,mathatha,Eastern Cape
+HIV prevalence,MSM,Men,18,49,0.639,,,118,2017,TRUE,fearon2020jaids,"Johannesburg: RDS adjusted estimate: Note that this include 15% ""transfeminine"" and 7% ""non-binary"". Oli seemed to have an estimate for just TGW, but I was unable to find that in the study",johannesburg,Gauteng
+HIV prevalence,FSW,Women,18,49,0.800,,,249,2017,TRUE,scheibe2020bmcinfdis,Pietermaritzburg only; did not derive CI because proportion was not exact relative to the numbers provided; assumed it was estimated or adjusted,Pietermaritzburg,Kwazulu-Natal
+HIV prevalence,All,Women,45,49,0.205,0.1559506,0.2642589,216.80614,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,45,49,0.264,0.1700835,0.3866891,64.38077,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,FSW,Women,15,49,0.460,0.37,0.55,124,2016,FALSE,radebe2016aids,"Conference abstract with missing data collection year (publication year used instead): Johannesburg only.   Age range assumed, though note mean 32.08 (SD = 6.56). Based on self-report.",,
+HIV prevalence,FSW,Women,18,49,0.520,0.44,0.6,156,2016,TRUE,yeo2022plosone,Klerksdorp only; no max age reported,Klerksdorp,North-West
+HIV prevalence,FSW,Women,18,49,0.536,0.48,0.6,280,2016,TRUE,coetzee2017plosone,Soweto only; no max age reported; RDS-adjusted estimate though Ntested is not adjusted,Soweto,Gauteng
+HIV prevalence,FSW,Women,15,49,0.540,0.39,0.68,50,2016,FALSE,radebe2016aids,"Conference abstract with missing data collection year (publication year used instead): Tshwane only. Age range assumed, though note mean 31.52 (SD = 5.21). Based on self-report.",,
+HIV prevalence,FSW,Women,18,49,0.551,,,280,2016,FALSE,coetzee2017plosone,Soweto only; no max age reported; not adjusted for RDS,Soweto,Gauteng
+HIV prevalence,FSW,Women,18,49,0.551,0.51,0.6,508,2016,TRUE,yeo2022plosone,Soweto only; no max age reported,Soweto,Gauteng
+HIV prevalence,FSW,Women,15,49,0.422,0.4,0.45,1364,2015,FALSE,slabbert2017bmcpubhealth,"Johannesburg, min/max age not reported, self-report",Johannesburg,Gauteng
+HIV prevalence,FSW,Women,15,49,0.529,0.48,0.58,399,2015,FALSE,slabbert2017bmcpubhealth,"Pretoria, min/max age not reported, self-report",Pretoria,Gauteng
+HIV prevalence,MSM,Men,15,49,0.584,0.55,0.61,1107,2015,TRUE,rees2017sextransdis,Johannesburg; no ages reported,Johannesburg,Gauteng
+HIV prevalence,FSW,Women,15,49,0.640,,,410,2014,TRUE,shwartz2017sextransinf,Taken from Oli's sheet - need access. Note that Leigh reports prev = 61.5%,,
+HIV prevalence,FSW,Women,15,49,0.751,0.69,0.8,249,2014,TRUE,black2016bmjsextransinf,"No access to full study, but from Oli's sheet Johannesberg only with no clear age range",Johannesburg,Gauteng
+HIV prevalence,PWID,Women,18,49,0.040,0.001,0.2,26,2013,TRUE,scheibe2016intjdrugpolicy,Western Cape,Western Cape,Western Cape
+HIV prevalence,PWID,All,18,49,0.090,,,,2013,FALSE,scheibe2016intjdrugpolicy,"Western Cape - no max age, use sex-specific results instead",western cape,western cape
+HIV prevalence,PWID,Men,18,49,0.100,0.06,0.17,124,2013,TRUE,scheibe2016intjdrugpolicy,Western Cape,Western Cape,Western Cape
+HIV prevalence,PWID,Men,18,49,0.150,0.09,0.22,123,2013,TRUE,scheibe2016intjdrugpolicy,Gauteng,Gauteng,Gauteng
+HIV prevalence,PWID,Men,18,49,0.160,0.09,0.23,116,2013,TRUE,scheibe2016intjdrugpolicy,Kwazulu-Natal,Kwazulu-Natal,Kwazulu-Natal
+HIV prevalence,PWID,All,18,49,0.160,,,,2013,FALSE,scheibe2016intjdrugpolicy,"Gauteng - no max age, use sex-specific results instead",gauteng,gauteng
+HIV prevalence,PWID,All,18,49,0.170,,,,2013,FALSE,scheibe2016intjdrugpolicy,"Kwazulu-Natal - no max age, use sex-specific results instead",kwazulu-natal,kwazulu-natal
+HIV prevalence,FSW,Women,16,49,0.194,0.15,0.34,650,2013,TRUE,anova2013SAHMS,"Survey in Cape Town, no max age",Cape Town,Western Cape
+HIV prevalence,PWID,Women,18,49,0.220,0.09,0.42,27,2013,TRUE,scheibe2016intjdrugpolicy,Gauteng,Gauteng,Gauteng
+HIV prevalence,PWID,Women,18,49,0.240,0.11,0.41,34,2013,TRUE,scheibe2016intjdrugpolicy,Kwazulu-Natal,Kwazulu-Natal,Kwazulu-Natal
+HIV prevalence,FSW,Women,16,49,0.449,0.31,0.66,764,2013,TRUE,anova2013SAHMS,"Survey in Johannesburg, no max age",Johannesburg,Gauteng
+HIV prevalence,FSW,Women,16,49,0.518,0.18,0.45,766,2013,TRUE,anova2013SAHMS,"Survey in Durban, no max age",Durban,Kwazulu-Natal
+HIV prevalence,All,Men,45,49,0.134,0.0931159,0.1879683,202.20618,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,MSM,Men,18,49,0.137,0.91,0.196,62,2012,TRUE,lane2014plosone,"Ehlanzeni - - RDS adjusted estimate, no max age",Ehlanzeni,Mpumalanga
+HIV prevalence,All,Women,45,49,0.197,0.1558929,0.245564,303.93057,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,MSM,Men,18,49,0.208,,,62,2012,FALSE,lane2014plosone,Ehlanzeni-raw,,
+HIV prevalence,MSM,Men,18,49,0.223,0.147,0.301,280,2012,TRUE,cloete2014marang,Cape town; no upper age,Cape Town,Western Cape
+HIV prevalence,MSM,Men,18,49,0.268,0.204,0.356,339,2012,TRUE,cloete2014marang,Johannesburg; no upper age,Johannesburg,Gauteng
+HIV prevalence,MSM,Men,18,49,0.283,0.211,0.353,110,2012,TRUE,lane2014plosone,"Gert Sibande - RDS adjusted estimate, no max age",Gert Sibande,Mpumalanga
+HIV prevalence,MSM,Men,18,49,0.358,,,110,2012,FALSE,lane2014plosone,Gert Sibande - raw,,
+HIV prevalence,MSM,Men,18,49,0.440,0.37,0.51,200,2012,TRUE,rebe2015plosone,"No upper age, excluded MSM who were treated for a recent STI in the past two weeks and required follow up clinic visits (may underestimate prevalence); Cape Town only",Cape Town,Western Cape
+HIV prevalence,MSM,Men,18,49,0.482,0.379,0.554,287,2012,TRUE,cloete2014marang,Durban; no upper age,Durban,Kwazulu-Natal
+HIV prevalence,FSW,Women,15,49,0.670,0.62,0.72,349,2012,TRUE,greener2014aids,Value taken from an abstract; Durban only; no age reported,Durban,Kwazulu-Natal
+HIV prevalence,MSM,Men,18,49,0.345,0.27,0.42,171,2010,TRUE,tucker2013aidscare,Cape Town; there may be overlap in population with Health4Men Study from Anova Health Institute (Extracted separately) due to use of same recruitment volunteers; no upper age,Cape Town,Western Cape
+HIV prevalence,All,Men,45,49,0.079,0.0487802,0.1255002,201.27056,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,45,49,0.143,0.0968359,0.2056155,162.55319,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,MSM,Men,18,49,0.275,0.17,0.381,69,2008,TRUE,rispel2011jaids,Durban; no max age,Durban,Kwazulu-Natal
+HIV prevalence,MSM,Men,18,49,0.495,0.425,0.565,202,2008,TRUE,rispel2011jaids,Johannesburg; no max age,Johannesburg,Gauteng
+HIV prevalence,All,Women,45,49,0.087,0.0600939,0.1255873,295.70239,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,45,49,0.103,0.0644475,0.1607114,160.67401,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,FSW,Women,18,49,0.590,0.53,0.65,276,2005,TRUE,luseno2009aidscare,No upper age; Pretoria only; included women who paid for sex but also those who reported having unprotected sex only,Pretoria,Gauteng
+HIV prevalence,FSW,Women,20,49,0.780,0.69,0.86,101,2001,TRUE,ndhlovu2005popcouncil,Careltonville only; no max age. Study does have age specific prevalences but no sample sizes (and must be read off a graph),Careltonville,Gauteng
+HIV prevalence,FSW,Women,20,49,0.690,0.6,0.77,121,1998,TRUE,ndhlovu2005popcouncil,Careltonville only; no max age. Study does have age specific prevalences but no sample sizes (and must be read off a graph),Careltonville,Gauteng
+HIV prevalence,FSW,Women,15,49,0.500,,,416,1996,TRUE,ramjee2005jaids,"Durban and Johannesburg truck stops: study year was 2005,but tracing the clinical trial to another citation, the study year was 1996 (ramji1998sextransdis). Paper does not state it. No ages stated.",Multi,Eastern Cape
+HIV prevalence,MSM,Men,18,49,,,,,,FALSE,lane2018biorxiv,Appears to be an analysis of IBBS data (already extracted as SAHMS) and extrapolation to other sites rather than primary collection,appears,
+HIV prevalence,All,Men,50,54,0.230,0.185294118,0.282352941,288.8821114,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,50,54,0.291,0.231617647,0.357352941,200.5381269,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,50,54,0.202,0.15,0.266,451,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,50,54,0.222,0.172,0.282,774,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,50,54,0.119,0.0719833,0.1890873,125.54451,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,50,54,0.148,0.1139496,0.1901155,337.96939,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,50,54,0.155,0.1085362,0.2161376,176.74755,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,50,54,0.095,0.061037,0.1441472,199.12703,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,50,54,0.106,0.065275,0.1673015,146.92105,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,50,54,0.074,0.0480425,0.1137261,257.62257,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,50,54,0.142,0.0848622,0.2275775,95.45476,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,MSM,Men,18,58,0.260,0.2,0.32,200,2009,TRUE,baral2011bmcpubhealth,Cape Town,Cape Town,Western Cape
+HIV prevalence,FSW,Women,16,58,0.596,0.559,0.628,775,2004,TRUE,vanLoggerenberg2008plosone,Durban only,Durban,Kwazulu-Natal
+HIV prevalence,All,Men,55,59,0.151,0.119117647,0.194117647,350.214598,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,55,59,0.161,0.130147059,0.198529412,443.8864526,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,55,59,0.148,0.102,0.211,384,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,55,59,0.176,0.14,0.219,697,2017,TRUE,zafhsrc2017,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,55,59,0.176,0.0981306,0.2941408,60.64386,2016,TRUE,zafdhs2016,"DHS Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,55,59,0.055,0.0359652,0.0842365,363.32317,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,55,59,0.097,0.070336,0.1325787,356.20312,2012,TRUE,zafhsrc2012,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,55,59,0.055,0.0283001,0.1042044,156.27904,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,55,59,0.068,0.0409184,0.1101143,216.48485,2008,TRUE,zafhsrc2008,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Women,55,59,0.030,0.0158139,0.0556363,317.09728,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,All,Men,55,59,0.064,0.0186033,0.1993241,39.06689,2005,TRUE,zafhsrc2005,"HSRC Survey, taken from 2023 AIM file",,
+HIV prevalence,FSW,Women,15,59,0.686,0.59,0.77,118,1998,TRUE,williams2000council,Khutsong only: Note that this study does have age-specific n and prevalence but the sample sizes are extremely low (example n = 1),Khutsong,Gauteng
+HIV prevalence,All,Women,60,64,0.113,0.083823529,0.15,351.6956488,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Men,60,64,0.120,0.092647059,0.156617647,396.5293734,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,MSM,Men,18,69,0.420,0.36,0.48,263,2015,TRUE,sullivan2020jaids,Study from Port Elizabeth and Cape town; age range for msm and tgw combined,Multi,Western Cape
+HIV prevalence,TGW,Women,18,69,0.590,0.36,0.79,22,2015,TRUE,sullivan2020jaids,Study from Port Elizabeth and Cape town; age range for msm and tgw combined,Multi,Western Cape
+HIV prevalence,All,Men,65,100,0.049,0.0375,0.070588235,654.0357988,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,All,Women,65,100,0.061,0.044117647,0.083823529,558.2874412,2022,TRUE,sabssm2023,SABSSM VI  - used plot digitzer for confidence intervals and effective sample size calculation,,
+HIV prevalence,FSW,Women,,,,,,,2001,FALSE,leggett2001socintrans,"Cannot find overall numbers for HIV positive (only stratified by drug use), though Thembisa reports 42.6% as overall prevalence. Year assumed to be study year.",,

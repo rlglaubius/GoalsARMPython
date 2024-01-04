@@ -10,7 +10,7 @@ import time
 import src.goals_model as Goals
 import src.goals_const as CONST
 import src.goals_utils as Utils
-from percussion import ancprev, hivprev
+from percussion import ancprev, hivprev, alldeaths
 
 ## TODO: make fill_hivprev_template, plot_fit_* members of GoalsFitter
 
@@ -27,7 +27,9 @@ def fill_hivprev_template(hivsim, template):
     yidx = template['Year'] - hivsim.year_first     # convert from years to indices relative to the first year of projection
     amin = template['AgeMin'] - CONST.AGE_ADULT_MIN # convert from ages to years since entry into the adult model
     amax = template['AgeMax'] - CONST.AGE_ADULT_MIN + 1
+  
     for row in range(nobs):
+
         match pop[row]:
             case 'All': pop_min, pop_max = CONST.POP_MIN, CONST.POP_MAX + 1
             case 'FSW': pop_min, pop_max = CONST.POP_FSW, CONST.POP_FSW + 1
@@ -48,10 +50,31 @@ def fill_hivprev_template(hivsim, template):
         if pop[row] == 'TGW':
             sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
 
-        pop_hiv = hivsim.pop_adult_hiv[yidx[row], sex_min:sex_max, amin[row]:amax[row], pop_min:pop_max, :, :].sum()
-        pop_neg = hivsim.pop_adult_neg[yidx[row], sex_min:sex_max, amin[row]:amax[row], pop_min:pop_max].sum()
+        pop_hiv = hivsim.pop_adult_hiv[int(yidx[row]), int(sex_min):int(sex_max), int(amin[row]):int(amax[row]), int(pop_min):int(pop_max), :, :].sum()
+        pop_neg = hivsim.pop_adult_neg[int(yidx[row]),int(sex_min):int(sex_max), int(amin[row]):int(amax[row]), int(pop_min):int(pop_max)].sum()
         template.at[row,'Prevalence'] = pop_hiv / (pop_hiv + pop_neg)
 
+def fill_deaths_template(hivsim, template):
+    # Poor practice first cut: loop. Since the template rows are invariant from
+    # one simulation to the next, we may be able to precompute and store the
+    # indices needed to calculate the model's prevalence estimates
+    nobs = len(template.index)
+    sex = template['Gender']
+    yidx = template['Year'] - hivsim.year_first     # convert from years to indices relative to the first year of projection
+    amin = template['AgeMin'] - CONST.AGE_ADULT_MIN # convert from ages to years since entry into the adult model
+    amax = template['AgeMax'] - CONST.AGE_ADULT_MIN + 1
+  
+    for row in range(nobs):
+        match sex[row]:
+            #Note that there is no 'All' in South Africa, but leaving here for future use
+            case 'All':   sex_min, sex_max = CONST.SEX_MC_MIN, CONST.SEX_MC_MAX + 1 
+            case 'Women': sex_min, sex_max = CONST.SEX_FEMALE, CONST.SEX_FEMALE + 1
+            case 'Men':   sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
+            case _: sys.stderr.write("Error: Unrecognized gender %s\n" % (sex[row]))
+        
+        deaths_hiv = hivsim.deaths_adult_hiv[int(yidx[row]), int(sex_min):int(sex_max), int(amin[row]):int(amax[row]), :].sum()
+        template.at[row,'Deaths'] = deaths_hiv
+      
 def plot_fit_anc(hivsim, ancdat, tiffname):
     anc_data = ancdat.anc_data.copy()
     anc_data['Source'] = ['Census' if site=='Census' else 'ANC-%s' % (kind) for site, kind in zip(anc_data['Site'], anc_data['Type'])]
@@ -88,6 +111,27 @@ def plot_fit_hiv(hivsim, hivdat, tiffname):
          + plotnine.geom_point()
          + plotnine.geom_line(data=mod_data[mod_data['AgeMax'] > 14])
          + plotnine.facet_grid('Population~Age', scales='free_y')
+         + plotnine.theme_bw()
+         + plotnine.theme(axis_text_x = plotnine.element_text(angle=90)))
+    p.save(filename=tiffname, dpi=600, units="in", width=16, height=9, pil_kwargs={"compression" : "tiff_lzw"})
+
+def plot_fit_deaths(hivsim, deathsdat, tiffname):
+    death_data = deathsdat.death_data.copy()
+    death_data['Age'] = ['%s-%s' % (amin, amax) for (amin, amax) in zip(death_data['AgeMin'], death_data['AgeMax'])]
+    death_data.rename(columns={'Value' : 'Deaths'}, inplace=True)
+
+    # Capture HIV deaths every year with data
+    pop_frame = death_data.groupby(['Gender', 'AgeMin', 'AgeMax']).size().reset_index(name='Deaths')
+    yrs_frame = pd.DataFrame({'Year' : range(hivsim.year_first, hivsim.year_final + 1)})
+    mod_data = yrs_frame.join(pop_frame, how='cross')
+    fill_deaths_template(hivsim, mod_data)
+    mod_data['Age'] = ['%s-%s' % (amin, amax) for (amin, amax) in zip(mod_data['AgeMin'], mod_data['AgeMax'])]
+
+    p = (plotnine.ggplot(death_data[death_data['AgeMax'] > 14])
+         + plotnine.aes(x='Year', y='Deaths')
+         + plotnine.geom_point()
+         + plotnine.geom_line(data=mod_data[mod_data['AgeMax'] > 14])
+         + plotnine.facet_grid('Gender~Age', scales='free_y')
          + plotnine.theme_bw()
          + plotnine.theme(axis_text_x = plotnine.element_text(angle=90)))
     p.save(filename=tiffname, dpi=600, units="in", width=16, height=9, pil_kwargs={"compression" : "tiff_lzw"})
@@ -142,10 +186,11 @@ class Parameter:
         return self._prior(theta, self.parameter1, self.parameter2)
 
 class GoalsFitter:
-    def __init__(self, par_xlsx, anc_csv, hiv_csv):
+    def __init__(self, par_xlsx, anc_csv, hiv_csv, deaths_csv):
         self.init_hivsim(par_xlsx)
         self.init_data_anc(anc_csv)
         self.init_data_hiv(hiv_csv)
+        self.init_data_deaths(deaths_csv)
         self.init_fitting(par_xlsx)
 
     def init_hivsim(self, par_xlsx):
@@ -163,6 +208,11 @@ class GoalsFitter:
         self._hivdat = hivprev.hivprev(self.year_first)
         self._hivdat.read_csv(hiv_csv)
         self._hivest = self._hivdat.projection_template()
+
+    def init_data_deaths(self, deaths_csv):
+        self._deathsdat = alldeaths.alldeaths(self.year_first)
+        self._deathsdat.read_csv(deaths_csv)
+        self._deathsest = self._deathsdat.projection_template()
 
     def init_fitting(self, par_xlsx):
         # Setting data_only=True lets the fitter use the calculated value of Excel
@@ -190,10 +240,13 @@ class GoalsFitter:
         self.project(params)
         self._ancest = self.hivsim.births_exposed / self.hivsim.births.sum((1))
         fill_hivprev_template(self.hivsim, self._hivest)
+        fill_deaths_template(self.hivsim, self._deathsest)
         lhood_hiv = self._hivdat.likelihood(self._hivest)
-        lhood_anc = self._ancdat.likelihood(self._ancest)
-        sys.stderr.write("%0.2f %0.2f\t%s\n" % (lhood_hiv, lhood_anc, params))
-        return lhood_hiv + lhood_anc, lhood_hiv, lhood_anc
+        #lhood_anc = self._ancdat.likelihood(self._ancest)
+        lhood_deaths = self._deathsdat.likelihood(self._deathsest)
+        lhood_anc = 0 #For South Africa only
+        sys.stderr.write("%0.2f %0.2f %0.2f\t%s\n" % (lhood_hiv, lhood_anc, lhood_deaths, params))
+        return lhood_hiv + lhood_anc + lhood_deaths, lhood_hiv, lhood_anc, lhood_deaths
 
     def posterior(self, params):
         """"! Posterior density on log scale """
@@ -306,14 +359,24 @@ class GoalsFitter:
             self._pardat[self._par_keys[i]].fitted_value = p_best[i]
 
         return self._pardat, optres
+    
+def array2frame(array, names):
+    if len(names) > 1:
+        array_index = pd.MultiIndex.from_product([range(s) for s in array.shape], names=names)
+        array_frame = pd.DataFrame({'Value' : array.flatten()}, index=array_index)['Value']
+    else:
+        array_index = pd.Index(range(array.shape[0]), name=names[0])
+        array_frame = pd.DataFrame({'Value' : array}, index=array_index)['Value']
+    return array_frame
 
-def main(par_file, anc_file, hiv_file):
+def main(par_file, anc_file, hiv_file, deaths_file, data_path):
     print("+=+ Inputs +=+")
     print("par_file = %s" % (par_file))
     print("anc_file = %s" % (anc_file))
     print("hiv_file = %s" % (hiv_file))
+    print("deaths_file = %s" % (deaths_file))
 
-    Fitter = GoalsFitter(par_file, anc_file, hiv_file)
+    Fitter = GoalsFitter(par_file, anc_file, hiv_file, deaths_file)
     pars, diag = Fitter.calibrate(method='Nelder-Mead')
 
     ## TODO: The outro below violates encapsuation by accessing "private"
@@ -322,7 +385,7 @@ def main(par_file, anc_file, hiv_file):
     ## relies on using implementation details gleaned from diag that the 
     ## caller should not know or care about.
     print("+=+ Fitting complete +=+")
-    lhood_val, lhood_hiv, lhood_anc = Fitter.likelihood(diag.x)
+    lhood_val, lhood_hiv, lhood_anc, lhood_deaths = Fitter.likelihood(diag.x)
     prior_val = Fitter.prior(diag.x)
 
     print({key : val.fitted_value for key, val in pars.items()})
@@ -331,20 +394,43 @@ def main(par_file, anc_file, hiv_file):
     print("prior:\t\t%f\nlhood_hiv:\t%f\nlhood_anc:\t%f" % (prior_val, lhood_hiv, lhood_anc))
     plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
     plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
+    plot_fit_deaths(Fitter.hivsim, Fitter._deathsdat, "deathsfit.tiff")
+
+    birth_all_frame = array2frame(Fitter.hivsim.births, ['Year', 'Sex'])
+    birth_exp_frame = array2frame(Fitter.hivsim.births_exposed, ['Year'])
+    pop_child_neg = array2frame(Fitter.hivsim.pop_child_neg, ['Year', 'Sex', 'Age'])
+    pop_child_hiv = array2frame(Fitter.hivsim.pop_child_hiv, ['Year', 'Sex', 'Age', 'CD4', 'ART'])
+    pop_adult_neg = array2frame(Fitter.hivsim.pop_adult_neg, ['Year', 'Sex', 'Age', 'Risk'])
+    pop_adult_hiv = array2frame(Fitter.hivsim.pop_adult_hiv, ['Year', 'Sex', 'Age', 'Risk', 'CD4', 'ART'])
+    new_hiv = array2frame(Fitter.hivsim.new_infections, ['Year', 'Sex', 'Age', 'Risk'])
+    t4 = time.time()
+
+    birth_all_frame.to_csv(data_path + "/births.csv")
+    birth_exp_frame.to_csv(data_path + "/births-exposed.csv")
+    pop_child_neg.to_csv(data_path + "/child-neg.csv")
+    pop_child_hiv.to_csv(data_path + "/child-hiv.csv")
+    pop_adult_neg.to_csv(data_path + "/adult-neg.csv")
+    pop_adult_hiv.to_csv(data_path + "/adult-hiv.csv")
+    new_hiv.to_csv(data_path + "/new-hiv.csv")
+
 
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
     time_start = time.time()
     if len(sys.argv) == 1:
-        par_file = "inputs/mwi-2023-inputs.xlsx"
+        par_file = "inputs/zaf-2023-inputs.xlsx"
         anc_file = "inputs/mwi-2023-anc-prev.csv"
-        hiv_file = "inputs/mwi-2023-hiv-prev.csv"
-        main(par_file, anc_file, hiv_file)
+        hiv_file = "inputs/zaf-2023-hiv-prev.csv"
+        deaths_file = "inputs/deaths-data-synthetic.csv"
+        data_path = "."
+        main(par_file, anc_file, hiv_file, deaths_file, data_path)
     elif len(sys.argv) < 3:
-        sys.stderr.write("USAGE: %s <input_param>.xlsx <anc_data>.csv <hiv_data>.csv" % (sys.argv[0]))
+        sys.stderr.write("USAGE: %s <input_param>.xlsx <anc_data>.csv <hiv_data>.csv <death_data>.csv" % (sys.argv[0]))
     else:
         par_file = sys.argv[1]
         anc_file = sys.argv[2]
         hiv_file = sys.argv[3]
-        main(par_file, anc_file, hiv_file)
+        deaths_file = sys.argv[4]
+        data_path = "."
+        main(par_file, anc_file, hiv_file, deaths_file, data_path)
     print("Completed in %s seconds" % (time.time() - time_start))
