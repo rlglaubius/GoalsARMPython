@@ -164,6 +164,10 @@ public:
 	/// by partnership type i (main=0, casual=1, commercial=2, msm=3)
 	void init_condom_freq(array_double_t freq);
 
+	/// Initialize input STI symptom prevalence trends
+	/// @param sti_prev Array by year, sex, age, and behavioral risk group
+	void init_sti_prev(array_double_t sti_prev);
+
 	/// Initialize the first year of epidemic simulation, and HIV prevalence in that year
 	/// @param seed_year First year of the HIV epidemic. This should be specified as the number of years since the projection began
 	/// @param seed_prev HIV prevalence in the first year of the HIV epidemic.
@@ -178,6 +182,8 @@ public:
 	/// @param symptom odds ratio for transmission during symptomatic infection
 	/// @param or_art_supp odds ratio for transmission on ART when virally suppressed, relative to off ART
 	/// @param or_art_fail odds ratio for transmission on ART when virally unsuppressed, relative to off ART
+	/// @param or_sti_hiv_pos odds ratio for HIV transmission for STI symptoms in HIV-positive partner
+	/// @param or_sti_hiv_neg odds ratio for HIV transmission for STI symptoms in HIV-negative partner
 	void init_transmission(
 		const double transmit_f2m,
 		const double or_m2f,
@@ -186,7 +192,9 @@ public:
 		const double chronic,
 		const double symptom,
 		const double or_art_supp,
-		const double or_art_fail);
+		const double or_art_fail,
+		const double or_sti_hiv_pos,
+		const double or_sti_hiv_neg);
 
 	/// Initialize HIV-related fertility rate ratios (FRRs)
 	/// @param frr_age_off_art FRRs off ART by year and five-year age group (15-19, 20-24, ..., 45-49)
@@ -338,6 +346,7 @@ PYBIND11_MODULE(goals_proj, m) {
 		.def("init_mixing_matrix",            &GoalsProj::init_mixing_matrix)
 		.def("init_sex_acts",                 &GoalsProj::init_sex_acts)
 		.def("init_condom_freq",              &GoalsProj::init_condom_freq)
+		.def("init_sti_prev",                 &GoalsProj::init_sti_prev)
 		.def("init_epidemic_seed",            &GoalsProj::init_epidemic_seed)
 		.def("init_hiv_fertility",            &GoalsProj::init_hiv_fertility)
 		.def("init_transmission",             &GoalsProj::init_transmission)

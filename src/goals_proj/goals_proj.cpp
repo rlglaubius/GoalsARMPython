@@ -268,6 +268,18 @@ void GoalsProj::init_condom_freq(array_double_t freq) {
 			proj->dat.condom_freq(t, q, arr_freq[t][q]);
 }
 
+void GoalsProj::init_sti_prev(array_double_t sti_prev) {
+	const int ndim(4);
+	size_t shape[] = {num_years, DP::N_SEX, DP::N_AGE_ADULT, DP::N_POP};
+	double* ptr_sti_prev(prepare_array(sti_prev, ndim, shape));
+	boost::multi_array_ref<double, ndim> arr_sti_prev(ptr_sti_prev, boost::extents[shape[0]][shape[1]][shape[2]][shape[3]]);
+	for (int t(0); t < shape[0]; ++t)
+		for (int s(0); s < shape[1]; ++s)
+			for (int a(0); a < shape[2]; ++a)
+				for (int r(0); r < shape[3]; ++r)
+					proj->dat.sti_prev(t, s, a, r, arr_sti_prev[t][s][a][r]);
+}
+
 void GoalsProj::init_epidemic_seed(const int seed_year, const double seed_prev) {
 	proj->dat.seed_time(seed_year);
 	proj->dat.seed_prevalence(seed_prev);
@@ -303,8 +315,20 @@ void GoalsProj::init_transmission(
 	const double chronic,
 	const double symptom,
 	const double or_art_supp,
-	const double or_art_fail) {
-	DP::set_transmission(proj->dat, transmit_f2m, or_m2f, or_m2m, primary, chronic, symptom, or_art_supp, or_art_fail);
+	const double or_art_fail,
+	const double or_sti_hiv_pos,
+	const double or_sti_hiv_neg) {
+	DP::set_transmission(proj->dat,
+		transmit_f2m,
+		or_m2f,
+		or_m2m,
+		primary,
+		chronic,
+		symptom,
+		or_art_supp,
+		or_art_fail,
+		or_sti_hiv_pos,
+		or_sti_hiv_neg);
 }
 
 void GoalsProj::init_adult_prog_from_10yr(array_double_t dist, array_double_t prog, array_double_t mort) {

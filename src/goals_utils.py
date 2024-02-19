@@ -33,8 +33,8 @@ def xlsx_load_epi(tab_epi):
     @param tab_epi an openpyxl workbook tab
     @return a dict mapping parameter tags to values
     """
-    vals = [cell[0].value for cell in tab_epi['B3:B19']]
-    keys = [cell[0].value for cell in tab_epi['D3:D19']]
+    vals = [cell[0].value for cell in tab_epi['B3:B22']]
+    keys = [cell[0].value for cell in tab_epi['D3:D22']]
     rval = dict(zip(keys, vals))
     return {key : rval[key] for key in keys if keys != None} # Prune empty rows
 
@@ -75,6 +75,28 @@ def xlsx_load_hiv_fert(tab_frr):
             'cd4' : frr_cd4,
             'art' : frr_art,
             'laf' : frr_laf}
+
+def xlsx_load_sti_prev(tab_sti):
+    ind_tgw, n_param = 5, 2
+    n_years = CONST.XLSX_FINAL_YEAR - CONST.XLSX_FIRST_YEAR + 1
+    sti_trend = np.zeros((n_years, CONST.N_SEX, CONST.N_POP), dtype=np.double, order="C")
+    sti_age   = np.zeros((CONST.N_SEX, CONST.N_POP, n_param), dtype=np.double, order="C")
+
+    sti_trend_w = xlsx_load_range(tab_sti,  'B3',  'CD8')
+    sti_trend_m = xlsx_load_range(tab_sti, 'B10', 'CD15')
+    sti_age_w = xlsx_load_range(tab_sti, 'B19', 'C24')
+    sti_age_m = xlsx_load_range(tab_sti, 'B26', 'C31')
+
+    ## Map from Excel to Goals layout
+    sti_trend[:,CONST.SEX_FEMALE, CONST.POP_NEVER:CONST.POP_MSM] = sti_trend_w[0:ind_tgw,:].transpose()
+    sti_trend[:,CONST.SEX_MALE,   CONST.POP_NEVER:CONST.POP_TGW] = sti_trend_m.transpose()
+    sti_trend[:,CONST.SEX_MALE,   CONST.POP_TGW] = sti_trend_w[ind_tgw,:]
+
+    sti_age[CONST.SEX_FEMALE, CONST.POP_NEVER:CONST.POP_MSM, :] = sti_age_w[0:ind_tgw,:]
+    sti_age[CONST.SEX_MALE,   CONST.POP_NEVER:CONST.POP_TGW, :] = sti_age_m
+    sti_age[CONST.SEX_MALE,   CONST.POP_TGW, :] = sti_age_w[ind_tgw,:]
+
+    return 0.01 * sti_trend, sti_age
 
 def xlsx_load_adult_prog(tab_prog):
     dist = xlsx_load_range(tab_prog, 'B4',  'I9')  # CD4 distribution after primary infection
