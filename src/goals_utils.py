@@ -163,7 +163,7 @@ def xlsx_load_fitting_pars(tab_fit):
     """! Load initial values and fitting metadata for parameters varied during model fitting
     @param tab_fit an openpyxl workbook tab
     """
-    last_row = 29
+    last_row = 32
     keys = [cell[0].value for cell in tab_fit['H2:H%d' % (last_row)]]
     vals = [tuple(cell.value for cell in row) for row in tab_fit['B2:F%d' % (last_row)]]
     rval = dict(zip(keys, vals))
