@@ -61,6 +61,7 @@ def fill_deaths_template(hivsim, template):
     nobs = len(template.index)
     sex = template['Gender']
     yidx = template['Year'] - hivsim.year_first     # convert from years to indices relative to the first year of projection
+  
     amin = template['AgeMin'] - CONST.AGE_ADULT_MIN # convert from ages to years since entry into the adult model
     amax = template['AgeMax'] - CONST.AGE_ADULT_MIN + 1
   
@@ -71,7 +72,7 @@ def fill_deaths_template(hivsim, template):
             case 'Women': sex_min, sex_max = CONST.SEX_FEMALE, CONST.SEX_FEMALE + 1
             case 'Men':   sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
             case _: sys.stderr.write("Error: Unrecognized gender %s\n" % (sex[row]))
-        
+
         deaths_hiv = hivsim.deaths_adult_hiv[int(yidx[row]), int(sex_min):int(sex_max), int(amin[row]):int(amax[row]), :].sum()
         template.at[row,'Deaths'] = deaths_hiv
       
@@ -391,7 +392,7 @@ def main(par_file, anc_file, hiv_file, deaths_file, data_path):
     print({key : val.fitted_value for key, val in pars.items()})
     print("%d likelihood evaluations" % (diag.nfev))
     print("Converged: %s" % (diag.success))
-    print("prior:\t\t%f\nlhood_hiv:\t%f\nlhood_anc:\t%f" % (prior_val, lhood_hiv, lhood_anc))
+    print("prior:\t\t%f\nlhood_hiv:\t%f\nlhood_anc:\t%f\nlhood_deaths:\t%f\n" % (prior_val, lhood_hiv, lhood_anc, lhood_deaths))
     plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
     plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
     plot_fit_deaths(Fitter.hivsim, Fitter._deathsdat, "deathsfit.tiff")
@@ -421,7 +422,7 @@ if __name__ == "__main__":
         par_file = "inputs/zaf-2023-inputs.xlsx"
         anc_file = "inputs/mwi-2023-anc-prev.csv"
         hiv_file = "inputs/zaf-2023-hiv-prev.csv"
-        deaths_file = "inputs/deaths-data-synthetic.csv"
+        deaths_file = "inputs/adjusted_deaths_data.csv"
         data_path = "."
         main(par_file, anc_file, hiv_file, deaths_file, data_path)
     elif len(sys.argv) < 3:
