@@ -194,8 +194,8 @@ class Model:
     def _initialize_population_sizes(self, med_age_debut, med_age_union, avg_dur_union, kp_size, kp_stay, kp_turnover):
         """! Convenience function for initializing model population sizes
         """
-        self._proj.init_median_age_debut(med_age_debut[CONST.SEX_FEMALE], med_age_debut[CONST.SEX_MALE])
-        self._proj.init_median_age_union(med_age_union[CONST.SEX_FEMALE], med_age_union[CONST.SEX_MALE])
+        self._proj.init_sexual_debut(med_age_debut[CONST.SEX_FEMALE], med_age_debut[CONST.SEX_MALE],
+                                     med_age_union[CONST.SEX_FEMALE], med_age_union[CONST.SEX_MALE])
         self._proj.init_mean_duration_union(avg_dur_union)
         self._proj.init_keypop_size_params(0.01 * kp_size, kp_stay, kp_turnover)
 

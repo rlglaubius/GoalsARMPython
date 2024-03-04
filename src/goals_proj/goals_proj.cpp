@@ -188,14 +188,13 @@ void GoalsProj::init_direct_incidence(
 	proj->dat.init_age_irr_from_5yr(DP::MALE,   airr_m);
 }
 
-void GoalsProj::init_median_age_debut(const double age_female, const double age_male) {
-	DP::set_median_age_debut(proj->dat, DP::FEMALE, age_female);
-	DP::set_median_age_debut(proj->dat, DP::MALE,   age_male);
-}
-
-void GoalsProj::init_median_age_union(const double age_female, const double age_male) {
-	DP::set_median_age_union(proj->dat, DP::FEMALE, age_female);
-	DP::set_median_age_union(proj->dat, DP::MALE,   age_male);
+void GoalsProj::init_sexual_debut(
+	const double med_age_debut_f,
+	const double med_age_debut_m,
+	const double med_age_union_f,
+	const double med_age_union_m) {
+	DP::init_sexual_debut(proj->dat, DP::FEMALE, med_age_debut_f, med_age_union_f);
+	DP::init_sexual_debut(proj->dat, DP::MALE,   med_age_debut_m, med_age_union_m);
 }
 
 void GoalsProj::init_mean_duration_union(const double years) {

@@ -103,15 +103,16 @@ public:
 		array_double_t pop_irr_f,
 		array_double_t pop_irr_m);
 
-	/// Initialize the median age at sexual debut
-	/// @param age_female median age at sexual debut among females
-	/// @param age_male   median age at sexual debut among males
-	void init_median_age_debut(const double age_female, const double age_male);
-
-	/// Initialize the median age at first union (marriage or cohabitation)
-	/// @param age_female median age at first union among females
-	/// @param age_male   median age at first union among males
-	void init_median_age_union(const double age_female, const double age_male);
+	/// Initialize the median age at sexual debut and first union (marriage or cohabitation)
+	/// @param med_age_debut_f median age at sexual debut among females
+	/// @param med_age_debut_m median age at sexual debut among males
+	/// @param med_age_union_f median age at first union among females
+	/// @param med_age_union_m median age at first union among males
+	void init_sexual_debut(
+		const double med_age_debut_f,
+		const double med_age_debut_m,
+		const double med_age_union_f,
+		const double med_age_union_m);
 
 	/// Initialize the average duration of marriage or cohabitation in years
 	/// @param years average duration
@@ -338,8 +339,7 @@ PYBIND11_MODULE(goals_proj, m) {
 		.def("init_pasfrs_from_5yr",          &GoalsProj::init_pasfrs_from_5yr)
 		.def("init_migr_from_5yr",            &GoalsProj::init_migr_from_5yr)
 		.def("init_direct_incidence",         &GoalsProj::init_direct_incidence)
-		.def("init_median_age_debut",         &GoalsProj::init_median_age_debut)
-		.def("init_median_age_union",         &GoalsProj::init_median_age_union)
+		.def("init_sexual_debut",             &GoalsProj::init_sexual_debut)
 		.def("init_mean_duration_union",      &GoalsProj::init_mean_duration_union)
 		.def("init_keypop_size_params",       &GoalsProj::init_keypop_size_params)
 		.def("init_keypop_married",           &GoalsProj::init_keypop_married)
