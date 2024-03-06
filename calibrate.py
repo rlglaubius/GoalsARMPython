@@ -270,6 +270,10 @@ class GoalsFitter:
                     self.hivsim.epi_pars[CONST.EPI_TRANSMIT_F2M] = params[idx]
                 case CONST.FIT_TRANSMIT_M2F:
                     self.hivsim.epi_pars[CONST.EPI_TRANSMIT_M2F] = params[idx]
+                case CONST.FIT_TRANSMIT_STI_NEG:
+                    self.hivsim.epi_pars[CONST.EPI_TRANSMIT_STI_NEG] = params[idx]
+                case CONST.FIT_TRANSMIT_STI_POS:
+                    self.hivsim.epi_pars[CONST.EPI_TRANSMIT_STI_POS] = params[idx]
                 case CONST.FIT_FORCE_PWID:
                     self.hivsim.pwid_force[:] = params[idx]
                 case CONST.FIT_LT_PARTNER_F:
@@ -322,7 +326,9 @@ class GoalsFitter:
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_CHRONIC],
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
                 self.hivsim.epi_pars[CONST.EPI_TRANSMIT_ART_VS],
-                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_ART_VF])
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_ART_VF],
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_STI_POS],
+                self.hivsim.epi_pars[CONST.EPI_TRANSMIT_STI_NEG])
         self.hivsim._proj.init_epidemic_seed(self.hivsim.epi_pars[CONST.EPI_INITIAL_YEAR] - self.year_first,
                                              self.hivsim.epi_pars[CONST.EPI_INITIAL_PREV])
 

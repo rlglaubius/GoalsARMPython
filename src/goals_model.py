@@ -116,7 +116,9 @@ class Model:
                                               self.p_married[CONST.SEX_FEMALE, CONST.POP_FSW  - CONST.POP_KEY_MIN],
                                               self.p_married[CONST.SEX_MALE,   CONST.POP_CSW  - CONST.POP_KEY_MIN],
                                               self.p_married[CONST.SEX_MALE,   CONST.POP_MSM  - CONST.POP_KEY_MIN],
-                                              self.p_married[CONST.SEX_FEMALE, CONST.POP_TGW  - CONST.POP_KEY_MIN]])
+                                              self.p_married[CONST.SEX_FEMALE, CONST.POP_TGW  - CONST.POP_KEY_MIN]])            
+            sti_trend, sti_age = Utils.xlsx_load_sti_prev(wb[CONST.XLSX_TAB_STIPREV])
+            self.sti_prev = self.calc_sti_prev(sti_trend, sti_age)
             
             # Resize arrays before sharing memory with the calculation engine, otherwise
             # modifying self.pwid_force or self.needle_sharing won't change the inputs
@@ -138,11 +140,14 @@ class Model:
                 self.epi_pars[CONST.EPI_TRANSMIT_CHRONIC],
                 self.epi_pars[CONST.EPI_TRANSMIT_SYMPTOM],
                 self.epi_pars[CONST.EPI_TRANSMIT_ART_VS],
-                self.epi_pars[CONST.EPI_TRANSMIT_ART_VF])
+                self.epi_pars[CONST.EPI_TRANSMIT_ART_VF],
+                self.epi_pars[CONST.EPI_TRANSMIT_STI_POS],
+                self.epi_pars[CONST.EPI_TRANSMIT_STI_NEG])
             self._proj.init_keypop_married(self.p_married)
             self._proj.init_mixing_matrix(self.mix_levels)
             self._proj.init_sex_acts(self.sex_acts)
             self._proj.init_condom_freq(self.condom_freq[year_range,:])
+            self._proj.init_sti_prev(self.sti_prev)
 
         if cfg_opts[CONST.CFG_USE_DIRECT_CLHIV]:
             direct_clhiv = Utils.xlsx_load_direct_clhiv(wb[CONST.XLSX_TAB_DIRECT_CLHIV])
@@ -189,8 +194,8 @@ class Model:
     def _initialize_population_sizes(self, med_age_debut, med_age_union, avg_dur_union, kp_size, kp_stay, kp_turnover):
         """! Convenience function for initializing model population sizes
         """
-        self._proj.init_median_age_debut(med_age_debut[CONST.SEX_FEMALE], med_age_debut[CONST.SEX_MALE])
-        self._proj.init_median_age_union(med_age_union[CONST.SEX_FEMALE], med_age_union[CONST.SEX_MALE])
+        self._proj.init_sexual_debut(med_age_debut[CONST.SEX_FEMALE], med_age_debut[CONST.SEX_MALE],
+                                     med_age_union[CONST.SEX_FEMALE], med_age_union[CONST.SEX_MALE])
         self._proj.init_mean_duration_union(avg_dur_union)
         self._proj.init_keypop_size_params(0.01 * kp_size, kp_stay, kp_turnover)
 
@@ -311,3 +316,29 @@ class Model:
         mix[:,[15,6]] = mix[:,[6,15]] # swaps TGW cols into place
 
         return mix.reshape((CONST.N_SEX, CONST.N_POP, CONST.N_SEX, CONST.N_POP))
+
+    def calc_sti_prev(self, sti_trend, sti_age):
+        """! Calculate STI prevalence inputs from input trends and age patterns """
+        n_years = self.year_final - self.year_first + 1
+        yr_bgn = self.year_first - CONST.XLSX_FIRST_YEAR
+        yr_end = self.year_final - CONST.XLSX_FIRST_YEAR + 1
+
+        sti = np.zeros((n_years, CONST.N_SEX, CONST.N_AGE_ADULT, CONST.N_POP), dtype=self._dtype, order=self._order)
+        scale_age = (np.array(range(CONST.AGE_ADULT_MIN, CONST.AGE_ADULT_MAX)) + 0.5 - 15.0) / (80.0 - 15.0)
+        scale_ref = (27.5 - 15.0) / (80 - 15.0)
+
+        for sex in range(CONST.N_SEX):
+            for pop in range(CONST.POP_NEVER, CONST.N_POP):
+                # This will calculate patterns for some populations we don't model
+                # like female MSM, but the code is not on the critical path and
+                # should continue to work if we add or change the number of risk groups.
+                par_mean = (sti_age[sex, pop, 0] - 15.0) / (80.0 - 15.0)
+                par_size = sti_age[sex, pop, 1]
+                dist = sp.stats.beta(1.0 + par_mean * par_size, 1.0 + (1.0 - par_mean) * par_size)
+
+                a_mtx = np.tile(dist.pdf(scale_age) / dist.pdf(scale_ref), (n_years, 1))
+                t_mtx = np.tile(sti_trend[yr_bgn:yr_end,sex,pop], (CONST.N_AGE_ADULT - 1, 1)).transpose()
+
+                sti[:, sex, 0:(CONST.N_AGE_ADULT-1), pop] = t_mtx * a_mtx / (1.0 - t_mtx + t_mtx * a_mtx)
+
+        return sti
