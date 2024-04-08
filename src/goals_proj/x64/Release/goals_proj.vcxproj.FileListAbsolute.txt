@@ -1,1 +1,0 @@
-C:\Proj\Repositories\GoalsARMPython\src\goals_proj\x64\Release\goals_proj.pyd
