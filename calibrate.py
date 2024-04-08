@@ -359,7 +359,7 @@ class GoalsFitter:
         bounds = optimize.Bounds(lb = [self._pardat[key].support[0] for key in self._par_keys],
                                  ub = [self._pardat[key].support[1] for key in self._par_keys])
         p_init = np.array([self._pardat[key].initial_value for key in self._par_keys])
-        optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds)
+        optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds, options={"maxiter" : 10000})
         p_best = optres.x
 
         for i in range(len(self._par_keys)):
@@ -425,10 +425,10 @@ if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
     time_start = time.time()
     if len(sys.argv) == 1:
-        par_file = "inputs/zaf-2023-inputs.xlsx"
-        anc_file = "inputs/mwi-2023-anc-prev.csv"
-        hiv_file = "inputs/zaf-2023-hiv-prev.csv"
-        deaths_file = "inputs/adjusted_deaths_data.csv"
+        par_file = "C:/Proj/Repositories/goalsARMinputs/inputs_workbooks/zaf-2023-inputs-sti.xlsx"
+        anc_file = "C:/Proj/Repositories/goalsARMinputs/anc/mwi-2023-anc-prev.csv"
+        hiv_file = "C:/Proj/Repositories/goalsARMinputs/prevalence/zaf-2023-hiv-prev.csv"
+        deaths_file = "C:/Proj/Repositories/goalsARMinputs/deaths/adjusted_deaths_data.csv"
         data_path = "."
         main(par_file, anc_file, hiv_file, deaths_file, data_path)
     elif len(sys.argv) < 3:

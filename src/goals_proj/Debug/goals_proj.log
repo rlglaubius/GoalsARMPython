@@ -1,0 +1,3 @@
+﻿  goals_proj.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\format(43): warning STL4038: The contents of <format> are available only with C++20 or later.
+C:\Proj\Repositories\GoalsARMPython\src\goals_proj\goals_proj.cpp(2,10): fatal  error C1083: Cannot open include file: 'boost/math/interpolators/pchip.hpp': No such file or directory

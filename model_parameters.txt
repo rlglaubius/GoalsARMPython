@@ -1,0 +1,15 @@
++=+ Inputs +=+
+par_file = inputs/zaf-2023-inputs-sti.xlsx
+anc_file = inputs/mwi-2023-anc-prev.csv
+hiv_file = inputs/zaf-2023-hiv-prev.csv
+deaths_file = inputs/adjusted_deaths_data.csv
++=+ Fitting complete +=+
+{'seed.prev': 0.00719911672186469, 'transmit.f2m': 0.0007884373701144905, 'transmit.m2f': 3.4365257933604796, 'effect.sti.neg': 0.010411619237401283, 'effect.sti.pos': 0.33930459493576026, 'lt.partner.f': 444.184223357555, 'lt.partner.m': 634.8222035121034, 'partner.age.mean.f': 0.5044474417096485, 'partner.age.mean.m': 0.4370640422711538, 'partner.age.scale.f': 1.5517071820046269, 'partner.age.scale.m': 0.1573744754315506, 'partner.pop.fsw': 151.04883664615528, 'partner.pop.client': 0.24576017772756667, 'partner.pop.msm': 0.45467433569487004, 'partner.pop.tgw': 0.20855504310220968, 'assort.fsw': 0.7073941578658737, 'assort.msm': 0.9385016582197374, 'assort.tgw': 0.9391900635696935, 'assort.gen': 0.5540299451289583}
+12642 likelihood evaluations
+Converged: False
+prior:		-746.876364
+lhood_hiv:	-3026.623928
+lhood_anc:	0.000000
+lhood_deaths:	-2432.565611
+
+Completed in 47466.8278362751 seconds
