@@ -36,6 +36,10 @@ def main(xlsx_name, data_path):
     pop_child_hiv = array2frame(model.pop_child_hiv, ['Year', 'Sex', 'Age', 'CD4', 'ART'])
     pop_adult_neg = array2frame(model.pop_adult_neg, ['Year', 'Sex', 'Age', 'Risk'])
     pop_adult_hiv = array2frame(model.pop_adult_hiv, ['Year', 'Sex', 'Age', 'Risk', 'CD4', 'ART'])
+    deaths_child_neg = array2frame(model.deaths_child_neg, ['Year', 'Sex', 'Age'])
+    deaths_child_hiv = array2frame(model.deaths_child_hiv, ['Year', 'Sex', 'Age', 'CD4', 'ART'])
+    deaths_adult_neg = array2frame(model.deaths_adult_neg, ['Year', 'Sex', 'Age', 'Risk'])
+    deaths_adult_hiv = array2frame(model.deaths_adult_hiv, ['Year', 'Sex', 'Age', 'Risk', 'CD4', 'ART'])
     new_hiv = array2frame(model.new_infections, ['Year', 'Sex', 'Age', 'Risk'])
     t4 = time.time()
 
@@ -45,6 +49,10 @@ def main(xlsx_name, data_path):
     pop_child_hiv.to_csv(data_path + "/child-hiv.csv")
     pop_adult_neg.to_csv(data_path + "/adult-neg.csv")
     pop_adult_hiv.to_csv(data_path + "/adult-hiv.csv")
+    deaths_child_neg.to_csv(data_path + "/deaths-child-neg.csv")
+    deaths_child_hiv.to_csv(data_path + "/deaths-child-hiv.csv")
+    deaths_adult_neg.to_csv(data_path + "/deaths-adult-neg.csv")
+    deaths_adult_hiv.to_csv(data_path + "/deaths-adult-hiv.csv")
     new_hiv.to_csv(data_path + "/new-hiv.csv")
     t5 = time.time()
 

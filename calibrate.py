@@ -51,13 +51,10 @@ def fill_hivprev_template(hivsim, template):
             sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
 
         pop_hiv = hivsim.pop_adult_hiv[int(yidx[row]), int(sex_min):int(sex_max), int(amin[row]):int(amax[row]), int(pop_min):int(pop_max), :, :].sum()
-        pop_neg = hivsim.pop_adult_neg[int(yidx[row]),int(sex_min):int(sex_max), int(amin[row]):int(amax[row]), int(pop_min):int(pop_max)].sum()
+        pop_neg = hivsim.pop_adult_neg[int(yidx[row]), int(sex_min):int(sex_max), int(amin[row]):int(amax[row]), int(pop_min):int(pop_max)].sum()
         template.at[row,'Prevalence'] = pop_hiv / (pop_hiv + pop_neg)
 
 def fill_deaths_template(hivsim, template):
-    # Poor practice first cut: loop. Since the template rows are invariant from
-    # one simulation to the next, we may be able to precompute and store the
-    # indices needed to calculate the model's prevalence estimates
     nobs = len(template.index)
     sex = template['Gender']
     yidx = template['Year'] - hivsim.year_first     # convert from years to indices relative to the first year of projection
@@ -73,8 +70,9 @@ def fill_deaths_template(hivsim, template):
             case 'Men':   sex_min, sex_max = CONST.SEX_MALE_U, CONST.SEX_MALE_C + 1
             case _: sys.stderr.write("Error: Unrecognized gender %s\n" % (sex[row]))
 
-        deaths_hiv = hivsim.deaths_adult_hiv[int(yidx[row]), int(sex_min):int(sex_max), int(amin[row]):int(amax[row]), :].sum()
-        template.at[row,'Deaths'] = deaths_hiv
+        deaths_hivpop = hivsim.deaths_adult_hiv[yidx[row], sex_min:sex_max, amin[row]:amax[row], :, :, :].sum()
+        deaths_negpop = hivsim.deaths_adult_neg[yidx[row], sex_min:sex_max, amin[row]:amax[row], :].sum()
+        template.at[row,'Deaths'] = deaths_hivpop + deaths_negpop
       
 def plot_fit_anc(hivsim, ancdat, tiffname):
     anc_data = ancdat.anc_data.copy()
