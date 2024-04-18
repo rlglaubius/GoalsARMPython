@@ -364,16 +364,20 @@ class GoalsFitter:
         self.hivsim.invalidate(-1) # needed so that Goals will recalculate the projection
         self.hivsim.project(self.year_final)
 
-    def calibrate(self, method='Nelder-Mead'):
+    def calibrate(self, method='Nelder-Mead', maxiter=None):
         """! Calibrate the model to ANC and HIV prevalence data
         @param method see scipy.optimize.minimize. Only methods that allow bounds can be used.
+        @param iter maximum number of iterations to perform
         @return a dictionary that lists the fitted parameters with their final values
         @return the diagnostic object returned by scipy optimize
         """
         bounds = optimize.Bounds(lb = [self._pardat[key].support[0] for key in self._par_keys],
                                  ub = [self._pardat[key].support[1] for key in self._par_keys])
         p_init = np.array([self._pardat[key].initial_value for key in self._par_keys])
-        optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds, options={"maxiter" : 0})
+
+        options = dict()
+        if maxiter: options['maxiter'] = maxiter
+        optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds, options=options)
         p_best = optres.x
 
         for i in range(len(self._par_keys)):
@@ -393,20 +397,22 @@ def array2frame(array, names):
 def setup_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('input_xlsx',  help="Excel model input workbook")
+    parser.add_argument('--maxiter',   help="Maximum number of optimization iterations to perform", type=int)
     parser.add_argument("--ancprev",   help="CSV file with HIV prevalence from ANC surveillance")
     parser.add_argument("--svyprev",   help="CSV file with HIV prevalence from surveys")
     parser.add_argument("--alldeaths", help="CSV file with all-cause deaths counts")
     return parser
 
-def main(par_file, anc_file, hiv_file, deaths_file, data_path):
+def main(par_file, maxiter, anc_file, hiv_file, deaths_file, data_path):
     print("+=+ Inputs +=+")
     print("par_file = %s" % (par_file))
     print("anc_file = %s" % (anc_file))
     print("hiv_file = %s" % (hiv_file))
     print("deaths_file = %s" % (deaths_file))
+    print("maxiter = %s" % (maxiter))
 
     Fitter = GoalsFitter(par_file, anc_file, hiv_file, deaths_file)
-    pars, diag = Fitter.calibrate(method='Nelder-Mead')
+    pars, diag = Fitter.calibrate(method='Nelder-Mead', maxiter=maxiter)
 
     ## TODO: The outro below violates encapsuation by accessing "private"
     ## data in _ancdat and _hivdat (drop "_", or move the plot methods into
@@ -457,6 +463,7 @@ if __name__ == "__main__":
     anc_file = args.ancprev
     svy_file = args.svyprev
     deaths_file = args.alldeaths
+    maxiter = args.maxiter
     out_path = "."
-    main(par_file, anc_file, svy_file, deaths_file, out_path)
+    main(par_file, maxiter, anc_file, svy_file, deaths_file, out_path)
     print("Completed in %s seconds" % (time.time() - time_start))
