@@ -439,9 +439,9 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         args = parser.parse_args()
     else:
-        args = parser.parse_args(["C:/Proj/Repositories/goalsARMinputs/inputs_workbooks/zaf-2023-inputs-sti.xlsx",
-                                  "--svyprev",   "C:/Proj/Repositories/GoalsARMInputs/prevalence/zaf-2023-hiv-prev.csv",
-                                  "--alldeaths", "C:/Proj/Repositories/GoalsARMInputs/deaths/adjusted_deaths_data.csv"])
+        args = parser.parse_args(["inputs/mwi-2023-inputs.xlsx",
+                                  "--ancprev",   "inputs/mwi-2023-anc-prev.csv",
+                                  "--svyprev",   "inputs/mwi-2023-hiv-prev.csv"])
     par_file = args.input_xlsx
     anc_file = args.ancprev
     svy_file = args.svyprev
