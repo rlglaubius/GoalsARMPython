@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import openpyxl as xlsx
 import os
@@ -357,7 +358,7 @@ class GoalsFitter:
         bounds = optimize.Bounds(lb = [self._pardat[key].support[0] for key in self._par_keys],
                                  ub = [self._pardat[key].support[1] for key in self._par_keys])
         p_init = np.array([self._pardat[key].initial_value for key in self._par_keys])
-        optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds, options={"maxiter" : 10000})
+        optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds)
         p_best = optres.x
 
         for i in range(len(self._par_keys)):
@@ -373,6 +374,14 @@ def array2frame(array, names):
         array_index = pd.Index(range(array.shape[0]), name=names[0])
         array_frame = pd.DataFrame({'Value' : array}, index=array_index)['Value']
     return array_frame
+
+def setup_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input_xlsx',  help="Excel model input workbook")
+    parser.add_argument("--ancprev",   help="CSV file with HIV prevalence from ANC surveillance")
+    parser.add_argument("--svyprev",   help="CSV file with HIV prevalence from surveys")
+    parser.add_argument("--alldeaths", help="CSV file with all-cause deaths counts")
+    return parser
 
 def main(par_file, anc_file, hiv_file, deaths_file, data_path):
     print("+=+ Inputs +=+")
@@ -422,20 +431,18 @@ def main(par_file, anc_file, hiv_file, deaths_file, data_path):
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
     time_start = time.time()
-    if len(sys.argv) == 1:
-        par_file = "C:/Proj/Repositories/goalsARMinputs/inputs_workbooks/zaf-2023-inputs-sti.xlsx"
-        anc_file = "C:/Proj/Repositories/goalsARMinputs/anc/mwi-2023-anc-prev.csv"
-        hiv_file = "C:/Proj/Repositories/goalsARMinputs/prevalence/zaf-2023-hiv-prev.csv"
-        deaths_file = "C:/Proj/Repositories/goalsARMinputs/deaths/adjusted_deaths_data.csv"
-        data_path = "."
-        main(par_file, anc_file, hiv_file, deaths_file, data_path)
-    elif len(sys.argv) < 3:
-        sys.stderr.write("USAGE: %s <input_param>.xlsx <anc_data>.csv <hiv_data>.csv <death_data>.csv" % (sys.argv[0]))
+    parser = setup_parser()
+    if len(sys.argv) > 1:
+        args = parser.parse_args()
     else:
-        par_file = sys.argv[1]
-        anc_file = sys.argv[2]
-        hiv_file = sys.argv[3]
-        deaths_file = sys.argv[4]
-        data_path = "."
-        main(par_file, anc_file, hiv_file, deaths_file, data_path)
+        args = parser.parse_args(["C:/Proj/Repositories/goalsARMinputs/inputs_workbooks/zaf-2023-inputs-sti.xlsx",
+                                  "--ancprev",   "C:/Proj/Repositories/goalsARMinputs/anc/mwi-2023-anc-prev.csv",
+                                  "--svyprev",   "C:/Proj/Repositories/goalsARMinputs/prevalence/zaf-2023-hiv-prev.csv",
+                                  "--alldeaths", "C:/Proj/Repositories/goalsARMinputs/deaths/adjusted_deaths_data.csv"])
+    par_file = args.input_xlsx
+    anc_file = args.ancprev
+    svy_file = args.svyprev
+    deaths_file = args.alldeaths
+    out_path = "."
+    main(par_file, anc_file, svy_file, deaths_file, out_path)
     print("Completed in %s seconds" % (time.time() - time_start))
