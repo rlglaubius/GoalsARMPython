@@ -185,6 +185,11 @@ class Parameter:
     def prior(self, theta):
         return self._prior(theta, self.parameter1, self.parameter2)
 
+## This object is used when a country has no data of a particular type.
+class AbstractLikelihood:
+    def likelihood(self, dat): return 0.0
+    def set_parameters(self, *args): pass
+
 class GoalsFitter:
     def __init__(self, par_xlsx, anc_csv, hiv_csv, deaths_csv):
         self.init_hivsim(par_xlsx)
@@ -201,18 +206,29 @@ class GoalsFitter:
         self.year_range = range(0, self.year_final - self.year_first + 1)
 
     def init_data_anc(self, anc_csv):
-        self._ancdat = ancprev.ancprev(self.year_first)
-        self._ancdat.read_csv(anc_csv)
+        if anc_csv:
+            self._ancdat = ancprev.ancprev(self.year_first)
+            self._ancdat.read_csv(anc_csv)
+        else:
+            self._ancdat = AbstractLikelihood()
 
     def init_data_hiv(self, hiv_csv):
-        self._hivdat = hivprev.hivprev(self.year_first)
-        self._hivdat.read_csv(hiv_csv)
-        self._hivest = self._hivdat.projection_template()
+        if hiv_csv:
+            self._hivdat = hivprev.hivprev(self.year_first)
+            self._hivdat.read_csv(hiv_csv)
+            self._hivest = self._hivdat.projection_template()
+        else:
+            self._hivdat = AbstractLikelihood()
+            self._hivest = pd.DataFrame(columns=['Population', 'Gender', 'Year', 'AgeMin', 'AgeMax'])
 
     def init_data_deaths(self, deaths_csv):
-        self._deathsdat = alldeaths.alldeaths(self.year_first)
-        self._deathsdat.read_csv(deaths_csv)
-        self._deathsest = self._deathsdat.projection_template()
+        if deaths_csv:
+            self._deathsdat = alldeaths.alldeaths(self.year_first)
+            self._deathsdat.read_csv(deaths_csv)
+            self._deathsest = self._deathsdat.projection_template()
+        else:
+            self._deathsdat = AbstractLikelihood()
+            self._deathsest = pd.DataFrame(columns=['Gender', 'Year', 'AgeMin', 'AgeMax'])
 
     def init_fitting(self, par_xlsx):
         # Setting data_only=True lets the fitter use the calculated value of Excel
@@ -242,9 +258,8 @@ class GoalsFitter:
         fill_hivprev_template(self.hivsim, self._hivest)
         fill_deaths_template(self.hivsim, self._deathsest)
         lhood_hiv = self._hivdat.likelihood(self._hivest)
-        #lhood_anc = self._ancdat.likelihood(self._ancest)
+        lhood_anc = self._ancdat.likelihood(self._ancest)
         lhood_deaths = self._deathsdat.likelihood(self._deathsest)
-        lhood_anc = 0 #For South Africa only
         sys.stderr.write("%0.2f %0.2f %0.2f\t%s\n" % (lhood_hiv, lhood_anc, lhood_deaths, params))
         return lhood_hiv + lhood_anc + lhood_deaths, lhood_hiv, lhood_anc, lhood_deaths
 
@@ -358,7 +373,7 @@ class GoalsFitter:
         bounds = optimize.Bounds(lb = [self._pardat[key].support[0] for key in self._par_keys],
                                  ub = [self._pardat[key].support[1] for key in self._par_keys])
         p_init = np.array([self._pardat[key].initial_value for key in self._par_keys])
-        optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds)
+        optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds, options={"maxiter" : 0})
         p_best = optres.x
 
         for i in range(len(self._par_keys)):
@@ -406,9 +421,9 @@ def main(par_file, anc_file, hiv_file, deaths_file, data_path):
     print("%d likelihood evaluations" % (diag.nfev))
     print("Converged: %s" % (diag.success))
     print("prior:\t\t%f\nlhood_hiv:\t%f\nlhood_anc:\t%f\nlhood_deaths:\t%f\n" % (prior_val, lhood_hiv, lhood_anc, lhood_deaths))
-    plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
-    plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
-    plot_fit_deaths(Fitter.hivsim, Fitter._deathsdat, "deathsfit.tiff")
+    if anc_file:    plot_fit_anc(Fitter.hivsim, Fitter._ancdat, "ancfit.tiff")
+    if hiv_file:    plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
+    if deaths_file: plot_fit_deaths(Fitter.hivsim, Fitter._deathsdat, "deathsfit.tiff")
 
     birth_all_frame = array2frame(Fitter.hivsim.births, ['Year', 'Sex'])
     birth_exp_frame = array2frame(Fitter.hivsim.births_exposed, ['Year'])
@@ -436,9 +451,8 @@ if __name__ == "__main__":
         args = parser.parse_args()
     else:
         args = parser.parse_args(["C:/Proj/Repositories/goalsARMinputs/inputs_workbooks/zaf-2023-inputs-sti.xlsx",
-                                  "--ancprev",   "C:/Proj/Repositories/goalsARMinputs/anc/mwi-2023-anc-prev.csv",
-                                  "--svyprev",   "C:/Proj/Repositories/goalsARMinputs/prevalence/zaf-2023-hiv-prev.csv",
-                                  "--alldeaths", "C:/Proj/Repositories/goalsARMinputs/deaths/adjusted_deaths_data.csv"])
+                                  "--svyprev",   "C:/Proj/Repositories/GoalsARMInputs/prevalence/zaf-2023-hiv-prev.csv",
+                                  "--alldeaths", "C:/Proj/Repositories/GoalsARMInputs/deaths/adjusted_deaths_data.csv"])
     par_file = args.input_xlsx
     anc_file = args.ancprev
     svy_file = args.svyprev
