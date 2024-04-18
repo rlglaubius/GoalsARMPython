@@ -367,7 +367,7 @@ class GoalsFitter:
     def calibrate(self, method='Nelder-Mead', maxiter=None):
         """! Calibrate the model to ANC and HIV prevalence data
         @param method see scipy.optimize.minimize. Only methods that allow bounds can be used.
-        @param iter maximum number of iterations to perform
+        @param maxiter maximum number of iterations to perform
         @return a dictionary that lists the fitted parameters with their final values
         @return the diagnostic object returned by scipy optimize
         """
@@ -376,7 +376,8 @@ class GoalsFitter:
         p_init = np.array([self._pardat[key].initial_value for key in self._par_keys])
 
         options = dict()
-        if maxiter: options['maxiter'] = maxiter
+        if not maxiter is None:
+            options['maxiter'] = maxiter
         optres = optimize.minimize(lambda p : -self.posterior(p), p_init, method=method, bounds=bounds, options=options)
         p_best = optres.x
 
@@ -403,7 +404,7 @@ def setup_parser():
     parser.add_argument("--alldeaths", help="CSV file with all-cause deaths counts")
     return parser
 
-def main(par_file, maxiter, anc_file, hiv_file, deaths_file, data_path):
+def main(par_file, maxiter, anc_file, hiv_file, deaths_file):
     print("+=+ Inputs +=+")
     print("par_file = %s" % (par_file))
     print("anc_file = %s" % (anc_file))
@@ -431,24 +432,6 @@ def main(par_file, maxiter, anc_file, hiv_file, deaths_file, data_path):
     if hiv_file:    plot_fit_hiv(Fitter.hivsim, Fitter._hivdat, "hivfit.tiff")
     if deaths_file: plot_fit_deaths(Fitter.hivsim, Fitter._deathsdat, "deathsfit.tiff")
 
-    birth_all_frame = array2frame(Fitter.hivsim.births, ['Year', 'Sex'])
-    birth_exp_frame = array2frame(Fitter.hivsim.births_exposed, ['Year'])
-    pop_child_neg = array2frame(Fitter.hivsim.pop_child_neg, ['Year', 'Sex', 'Age'])
-    pop_child_hiv = array2frame(Fitter.hivsim.pop_child_hiv, ['Year', 'Sex', 'Age', 'CD4', 'ART'])
-    pop_adult_neg = array2frame(Fitter.hivsim.pop_adult_neg, ['Year', 'Sex', 'Age', 'Risk'])
-    pop_adult_hiv = array2frame(Fitter.hivsim.pop_adult_hiv, ['Year', 'Sex', 'Age', 'Risk', 'CD4', 'ART'])
-    new_hiv = array2frame(Fitter.hivsim.new_infections, ['Year', 'Sex', 'Age', 'Risk'])
-    t4 = time.time()
-
-    birth_all_frame.to_csv(data_path + "/births.csv")
-    birth_exp_frame.to_csv(data_path + "/births-exposed.csv")
-    pop_child_neg.to_csv(data_path + "/child-neg.csv")
-    pop_child_hiv.to_csv(data_path + "/child-hiv.csv")
-    pop_adult_neg.to_csv(data_path + "/adult-neg.csv")
-    pop_adult_hiv.to_csv(data_path + "/adult-hiv.csv")
-    new_hiv.to_csv(data_path + "/new-hiv.csv")
-
-
 if __name__ == "__main__":
     sys.stderr.write("Process %d\n" % (os.getpid()))
     time_start = time.time()
@@ -464,6 +447,5 @@ if __name__ == "__main__":
     svy_file = args.svyprev
     deaths_file = args.alldeaths
     maxiter = args.maxiter
-    out_path = "."
-    main(par_file, maxiter, anc_file, svy_file, deaths_file, out_path)
+    main(par_file, maxiter, anc_file, svy_file, deaths_file)
     print("Completed in %s seconds" % (time.time() - time_start))
